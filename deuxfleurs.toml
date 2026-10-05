@@ -15,24 +15,48 @@ for = ["**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.gif", "**/*.webp"]
 Cache-Control = "max-age=31536000, no-transform, public"
 
 [[redirects]]
+from = "/en/provocations/2026-10-05-a-revolution-in-thought-and-action-are-we-up-for-it/index.html"
+to = "/provocations/2026-10-05-a-revolution-in-thought-and-action-are-we-up-for-it/"
+
+[[redirects]]
 from = "/fichiers/index.html"
 to = "/fr/fichiers/"
 
 [[redirects]]
 from = "/en/persons/raqib-naik/posts/index.html"
-to = "/en/persons/raqib-naik/provocations/"
+to = "/persons/raqib-naik/provocations/"
 
 [[redirects]]
 from = "/en/posts/index.html"
-to = "/en/provocations/"
+to = "/provocations/"
 
 [[redirects]]
 from = "/agenda/2026/index.html"
 to = "/fr/agenda/2026/"
 
 [[redirects]]
+from = "/en/agenda/gathering/index.html"
+to = "/future-labs/gathering/"
+
+[[redirects]]
+from = "/en/agenda/2026/09/index.html"
+to = "/future-labs/2026/09/"
+
+[[redirects]]
 from = "/en/persons/namatai-kwekweza/posts/index.html"
-to = "/en/persons/namatai-kwekweza/provocations/"
+to = "/persons/namatai-kwekweza/provocations/"
+
+[[redirects]]
+from = "/en/agenda/2026/04/index.html"
+to = "/future-labs/2026/04/"
+
+[[redirects]]
+from = "/en/future-labs/index.html"
+to = "/future-labs/"
+
+[[redirects]]
+from = "/en/agenda/2026/07/index.html"
+to = "/future-labs/2026/07/"
 
 [[redirects]]
 from = "/politique-de-confidentialite/index.html"
@@ -40,11 +64,19 @@ to = "/fr/politique-de-confidentialite/"
 
 [[redirects]]
 from = "/en/posts/2026-10-05-the-right-to-remain-human-a-futurists-provocation-on-radical-care-techno-feudalism-and-the-politics/index.html"
-to = "/en/provocations/2026-10-05-the-right-to-remain-human-a-futurists-provocation-on-radical-care-techno-feudalism-and-the-politics/"
+to = "/provocations/2026-10-05-the-right-to-remain-human-a-futurists-provocation-on-radical-care-techno-feudalism-and-the-politics/"
+
+[[redirects]]
+from = "/en/privacy-policy/index.html"
+to = "/privacy-policy/"
 
 [[redirects]]
 from = "/accessibilite/index.html"
 to = "/fr/accessibilite/"
+
+[[redirects]]
+from = "/en/agenda/2026/inception-design-united-kingdom/index.html"
+to = "/future-labs/2026/inception-design-united-kingdom/"
 
 [[redirects]]
 from = "/agenda/2026/07/index.html"
@@ -55,20 +87,76 @@ from = "/agenda/index.html"
 to = "/fr/agenda/"
 
 [[redirects]]
+from = "/en/sitemap/index.html"
+to = "/sitemap/"
+
+[[redirects]]
+from = "/en/exhibitions/index.html"
+to = "/exhibitions/"
+
+[[redirects]]
+from = "/en/provocations/2026-10-05-the-right-to-remain-human-a-futurists-provocation-on-radical-care-techno-feudalism-and-the-politics/index.html"
+to = "/provocations/2026-10-05-the-right-to-remain-human-a-futurists-provocation-on-radical-care-techno-feudalism-and-the-politics/"
+
+[[redirects]]
 from = "/agenda/2026/11/index.html"
 to = "/fr/agenda/2026/11/"
 
 [[redirects]]
+from = "/en/posts/featured-question/index.html"
+to = "/provocations/featured-question/"
+
+[[redirects]]
+from = "/en/agenda/2026/06/index.html"
+to = "/future-labs/2026/06/"
+
+[[redirects]]
+from = "/en/agenda/2026/12/index.html"
+to = "/future-labs/2026/12/"
+
+[[redirects]]
+from = "/en/provocations/index.html"
+to = "/provocations/"
+
+[[redirects]]
+from = "/en/agenda/2026/tech-futures-lab/index.html"
+to = "/future-labs/2026/tech-futures-lab/"
+
+[[redirects]]
+from = "/en/agenda/2026/index.html"
+to = "/future-labs/2026/"
+
+[[redirects]]
+from = "/en/organizations/index.html"
+to = "/organizations/"
+
+[[redirects]]
 from = "/agenda/2026/generation-freedom-futures-lab/index.html"
-to = "/en/agenda/2026/generation-freedom-futures-lab/"
+to = "/future-labs/2026/generation-freedom-futures-lab/"
 
 [[redirects]]
 from = "/agenda/2026/human-rights-in-transition/index.html"
-to = "/en/agenda/2026/human-rights-in-transition/"
+to = "/future-labs/2026/human-rights-in-transition/"
 
 [[redirects]]
 from = "/agenda/2026/02/index.html"
 to = "/fr/agenda/2026/02/"
+
+[[redirects]]
+from = "/en/future-labs/2026/index.html"
+to = "/future-labs/2026/"
+
+[[redirects]]
+from = "/en/index.html"
+to = "/"
+
+[[redirects]]
+from = "/en/legal-terms/index.html"
+to = "/legal-terms/"
+
+[[redirects]]
+from = "/en/agenda/in-person/index.html"
+to = "/future-labs/in-person/"
 
 [[redirects]]
 from = "/agenda/2026/04/index.html"
@@ -79,12 +167,40 @@ from = "/expositions/archives-expositions/index.html"
 to = "/fr/expositions/archives-expositions/"
 
 [[redirects]]
+from = "/en/persons/raqib-naik/index.html"
+to = "/persons/raqib-naik/"
+
+[[redirects]]
 from = "/agenda/2026/10/index.html"
 to = "/fr/agenda/2026/10/"
 
 [[redirects]]
+from = "/en/persons/namatai-kwekweza/index.html"
+to = "/persons/namatai-kwekweza/"
+
+[[redirects]]
+from = "/en/persons/index.html"
+to = "/persons/"
+
+[[redirects]]
+from = "/en/agenda/2026/01/index.html"
+to = "/future-labs/2026/01/"
+
+[[redirects]]
 from = "/mentions-legales/index.html"
 to = "/fr/mentions-legales/"
+
+[[redirects]]
+from = "/en/files/index.html"
+to = "/files/"
+
+[[redirects]]
+from = "/en/persons/namatai-kwekweza/provocations/index.html"
+to = "/persons/namatai-kwekweza/provocations/"
+
+[[redirects]]
+from = "/en/future-labs/2026/inception-design-united-kingdom/index.html"
+to = "/future-labs/2026/inception-design-united-kingdom/"
 
 [[redirects]]
 from = "/agenda/2026/06/index.html"
@@ -95,8 +211,16 @@ from = "/agenda/2026/09/index.html"
 to = "/fr/agenda/2026/09/"
 
 [[redirects]]
+from = "/en/accessibility/index.html"
+to = "/accessibility/"
+
+[[redirects]]
 from = "/agenda/2026/03/index.html"
 to = "/fr/agenda/2026/03/"
+
+[[redirects]]
+from = "/en/exhibitions/exhibitions-archives/index.html"
+to = "/exhibitions/exhibitions-archives/"
 
 [[redirects]]
 from = "/personnes/equipe-editoriale/index.html"
@@ -107,12 +231,52 @@ from = "/organisations/index.html"
 to = "/fr/organisations/"
 
 [[redirects]]
+from = "/en/agenda/2026/global-commons-futures-lab/index.html"
+to = "/future-labs/2026/global-commons-futures-lab/"
+
+[[redirects]]
+from = "/en/persons/raqib-naik/provocations/index.html"
+to = "/persons/raqib-naik/provocations/"
+
+[[redirects]]
+from = "/en/agenda/2026/08/index.html"
+to = "/future-labs/2026/08/"
+
+[[redirects]]
+from = "/en/agenda/2026/10/index.html"
+to = "/future-labs/2026/10/"
+
+[[redirects]]
+from = "/en/agenda/2026/11/index.html"
+to = "/future-labs/2026/11/"
+
+[[redirects]]
 from = "/agenda/2026/08/index.html"
 to = "/fr/agenda/2026/08/"
 
 [[redirects]]
+from = "/en/persons/editors/index.html"
+to = "/persons/editors/"
+
+[[redirects]]
+from = "/en/posts/2026-10-04-neighbourism-as-political-infrastructure/index.html"
+to = "/provocations/2026-10-04-neighbourism-as-political-infrastructure/"
+
+[[redirects]]
 from = "/agenda/2026/01/index.html"
 to = "/fr/agenda/2026/01/"
+
+[[redirects]]
+from = "/en/agenda/2026/03/index.html"
+to = "/future-labs/2026/03/"
+
+[[redirects]]
+from = "/en/agenda/2026/02/index.html"
+to = "/future-labs/2026/02/"
+
+[[redirects]]
+from = "/en/future-labs/2026/10/index.html"
+to = "/future-labs/2026/10/"
 
 [[redirects]]
 from = "/expositions/index.html"
@@ -127,8 +291,28 @@ from = "/agenda/2026/05/index.html"
 to = "/fr/agenda/2026/05/"
 
 [[redirects]]
+from = "/en/posts/essay/index.html"
+to = "/provocations/essay/"
+
+[[redirects]]
+from = "/en/agenda/2026/generation-freedom-futures-lab/index.html"
+to = "/future-labs/2026/generation-freedom-futures-lab/"
+
+[[redirects]]
+from = "/en/agenda/2026/05/index.html"
+to = "/future-labs/2026/05/"
+
+[[redirects]]
 from = "/agenda/2026/12/index.html"
 to = "/fr/agenda/2026/12/"
+
+[[redirects]]
+from = "/en/agenda/2026/human-rights-in-transition/index.html"
+to = "/future-labs/2026/human-rights-in-transition/"
+
+[[redirects]]
+from = "/en/agenda/index.html"
+to = "/future-labs/"
 
 [[redirects]]
 from = "/actualites/index.html"
