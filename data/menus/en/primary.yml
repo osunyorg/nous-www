@@ -39,7 +39,7 @@ items:
   file: content/en/organizations/_index.html
 - title: Futures Labs
   slug: futures-labs
-  target: "/en/agenda/"
+  target: "/en/future-labs/"
   kind: page
   new_tab: false
   children: []
