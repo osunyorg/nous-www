@@ -9,5 +9,5 @@ osuny:
 
 
 ## LANGUAGE
-defaultContentLanguage: fr
-defaultContentLanguageInSubdir: false
+defaultContentLanguage: en
+defaultContentLanguageInSubdir: true

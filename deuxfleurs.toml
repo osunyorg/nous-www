@@ -14,3 +14,119 @@ for = ["**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.gif", "**/*.webp"]
 [headers.values]
 Cache-Control = "max-age=31536000, no-transform, public"
 
+[[redirects]]
+from = "/fichiers/index.html"
+to = "/fr/fichiers/"
+
+[[redirects]]
+from = "/agenda/2026/index.html"
+to = "/fr/agenda/2026/"
+
+[[redirects]]
+from = "/politique-de-confidentialite/index.html"
+to = "/fr/politique-de-confidentialite/"
+
+[[redirects]]
+from = "/accessibilite/index.html"
+to = "/fr/accessibilite/"
+
+[[redirects]]
+from = "/agenda/2026/07/index.html"
+to = "/fr/agenda/2026/07/"
+
+[[redirects]]
+from = "/agenda/index.html"
+to = "/fr/agenda/"
+
+[[redirects]]
+from = "/agenda/2026/11/index.html"
+to = "/fr/agenda/2026/11/"
+
+[[redirects]]
+from = "/agenda/2026/generation-freedom-futures-lab/index.html"
+to = "/en/agenda/2026/generation-freedom-futures-lab/"
+
+[[redirects]]
+from = "/agenda/2026/human-rights-in-transition/index.html"
+to = "/en/agenda/2026/human-rights-in-transition/"
+
+[[redirects]]
+from = "/agenda/2026/02/index.html"
+to = "/fr/agenda/2026/02/"
+
+[[redirects]]
+from = "/agenda/2026/04/index.html"
+to = "/fr/agenda/2026/04/"
+
+[[redirects]]
+from = "/expositions/archives-expositions/index.html"
+to = "/fr/expositions/archives-expositions/"
+
+[[redirects]]
+from = "/agenda/2026/10/index.html"
+to = "/fr/agenda/2026/10/"
+
+[[redirects]]
+from = "/mentions-legales/index.html"
+to = "/fr/mentions-legales/"
+
+[[redirects]]
+from = "/agenda/2026/06/index.html"
+to = "/fr/agenda/2026/06/"
+
+[[redirects]]
+from = "/agenda/2026/09/index.html"
+to = "/fr/agenda/2026/09/"
+
+[[redirects]]
+from = "/agenda/2026/03/index.html"
+to = "/fr/agenda/2026/03/"
+
+[[redirects]]
+from = "/personnes/equipe-editoriale/index.html"
+to = "/fr/personnes/equipe-editoriale/"
+
+[[redirects]]
+from = "/organisations/index.html"
+to = "/fr/organisations/"
+
+[[redirects]]
+from = "/agenda/2026/08/index.html"
+to = "/fr/agenda/2026/08/"
+
+[[redirects]]
+from = "/agenda/2026/01/index.html"
+to = "/fr/agenda/2026/01/"
+
+[[redirects]]
+from = "/agenda/2026/global-commons-futures-lab/index.html"
+to = "/en/agenda/2026/global-commons-futures-lab/"
+
+[[redirects]]
+from = "/expositions/index.html"
+to = "/fr/expositions/"
+
+[[redirects]]
+from = "/personnes/index.html"
+to = "/fr/personnes/"
+
+[[redirects]]
+from = "/agenda/2026/05/index.html"
+to = "/fr/agenda/2026/05/"
+
+[[redirects]]
+from = "/agenda/2026/inception-design-united-kingdom/index.html"
+to = "/fr/agenda/2026/inception-design-united-kingdom/"
+
+[[redirects]]
+from = "/agenda/2026/12/index.html"
+to = "/fr/agenda/2026/12/"
+
+[[redirects]]
+from = "/actualites/index.html"
+to = "/fr/actualites/"
+
+[[redirects]]
+from = "/plan-du-site/index.html"
+to = "/fr/plan-du-site/"
+
