@@ -1,0 +1,88 @@
+// Posts — index
+.posts__section .posts--highlight
+  display: grid
+  grid-template-columns: repeat(2, minmax(0, 1fr))
+  gap: 1.25rem
+  list-style: none
+  padding: 0
+  > li
+    min-width: 0
+
+  // Content
+  .post-content
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    gap: 0.75rem 1rem
+    > *
+      flex-basis: 100%
+  .post-title
+    order: 2
+  .post-categories
+    order: 1
+    display: flex
+    gap: 0.5rem
+    list-style: none
+    margin: 0
+    padding: 0
+    a
+      display: inline-block
+      padding: 0.2rem 0.6rem
+      border-radius: 6rem
+      font-size: 0.7rem
+      text-transform: uppercase
+      text-decoration: none
+      background: $color-accent
+      color: $color-background
+  .post-meta
+    order: 3
+    flex: 1 1 auto
+  .more
+    order: 4
+    flex: 0 0 auto
+    &::after
+      content: " →"
+  .without-image .media
+    display: none
+
+  // Post highlight
+  > li:first-child
+    grid-column: 1 / -1
+    margin-bottom: 1.25rem
+    article
+      display: flex
+      background: $posts-featured-background
+      color: $color-background
+      border-radius: 1rem
+      overflow: hidden
+      a, .post-title, .post-meta, .post-author p
+        color: inherit
+      .post-categories a
+        background: $posts-card-background
+        color: $color-accent
+      .post-content
+        flex: 1 1 55%
+        padding: 2.5rem
+      .media
+        flex: 1 1 45%
+        img
+          height: 100%
+          object-fit: cover
+
+  // Other posts
+  > li:not(:first-child)
+    article
+      background: $posts-card-background
+      border-radius: 1.25rem
+      padding: 1.25rem 1.5rem
+      height: 100%
+    .media
+      display: none
+    .post-meta
+      border-top: 1px solid rgba($color-accent, 0.15)
+      padding-top: 0.75rem
+
+  @media (max-width: 768px)
+    grid-template-columns: 1fr
+    > li:first-child article
+      flex-direction: column-reverse

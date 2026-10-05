@@ -11,3 +11,15 @@ params:
   home:
     head:
       title: site
+  posts:
+    index:
+      layout: highlight
+      options:
+        author: true
+        categories: true
+        date: false
+        image: true
+        reading_time: false
+        summary: false
+        subtitle: false
+        with_more: true
