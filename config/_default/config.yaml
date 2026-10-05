@@ -6,7 +6,7 @@ params:
   search:
     active: true
   logo:
-    header: ''
+    header: '/assets/images/nous-logo.png'
     footer: ''
   home:
     head:
