@@ -19,6 +19,10 @@ from = "/fichiers/index.html"
 to = "/fr/fichiers/"
 
 [[redirects]]
+from = "/en/posts/index.html"
+to = "/en/provocations/"
+
+[[redirects]]
 from = "/agenda/2026/index.html"
 to = "/fr/agenda/2026/"
 
