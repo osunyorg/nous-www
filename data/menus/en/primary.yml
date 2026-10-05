@@ -46,13 +46,4 @@ items:
   descendants_targets: []
   path: "/organizations"
   file: content/en/organizations/_index.html
-- title: Exhibitions
-  slug: exhibitions
-  target: "/exhibitions/"
-  kind: page
-  new_tab: false
-  children: []
-  descendants_targets: []
-  path: "/exhibitions"
-  file: content/en/exhibitions/_index.html
 
