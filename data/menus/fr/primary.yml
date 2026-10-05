@@ -37,8 +37,8 @@ items:
   descendants_targets: []
   path: "/organizations"
   file: content/fr/organizations/_index.html
-- title: Agenda
-  slug: agenda
+- title: Futures Labs
+  slug: futures-labs
   target: "/agenda/"
   kind: page
   new_tab: false
