@@ -10,8 +10,8 @@ items:
   descendants_targets: []
   path: "/files"
   file: content/fr/files/_index.html
-- title: Actualités
-  slug: actualites
+- title: Provocations
+  slug: provocations
   target: "/actualites/"
   kind: page
   new_tab: false
