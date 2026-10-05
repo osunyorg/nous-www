@@ -19,6 +19,10 @@ from = "/fichiers/index.html"
 to = "/fr/fichiers/"
 
 [[redirects]]
+from = "/en/persons/raqib-naik/posts/index.html"
+to = "/en/persons/raqib-naik/provocations/"
+
+[[redirects]]
 from = "/en/posts/index.html"
 to = "/en/provocations/"
 
@@ -27,8 +31,16 @@ from = "/agenda/2026/index.html"
 to = "/fr/agenda/2026/"
 
 [[redirects]]
+from = "/en/persons/namatai-kwekweza/posts/index.html"
+to = "/en/persons/namatai-kwekweza/provocations/"
+
+[[redirects]]
 from = "/politique-de-confidentialite/index.html"
 to = "/fr/politique-de-confidentialite/"
+
+[[redirects]]
+from = "/en/posts/2026-10-05-the-right-to-remain-human-a-futurists-provocation-on-radical-care-techno-feudalism-and-the-politics/index.html"
+to = "/en/provocations/2026-10-05-the-right-to-remain-human-a-futurists-provocation-on-radical-care-techno-feudalism-and-the-politics/"
 
 [[redirects]]
 from = "/accessibilite/index.html"
@@ -103,10 +115,6 @@ from = "/agenda/2026/01/index.html"
 to = "/fr/agenda/2026/01/"
 
 [[redirects]]
-from = "/agenda/2026/global-commons-futures-lab/index.html"
-to = "/en/agenda/2026/global-commons-futures-lab/"
-
-[[redirects]]
 from = "/expositions/index.html"
 to = "/fr/expositions/"
 
@@ -117,10 +125,6 @@ to = "/fr/personnes/"
 [[redirects]]
 from = "/agenda/2026/05/index.html"
 to = "/fr/agenda/2026/05/"
-
-[[redirects]]
-from = "/agenda/2026/inception-design-united-kingdom/index.html"
-to = "/fr/agenda/2026/inception-design-united-kingdom/"
 
 [[redirects]]
 from = "/agenda/2026/12/index.html"
