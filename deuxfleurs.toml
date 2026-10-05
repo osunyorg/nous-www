@@ -23,6 +23,10 @@ from = "/fichiers/index.html"
 to = "/fr/fichiers/"
 
 [[redirects]]
+from = "/files/index.html"
+to = "/repository/"
+
+[[redirects]]
 from = "/en/persons/raqib-naik/posts/index.html"
 to = "/persons/raqib-naik/provocations/"
 
@@ -192,7 +196,7 @@ to = "/fr/mentions-legales/"
 
 [[redirects]]
 from = "/en/files/index.html"
-to = "/files/"
+to = "/repository/"
 
 [[redirects]]
 from = "/en/persons/namatai-kwekweza/provocations/index.html"
