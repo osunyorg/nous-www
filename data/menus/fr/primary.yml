@@ -37,4 +37,22 @@ items:
   descendants_targets: []
   path: "/organizations"
   file: content/fr/organizations/_index.html
+- title: Agenda
+  slug: agenda
+  target: "/agenda/"
+  kind: page
+  new_tab: false
+  children: []
+  descendants_targets: []
+  path: "/events"
+  file: content/fr/events/_index.html
+- title: Expositions
+  slug: expositions
+  target: "/expositions/"
+  kind: page
+  new_tab: false
+  children: []
+  descendants_targets: []
+  path: "/exhibitions"
+  file: content/fr/exhibitions/_index.html
 
