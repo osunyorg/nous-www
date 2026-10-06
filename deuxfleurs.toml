@@ -103,6 +103,10 @@ from = "/en/exhibitions/index.html"
 to = "/exhibitions/"
 
 [[redirects]]
+from = "/test-futures-labs/index.html"
+to = "/futures-labs/"
+
+[[redirects]]
 from = "/en/provocations/2026-10-05-the-right-to-remain-human-a-futurists-provocation-on-radical-care-techno-feudalism-and-the-politics/index.html"
 to = "/provocations/2026-10-05-the-right-to-remain-human-a-futurists-provocation-on-radical-care-techno-feudalism-and-the-politics/"
 
@@ -293,10 +297,6 @@ to = "/fr/expositions/"
 [[redirects]]
 from = "/personnes/index.html"
 to = "/fr/personnes/"
-
-[[redirects]]
-from = "/futures-labs/index.html"
-to = "/futures-labs-agenda/"
 
 [[redirects]]
 from = "/agenda/2026/05/index.html"
