@@ -56,7 +56,11 @@ to = "/future-labs/2026/04/"
 
 [[redirects]]
 from = "/en/future-labs/index.html"
-to = "/future-labs/"
+to = "/futures-labs/"
+
+[[redirects]]
+from = "/future-labs/index.html"
+to = "/futures-labs/"
 
 [[redirects]]
 from = "/en/agenda/2026/07/index.html"
@@ -316,7 +320,7 @@ to = "/future-labs/2026/human-rights-in-transition/"
 
 [[redirects]]
 from = "/en/agenda/index.html"
-to = "/future-labs/"
+to = "/futures-labs/"
 
 [[redirects]]
 from = "/actualites/index.html"
