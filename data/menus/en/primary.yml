@@ -21,13 +21,13 @@ items:
   file: content/en/posts/_index.html
 - title: Futures Labs
   slug: futures-labs
-  target: "/futures-labs/"
+  target: "/test-futures-labs/"
   kind: page
   new_tab: false
   children: []
   descendants_targets: []
-  path: "/events"
-  file: content/en/events/_index.html
+  path: "/pages/test-futures-labs"
+  file: content/en/pages/test-futures-labs/_index.html
 - title: Alternative Human Rights Repository
   slug: alternative-human-rights-repository
   target: "/repository/"
