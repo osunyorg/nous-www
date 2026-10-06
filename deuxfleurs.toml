@@ -56,11 +56,11 @@ to = "/future-labs/2026/04/"
 
 [[redirects]]
 from = "/en/future-labs/index.html"
-to = "/futures-labs/"
+to = "/futures-labs-agenda/"
 
 [[redirects]]
 from = "/future-labs/index.html"
-to = "/futures-labs/"
+to = "/futures-labs-agenda/"
 
 [[redirects]]
 from = "/en/agenda/2026/07/index.html"
@@ -295,6 +295,10 @@ from = "/personnes/index.html"
 to = "/fr/personnes/"
 
 [[redirects]]
+from = "/futures-labs/index.html"
+to = "/futures-labs-agenda/"
+
+[[redirects]]
 from = "/agenda/2026/05/index.html"
 to = "/fr/agenda/2026/05/"
 
@@ -320,7 +324,7 @@ to = "/future-labs/2026/human-rights-in-transition/"
 
 [[redirects]]
 from = "/en/agenda/index.html"
-to = "/futures-labs/"
+to = "/futures-labs-agenda/"
 
 [[redirects]]
 from = "/actualites/index.html"
