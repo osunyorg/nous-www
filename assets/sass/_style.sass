@@ -1,12 +1,15 @@
-// Posts — index
-.posts__section .hero
-  background: $color-background
-  .content, .hero-text
-    width: 100%
-    text-align: center
-  .hero-text
-    margin-inline: auto
-    max-width: 50rem
+// Posts & Events - index
+.posts__section, .events__section, .files__section
+  .hero
+    background: $color-background
+
+    .content, .hero-text
+      width: 100%
+      text-align: center
+
+    .hero-text
+      margin-inline: auto
+      max-width: 50rem
 
 .posts__section .posts--highlight
   display: grid
@@ -111,3 +114,56 @@
     > li:first-child article
       grid-template-columns: 1fr
       grid-template-areas: "media" "content"
+
+
+// Events
+// Featured Gathering block
+.block-agenda--large
+  background: $color-green
+  border-radius: 1rem
+  overflow: hidden
+  margin: 0 $spacing-2
+
+  > .container
+  .block-content
+    padding: 2.5rem
+    
+  .block-title
+    margin: auto
+    padding: 0rem
+    a
+      color: $color-accent
+      font-weight: 700
+      
+  .event
+    &-title
+      a
+        color: $color-accent
+        font-size: 1.5rem
+        font-weight: 700
+        line-height: 1
+        &:hover
+          color: darken($color-accent, 10%)
+      h3
+        line-height: 1
+          
+    &-schedule
+      margin-top: 1rem
+      
+    &-dates
+      font-size: 0.5rem
+      
+    .more
+      margin-top: 0.5rem
+      
+  @include media-breakpoint-up(desktop)
+    margin: 0 $spacing-4
+
+
+.block-agenda--large .events--large .event:not(.event--with-image)
+  &,
+  body.full-width &,
+  main > .blocks &,
+  .contents-full-width &
+    margin-left: 0
+    width: auto
