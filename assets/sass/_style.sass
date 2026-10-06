@@ -168,9 +168,7 @@
     margin-left: 0
     width: auto
 
-
-main .events--grid.events--grid,
-.events--grid.events--grid
+main .events--grid.events--grid
   display: grid
   grid-template-columns: repeat(2, minmax(0, 1fr))
   gap: 1.25rem
@@ -195,29 +193,26 @@ main .events--grid.events--grid,
 
   @media (max-width: 768px)
     grid-template-columns: 1fr
-  display: grid
-  grid-template-columns: repeat(2, minmax(0, 1fr))
-  gap: 1.25rem
-  list-style: none
-  padding: 0
-  margin: 0
-
-  > li
-    min-width: 0
-
-    .event
-      background: $posts-card-background
-      border-radius: 1.25rem
-      padding: 1.25rem 1.5rem
-      height: 100%
-
-  @media (max-width: 768px)
-    grid-template-columns: 1fr
-
 
 .block-class-light-green-bg
   background-color: $color-light-green
+  padding: 2.5rem 0.5rem
+
+  .block-title
+    font-size: 2.5rem
+    font-weight: 800
+    text-transform: capitalize
+
+main .block-class-light-green-bg .events--grid.events--grid > li .event
+  background: transparent
 
 .block-class-flex-justify-between
-  diplay: flex
-  justify: space-between
+  .call_to_action > div
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+.block-class-light-green-bg
+  background-color: $color-light-green
+  padding: 2.5rem 0.5rem
+
