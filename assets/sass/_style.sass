@@ -167,3 +167,49 @@
   .contents-full-width &
     margin-left: 0
     width: auto
+
+
+main .events--grid.events--grid,
+.events--grid.events--grid
+  display: grid
+  grid-template-columns: repeat(2, minmax(0, 1fr))
+  gap: 1.25rem
+  list-style: none
+  padding: 0
+  margin: 0
+
+  > li
+    width: auto
+    max-width: none
+    margin: 0
+    min-width: 0
+    float: none
+
+    .event
+      width: auto
+      margin: 0
+      height: 100%
+      background: $posts-card-background
+      border-radius: 1.25rem
+      padding: 1.25rem 1.5rem
+
+  @media (max-width: 768px)
+    grid-template-columns: 1fr
+  display: grid
+  grid-template-columns: repeat(2, minmax(0, 1fr))
+  gap: 1.25rem
+  list-style: none
+  padding: 0
+  margin: 0
+
+  > li
+    min-width: 0
+
+    .event
+      background: $posts-card-background
+      border-radius: 1.25rem
+      padding: 1.25rem 1.5rem
+      height: 100%
+
+  @media (max-width: 768px)
+    grid-template-columns: 1fr
