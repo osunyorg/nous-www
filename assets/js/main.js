@@ -2,3 +2,4 @@
 
 import './theme/';
 import './home-title';
+import './home-showcase';

@@ -1,0 +1,96 @@
+{{ $image := .image }}
+{{ $tabs := slice }}
+
+{{ range site.Data.showcase.tabs }}
+  {{ $page := site.GetPage .page }}
+  {{ if $page }}
+    {{ $featured := false }}
+
+    {{/* First item of the first posts or agenda block of the page */}}
+    {{ range $page.Params.contents }}
+      {{ if not $featured }}
+        {{ with or .data.posts .data.events }}
+          {{ $featured = site.GetPage (index . 0).path }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+
+    {{/* Otherwise the first page of the section, as listed on the section page */}}
+    {{ if and (not $featured) $page.IsSection }}
+      {{ with $page.RegularPagesRecursive }}
+        {{ $featured = index . 0 }}
+      {{ end }}
+    {{ end }}
+
+    {{ $authors := slice }}
+    {{ if $featured }}
+      {{ range $featured.GetTerms "authors" }}
+        {{ with site.GetPage (printf "/persons/%s" .Slug) }}
+          {{ $authors = $authors | append .Title }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+
+    {{ $tabs = $tabs | append (dict
+      "page" $page
+      "featured" $featured
+      "authors" $authors
+      "text" (.text | default ($page.Params.summary | plainify | strings.TrimSpace))
+      "summary" ($page.Params.summary | plainify | strings.TrimSpace)
+    ) }}
+  {{ end }}
+{{ end }}
+
+{{ if $tabs }}
+  {{ $id := "showcase" }}
+  <div class="showcase" data-showcase>
+    <div class="showcase-main">
+      {{ with $image }}
+        {{ partial "commons/image/figure.html" (dict
+          "image" .
+          "sizes" site.Params.image_sizes.blocks.chapter
+        ) }}
+      {{ end }}
+
+      <div class="showcase-panels">
+        {{ range $index, $tab := $tabs }}
+          <div class="showcase-panel" id="{{ $id }}-panel-{{ $index }}" role="tabpanel" aria-labelledby="{{ $id }}-tab-{{ $index }}" {{ if gt $index 0 }}hidden{{ end }}>
+            {{ with $tab.featured }}
+              <p class="showcase-featured-title"><a href="{{ .Permalink }}">{{ .Title }}</a></p>
+            {{ else }}
+              <p class="showcase-featured-title">{{ $tab.page.Title }}</p>
+            {{ end }}
+            {{ with $tab.authors }}
+              <p class="showcase-authors">{{ delimit . ", " }}</p>
+            {{ end }}
+            {{ with $tab.text }}
+              <p class="showcase-text">{{ . }}</p>
+            {{ end }}
+            <a class="showcase-more" href="{{ $tab.page.Permalink }}" aria-label="{{ i18n "commons.more_aria" (dict "Title" $tab.page.Title) }}">{{ i18n "commons.more" }}</a>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+
+    <div class="showcase-tabs" role="tablist">
+      {{ range $index, $tab := $tabs }}
+        <button type="button" class="showcase-tab" id="{{ $id }}-tab-{{ $index }}" role="tab" aria-controls="{{ $id }}-panel-{{ $index }}" aria-selected="{{ if eq $index 0 }}true{{ else }}false{{ end }}" {{ if gt $index 0 }}tabindex="-1"{{ end }}>{{ $tab.page.Title }}</button>
+      {{ end }}
+    </div>
+
+    {{/* The other tabs as cards, the selected one is hidden */}}
+    <ul class="showcase-cards">
+      {{ range $index, $tab := $tabs }}
+        <li data-showcase-card="{{ $id }}-tab-{{ $index }}" {{ if eq $index 0 }}hidden{{ end }}>
+          <article class="showcase-card">
+            <h3 class="showcase-card-title"><a href="{{ $tab.page.Permalink }}">{{ $tab.page.Title }}</a></h3>
+            {{ with $tab.summary }}
+              <p class="showcase-card-text">{{ . }}</p>
+            {{ end }}
+            <span class="showcase-card-more" aria-hidden="true">{{ i18n "commons.more" }}</span>
+          </article>
+        </li>
+      {{ end }}
+    </ul>
+  </div>
+{{ end }}

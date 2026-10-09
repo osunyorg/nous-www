@@ -1,0 +1,28 @@
+{{/* Override of the theme chapter block: a chapter with the "showcase" class renders the showcase tabs */}}
+{{ $block := .block }}
+{{ $block_class := partial "blocks/helpers/GetClass" .block }}
+{{ $is_showcase := in ($block.html_class | default "") "showcase" }}
+{{ with .block.data }}
+  {{ if .image }}
+    {{ $block_class = printf "%s block-chapter--with-image" $block_class }}
+  {{ end }}
+  <div class="{{ $block_class }}">
+    <div class="container">
+      <div class="block-content">
+        <div class="chapter">
+          <div class="text">
+            {{ partial "blocks/top.html" $block.top }}
+            {{ partial "blocks/templates/chapter/text.html" . }}
+            {{ partial "blocks/templates/chapter/notes.html" . }}
+          </div>
+          {{ if not $is_showcase }}
+            {{ partial "blocks/templates/chapter/image.html" . }}
+          {{ end }}
+        </div>
+        {{ if $is_showcase }}
+          {{ partial "blocks/templates/chapter/showcase.html" . }}
+        {{ end }}
+      </div>
+    </div>
+  </div>
+{{ end }}

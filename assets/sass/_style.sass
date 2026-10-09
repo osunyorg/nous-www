@@ -92,6 +92,150 @@
         font-weight: 800
         line-height: 1.1
 
+  // Showcase — chapter block with the "showcase" class: image, purple frame, tabs
+  --showcase-height: 24rem
+
+  .block-chapter.block-chapter--with-image .chapter
+    flex-direction: column
+    .text
+      order: 0
+      width: 100%
+
+  .showcase
+    margin-top: $spacing-4
+
+    &-main
+      display: flex
+      flex-direction: column
+      gap: var(--grid-gutter)
+      figure
+        margin: 0
+        .lightbox-button, picture, img
+          display: block
+          width: 100%
+        img
+          height: var(--showcase-height)
+          max-height: none
+          aspect-ratio: auto
+          object-fit: cover
+
+    &-panels
+      flex: 1
+      min-width: 0
+
+    &-panel
+      display: flex
+      flex-direction: column
+      justify-content: flex-end
+      gap: $spacing-2
+      height: 100%
+      min-height: var(--showcase-height)
+      padding: $spacing-4
+      background: $color-accent
+      border-radius: 1rem
+      color: $color-background
+      &[hidden]
+        display: none
+      p
+        margin: 0
+      a
+        color: inherit
+
+    &-featured-title
+      font-family: $heading-font-family
+      font-size: clamp(1.5rem, 2.5vw, 2.25rem)
+      line-height: 1.15
+      a
+        text-decoration: none
+        &:hover
+          text-decoration: underline
+
+    &-text
+      max-width: 40rem
+      margin-top: $spacing-2 !important
+
+    &-more
+      align-self: flex-start
+      margin-top: $spacing-2
+      &::after
+        content: " →"
+
+    &-tabs
+      display: flex
+      flex-wrap: wrap
+      gap: $spacing-2
+      margin-top: $spacing-3
+
+    &-tab
+      padding: 0.4rem 1rem
+      border: 1px solid $color-accent
+      border-radius: 6rem
+      background: transparent
+      color: $color-accent
+      font: inherit
+      cursor: pointer
+      &:hover
+        background: rgba($color-accent, 0.08)
+      &[aria-selected="true"]
+        background: $color-accent
+        color: $color-background
+
+  // Showcase cards
+  .showcase-cards
+    display: grid
+    grid-template-columns: 1fr
+    gap: var(--grid-gutter)
+    margin: $spacing-4 0 0
+    padding: 0
+    list-style: none
+    > li
+      margin: 0
+      &[hidden]
+        display: none
+
+  .showcase-card
+    position: relative
+    display: flex
+    flex-direction: column
+    gap: $spacing-2
+    height: 100%
+    padding: $spacing-4
+    border: 1px solid $color-accent
+    border-radius: 1rem
+    background: transparent
+    &-title
+      margin: 0
+      a
+        color: inherit
+        text-decoration: none
+        &::before
+          content: ""
+          position: absolute
+          inset: 0
+    &-text
+      margin: 0
+    &-more
+      margin-top: auto
+      padding-top: $spacing-2
+      &::after
+        content: " →"
+    &:hover .showcase-card-title a
+      text-decoration: underline
+
+  @include media-breakpoint-up(desktop)
+    --showcase-height: 35rem
+
+    .showcase-main
+      flex-direction: row
+      align-items: stretch
+      figure
+        flex: 0 0 columns(4)
+        width: columns(4)
+
+    .showcase-cards
+      grid-template-columns: repeat(2, minmax(0, 1fr))
+
+
 // Posts & Events - index
 .posts__section, .events__section, .files__section, .pages__section
   .hero
