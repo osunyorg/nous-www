@@ -55,14 +55,16 @@
       <div class="showcase-panels">
         {{ range $index, $tab := $tabs }}
           <div class="showcase-panel" id="{{ $id }}-panel-{{ $index }}" role="tabpanel" aria-labelledby="{{ $id }}-tab-{{ $index }}" {{ if gt $index 0 }}hidden{{ end }}>
-            {{ with $tab.featured }}
-              <p class="showcase-featured-title"><a href="{{ .Permalink }}">{{ .Title }}</a></p>
-            {{ else }}
-              <p class="showcase-featured-title">{{ $tab.page.Title }}</p>
-            {{ end }}
-            {{ with $tab.authors }}
-              <p class="showcase-authors">{{ delimit . ", " }}</p>
-            {{ end }}
+            <div class="showcase-featured">
+              {{ with $tab.featured }}
+                <p class="showcase-featured-title"><a href="{{ .Permalink }}">{{ .Title }}</a></p>
+              {{ else }}
+                <p class="showcase-featured-title">{{ $tab.page.Title }}</p>
+              {{ end }}
+              {{ with $tab.authors }}
+                <p class="showcase-authors">{{ delimit . ", " }}</p>
+              {{ end }}
+            </div>
             {{ with $tab.text }}
               <p class="showcase-text">{{ . }}</p>
             {{ end }}
