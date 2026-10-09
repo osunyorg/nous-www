@@ -1,0 +1,157 @@
+.page__home
+
+  // Hero
+  .hero.hero--with-image
+    display: flex
+    align-items: center
+    min-height: 100vh
+    margin-bottom: 0
+    color: $color-white
+
+    &::before
+      content: ""
+      position: absolute
+      inset: 0
+      z-index: 1
+      background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.45))
+
+    .container
+      position: static
+      display: block
+      width: 100%
+
+    .content
+      display: block
+      padding: 0
+
+      .hero-text
+        position: relative
+        z-index: 2
+        width: 100%
+        margin: 0
+        padding: $spacing-5 0
+        text-align: start
+
+      h1
+        color: $color-white
+        font-size: 5.5rem
+
+        .hero-rotating
+          display: block
+          color: inherit
+          transition: opacity 0.4s ease
+          &.is-hidden
+            opacity: 0
+          @media (prefers-reduced-motion: reduce)
+            transition: none
+        > span:not(.hero-rotating, .sr-only)
+          margin-top: $spacing-2
+          color: $color-white
+          font-size: clamp(1.1rem, 2.2vw, 1.75rem)
+          line-height: 1.3
+
+      figure.hero-image
+        position: absolute
+        inset: 0
+        width: 100%
+        height: 100%
+        margin: 0
+        picture, img, [role="button"]
+          display: block
+          width: 100%
+          height: 100%
+        img
+          @include cover-image
+
+  // Our Mission
+  .block.block-summary
+    display: flex
+    align-items: center
+    min-height: 50vh
+    margin: 0
+    padding: $spacing-5 0
+    background: $color-light-green
+    text-align: center
+
+    .container
+      width: 100%
+
+    .lead
+      max-width: 50rem
+      margin-inline: auto
+      p
+        margin-inline: auto
+        font-size: clamp(1.1rem, 1.6vw, 1.4rem)
+        line-height: 1.5
+      p:first-child
+        margin-bottom: $spacing-3
+        font-family: $heading-font-family
+        font-size: clamp(2rem, 5vw, 3.5rem)
+        font-weight: 800
+        line-height: 1.1
+
+  // Call to action
+  .block.block-call_to_action
+    margin-bottom: 0
+    padding: $spacing-5 0
+    background: $cta-background-color url("/assets/images/cta-background.png") center / cover no-repeat
+
+    .call_to_action.call_to_action--with-image
+      display: grid
+      grid-template-columns: 1fr
+      gap: var(--grid-gutter)
+      align-items: stretch
+
+      > div
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        width: auto
+        min-height: 20rem
+        padding: $spacing-4
+        border: 1px solid $header-background
+        border-radius: 1rem
+        background: transparent
+        text-align: center
+        color: $color-white
+
+      .block-title
+        margin: 0
+        font-size: clamp(2rem, 4vw, 3rem)
+        font-weight: 800
+        line-height: 1.1
+
+      .actions a
+        --btn-background: #{$header-background}
+        --btn-border: #{$header-background}
+        --btn-color: #{$color-accent}
+        margin-right: 0
+        border-radius: 1rem
+        opacity: 0.6
+
+      figure
+        width: auto
+        max-width: none
+        margin: 0
+        .lightbox-button, picture
+          display: block
+          width: 100%
+          height: 100%
+        img
+          display: block
+          width: 100%
+          height: 100%
+          min-height: 20rem
+          @include cover-image
+
+  @include media-breakpoint-up(desktop)
+    .block.block-call_to_action
+      .block-content
+        padding-top: 0
+        padding-bottom: 0
+      .call_to_action.call_to_action--with-image
+        grid-template-columns: repeat(2, minmax(0, 1fr))
+        padding-top: 0
+        > div, > figure
+          grid-column: auto
