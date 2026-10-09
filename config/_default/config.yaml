@@ -11,6 +11,10 @@ params:
   home:
     head:
       title: site
+  page:
+    single:
+      summary:
+        position: content
   posts:
     index:
       layout: highlight
