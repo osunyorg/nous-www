@@ -1,0 +1,113 @@
+.page-futures-labs
+
+  // Featured Gathering
+  .block-agenda--large
+    background: $color-green
+    border-radius: 1rem
+    overflow: hidden
+    margin: 0 $spacing-2
+
+    > .container
+      .block-content
+        padding: 2.5rem
+
+    .block-title
+      margin: auto
+      padding: 0
+
+      a
+        color: $color-accent
+        font-weight: 700
+
+    .event
+      &-title
+        a
+          color: $color-accent
+          font-size: 1.5rem
+          font-weight: 700
+          line-height: 1
+
+          &:hover
+            color: darken($color-accent, 10%)
+
+        h3
+          line-height: 1
+
+      &-schedule
+        margin-top: 1rem
+
+      &-dates
+        font-size: 0.5rem
+
+      .more
+        margin-top: 0.5rem
+
+    @include media-breakpoint-up(desktop)
+      margin: 0 $spacing-4
+
+
+  // Event grid
+  main .events--grid.events--grid
+    display: grid
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+    gap: 1.25rem
+    list-style: none
+    padding: 0
+    margin: 0
+
+    > li
+      width: auto
+      max-width: none
+      margin: 0
+      min-width: 0
+      float: none
+
+      .event
+        width: auto
+        margin: 0
+        height: 100%
+        @include light-card
+
+    @include media-breakpoint-down(md)
+      grid-template-columns: 1fr
+
+
+  // Past Gatherings
+  .block-class-light-green-bg
+    background-color: $color-light-green
+    padding: 2.5rem 0.5rem
+
+    .block-title
+      font-size: 2.5rem
+      font-weight: 800
+      text-transform: capitalize
+
+    .events--grid.events--grid > li .event
+      background: transparent
+
+
+  // CTA — Upcoming
+  .block-class-flex-justify-between
+    .call_to_action > div
+      display: flex
+      justify-content: space-between
+      align-items: center
+
+  .block-call_to_action
+    .block-content
+      padding: 0 !important
+      margin-left: 0 !important
+      margin-right: 0 !important
+
+    .call_to_action > div
+      display: flex
+      align-items: center
+      justify-content: space-between
+
+      .actions
+        margin-top: 0
+
+    .call_to_action h2.block-title
+      font-size: 2.5rem !important
+      font-weight: 800
+      text-transform: capitalize

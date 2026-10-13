@@ -1,0 +1,16 @@
+// Image filling its container, cropped if needed
+@mixin cover-image
+  max-height: none
+  aspect-ratio: auto
+  object-fit: cover
+
+// "Read more" arrow after a link
+@mixin trailing-arrow
+  &::after
+    content: " →"
+
+// Light green card used for posts and events
+@mixin light-card
+  background: $posts-card-background
+  border-radius: 1.25rem
+  padding: 1.25rem 1.5rem
