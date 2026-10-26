@@ -49,6 +49,8 @@
 
   // Event grid
   main .events--grid.events--grid
+    $pill-row-height: 1.6rem
+
     display: grid
     grid-template-columns: repeat(3, minmax(0, 1fr))
     gap: 1.25rem
@@ -64,31 +66,129 @@
       float: none
 
       .event
+        position: relative              // ancre le lien étiré
+        display: flex
+        flex-direction: column
         width: auto
         margin: 0
         height: 100%
         @include light-card
 
-    @include media-breakpoint-down(md)
-      grid-template-columns: 1fr
+      .event-content
+        display: flex
+        flex-direction: column
+        align-items: flex-start
+        gap: 0.75rem
+        flex: 1
+
+        // Lien Read more (texte + flèche)
+        &::after
+          content: "Read more \2192"
+          order: 4
+          margin-top: auto
+          color: $color-accent
+          font-size: 0.9rem
+          font-weight: 700
+          text-decoration: underline
+          text-underline-offset: 0.2em
+          text-decoration-color: transparent
+          transition: text-decoration-color 0.2s
+
+        // Card sans catégorie : même hauteur réservée au-dessus du titre
+        &:not(:has(.event-categories))::before
+          content: ""
+          order: 1
+          display: block
+          height: $pill-row-height
+
+      .event-categories
+        order: 1
+        display: flex
+        flex-wrap: wrap
+        align-items: center
+        min-height: $pill-row-height
+        gap: 0.5rem
+        list-style: none
+        margin: 0
+        padding: 0
+        a
+          display: inline-block
+          padding: 0.2rem 0.6rem
+          border: 1px solid rgba($color-accent, 0.4)
+          border-radius: 6rem
+          font-size: 0.7rem
+          text-transform: uppercase
+          text-decoration: none
+          background: transparent
+          color: $color-accent
+
+      .event-title
+        order: 2
+        margin: 0
+
+        // Toute la card cliquable via le lien du titre
+        a::before
+          content: ""
+          position: absolute
+          inset: 0
+          z-index: 1
+
+      .event-schedule
+        order: 3
+        margin: 0
+
+      &:hover .event-content::after
+        text-decoration-color: currentColor
 
     @include media-breakpoint-down(lg)
       grid-template-columns: repeat(2, minmax(0, 1fr))
 
+    @include media-breakpoint-down(md)
+      grid-template-columns: 1fr
 
   // Past Gatherings
   .block-class-light-green-bg
     background-color: $color-light-green
     padding: 2.5rem 0.5rem
+    margin-bottom: 0
 
     .block-title
       font-size: 2.5rem
       font-weight: 800
       text-transform: capitalize
+      margin-bottom: 0
+
+      // Le titre n'est plus un lien visible ni cliquable, sans flèche
+      a
+        color: inherit
+        text-decoration: none
+        pointer-events: none
+        cursor: default
+
+        &::before,
+        &::after
+          content: none
+          display: none
+          background: none
+
+    // Sous-titre rapproché du h2
+    .top .block-title + .description
+      margin-top: 0.25rem
+
+      p
+        margin: 0
 
     .events--grid.events--grid > li .event
       background: transparent
 
+    .events--grid.events--grid > li .event .media
+      border-radius: 1rem
+      overflow: hidden
+
+    // Pas de catégories ici : on retire seulement l'espace réservé.
+    // Le "Read more" (::after) reste affiché.
+    main .events--grid.events--grid > li .event-content:not(:has(.event-categories))::before
+      display: none
 
   // CTA — Upcoming
   .block-class-flex-justify-between
@@ -111,10 +211,41 @@
       .actions
         margin-top: 0
 
+        // CTA en lien texte souligné (plus de bouton)
+        a
+          display: inline
+          padding: 0
+          border: 0
+          border-radius: 0
+          background: none
+          box-shadow: none
+          color: $color-accent
+          font-weight: 700
+          text-decoration: underline
+          text-underline-offset: 0.2em
+          text-decoration-thickness: 1px
+
+          &:hover,
+          &:focus-visible
+            background: none
+            color: darken($color-accent, 10%)
+            text-decoration-thickness: 2px
+
+          &::before,
+          &::after
+            content: none
+
     .call_to_action h2.block-title
       font-size: 2.5rem !important
       font-weight: 800
       text-transform: capitalize
+
+  // Pas d'espace blanc entre le dernier bloc et le footer
+  main.page-with-blocks
+    padding-bottom: 0 !important
+
+  .blocks > .block:last-child
+    margin-bottom: 0
 
 
 // Top event
@@ -162,9 +293,6 @@
     list-style: none
     margin: 0
     padding: 0
-    // le badge "Featured Gathering" passe toujours en premier
-    li:has(a[href$="/featured-gathering/"])
-      order: -1
     a
       display: inline-block
       padding: 0.2rem 0.6rem
