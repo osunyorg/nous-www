@@ -2,14 +2,20 @@
 
   // Featured Gathering
   .block-agenda--large
-    background: $color-green
-    border-radius: 1rem
-    overflow: hidden
-    margin: 0 $spacing-2
-
     > .container
+      width: var(--grid-width)
+      max-width: 100%
+      margin-left: auto
+      margin-right: auto
+      padding-left: var(--grid-gutter)
+      padding-right: var(--grid-gutter)
+
       .block-content
+        background: $color-green
+        border-radius: 1rem
+        overflow: hidden
         padding: 2.5rem
+        margin: 0
 
     .block-title
       margin: auto
@@ -41,10 +47,6 @@
 
       .more
         margin-top: 0.5rem
-
-    @include media-breakpoint-up(desktop)
-      margin: 0 $spacing-4
-
 
   // Event grid
   main .events--grid.events--grid
