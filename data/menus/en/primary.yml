@@ -33,16 +33,8 @@ items:
   target: "/human-rights-jams/"
   kind: page
   new_tab: false
-  children:
-  - title: Interview Marcos
-    slug: interview-marcos
-    target: https://www.youtube.com/watch?v=beIDKFwXam0&list=RDbeIDKFwXam0&start_radio=1
-    kind: url
-    new_tab: false
-    children: []
-    descendants_targets: []
-  descendants_targets:
-  - https://www.youtube.com/watch?v=beIDKFwXam0&list=RDbeIDKFwXam0&start_radio=1
+  children: []
+  descendants_targets: []
   path: "/pages/human-rights-jams"
   file: content/en/pages/human-rights-jams/_index.html
 - title: Alternative Human Rights Repository
