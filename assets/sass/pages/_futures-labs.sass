@@ -14,7 +14,6 @@
         background: $color-green
         border-radius: 1rem
         overflow: hidden
-        padding: 2.5rem
         margin: 0
 
     .block-title
@@ -29,7 +28,7 @@
       &-title
         a
           color: $color-accent
-          font-size: 1.5rem
+          font-size: 2.5rem
           font-weight: 700
           line-height: 1
 
@@ -51,7 +50,7 @@
   // Event grid
   main .events--grid.events--grid
     display: grid
-    grid-template-columns: repeat(2, minmax(0, 1fr))
+    grid-template-columns: repeat(3, minmax(0, 1fr))
     gap: 1.25rem
     list-style: none
     padding: 0
@@ -72,6 +71,9 @@
 
     @include media-breakpoint-down(md)
       grid-template-columns: 1fr
+
+    @include media-breakpoint-down(lg)
+      grid-template-columns: repeat(2, minmax(0, 1fr))
 
 
   // Past Gatherings
@@ -113,3 +115,102 @@
       font-size: 2.5rem !important
       font-weight: 800
       text-transform: capitalize
+
+
+// Top event
+
+// Futures Labs: featured gathering (premier événement mis en avant)
+.page-futures-labs .block-agenda--large
+  .top
+    display: none
+
+  .events--large
+    list-style: none
+    margin: 0
+    padding: 0
+    > li
+      min-width: 0
+
+  .event
+    display: grid
+    grid-template-columns: 2fr 1fr
+    grid-template-areas: "media content"
+    padding: 0
+    background: $color-green
+    color: $color-text
+    border-radius: 1rem
+    overflow: hidden
+    a
+      color: inherit
+      text-decoration: none
+
+  // Content
+  .event-content
+    grid-area: content
+    min-width: 0
+    display: flex
+    flex-direction: column
+    align-items: flex-start
+    gap: 0.75rem
+    padding: 2.5rem
+
+  .event-categories
+    order: 1
+    display: flex
+    flex-wrap: wrap
+    gap: 0.5rem
+    list-style: none
+    margin: 0
+    padding: 0
+    // le badge "Featured Gathering" passe toujours en premier
+    li:has(a[href$="/featured-gathering/"])
+      order: -1
+    a
+      display: inline-block
+      padding: 0.2rem 0.6rem
+      border: 1px solid rgba($color-accent, 0.4)
+      border-radius: 6rem
+      font-size: 0.7rem
+      text-transform: uppercase
+      background: transparent
+      color: $color-accent
+    // badge plein pour Featured Gathering
+    a[href$="/featured-gathering/"]
+      background: $color-accent
+      border-color: $color-accent
+      color: $color-background
+
+  .event-title
+    order: 2
+    margin: 0
+
+  .event-schedule
+    order: 3
+
+  .more
+    order: 4
+    margin-top: auto
+    @include trailing-arrow
+
+  // Media à gauche
+  .media
+    grid-area: media
+    margin: 0
+    min-width: 0
+    min-height: 15rem
+    overflow: hidden
+    picture
+      display: block
+      height: 100%
+    img
+      display: block
+      width: 100%
+      height: 100%
+      @include cover-image
+
+  @include media-breakpoint-down(md)
+    .event
+      grid-template-columns: 1fr
+      grid-template-areas: "media" "content"
+    .event-content
+      padding: 1.5rem
