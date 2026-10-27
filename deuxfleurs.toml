@@ -63,6 +63,10 @@ from = "/en/agenda/2026/04/index.html"
 to = "/futures-labs-agenda/2026/04/"
 
 [[redirects]]
+from = "/repository/digital-rights-technology/democracy-political-power/index.html"
+to = "/repository/themes/democracy-political-power/"
+
+[[redirects]]
 from = "/en/future-labs/index.html"
 to = "/futures-labs-agenda/"
 
