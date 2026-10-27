@@ -37,6 +37,15 @@ items:
   descendants_targets: []
   path: "/pages/human-rights-jams"
   file: content/en/pages/human-rights-jams/_index.html
+- title: Fellowships
+  slug: fellowships
+  target: "/global-majority-futures-fellowship/"
+  kind: page
+  new_tab: false
+  children: []
+  descendants_targets: []
+  path: "/pages/global-majority-futures-fellowship"
+  file: content/en/pages/global-majority-futures-fellowship/_index.html
 - title: Alternative Human Rights Repository
   slug: alternative-human-rights-repository
   target: "/repository/"
