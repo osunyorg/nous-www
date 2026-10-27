@@ -51,6 +51,10 @@ from = "/en/agenda/2026/09/index.html"
 to = "/futures-labs-agenda/2026/09/"
 
 [[redirects]]
+from = "/exhibitions/index.html"
+to = "/hr-entries/"
+
+[[redirects]]
 from = "/en/persons/namatai-kwekweza/posts/index.html"
 to = "/persons/namatai-kwekweza/provocations/"
 
@@ -120,7 +124,7 @@ to = "/futures-labs-agenda/2026/global-commons-futures-lab/"
 
 [[redirects]]
 from = "/en/exhibitions/index.html"
-to = "/exhibitions/"
+to = "/hr-entries/"
 
 [[redirects]]
 from = "/test-futures-labs/index.html"
@@ -165,6 +169,10 @@ to = "/futures-labs-agenda/2026/"
 [[redirects]]
 from = "/en/organizations/index.html"
 to = "/organizations/"
+
+[[redirects]]
+from = "/exhibitions/exhibitions-archives/index.html"
+to = "/hr-entries/exhibitions-archives/"
 
 [[redirects]]
 from = "/future-labs/2026/12/index.html"
@@ -259,6 +267,10 @@ from = "/en/persons/namatai-kwekweza/provocations/index.html"
 to = "/persons/namatai-kwekweza/provocations/"
 
 [[redirects]]
+from = "/job-offers/index.html"
+to = "/hr-videos/"
+
+[[redirects]]
 from = "/en/future-labs/2026/inception-design-united-kingdom/index.html"
 to = "/futures-labs-agenda/2026/inception-design-united-kingdom/"
 
@@ -292,7 +304,7 @@ to = "/futures-labs-agenda/2026/01/"
 
 [[redirects]]
 from = "/en/exhibitions/exhibitions-archives/index.html"
-to = "/exhibitions/exhibitions-archives/"
+to = "/hr-entries/exhibitions-archives/"
 
 [[redirects]]
 from = "/personnes/equipe-editoriale/index.html"
