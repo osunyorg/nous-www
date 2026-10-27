@@ -52,7 +52,7 @@ to = "/futures-labs-agenda/2026/09/"
 
 [[redirects]]
 from = "/exhibitions/index.html"
-to = "/hr-entries/"
+to = "/hr-genealogies/"
 
 [[redirects]]
 from = "/en/persons/namatai-kwekweza/posts/index.html"
@@ -81,6 +81,10 @@ to = "/futures-labs-agenda/"
 [[redirects]]
 from = "/en/agenda/2026/07/index.html"
 to = "/futures-labs-agenda/2026/07/"
+
+[[redirects]]
+from = "/hr-entries/exhibitions-archives/index.html"
+to = "/hr-genealogies/exhibitions-archives/"
 
 [[redirects]]
 from = "/politique-de-confidentialite/index.html"
@@ -124,7 +128,7 @@ to = "/futures-labs-agenda/2026/global-commons-futures-lab/"
 
 [[redirects]]
 from = "/en/exhibitions/index.html"
-to = "/hr-entries/"
+to = "/hr-genealogies/"
 
 [[redirects]]
 from = "/test-futures-labs/index.html"
@@ -137,6 +141,10 @@ to = "/provocations/2026-10-05-the-right-to-remain-human-a-futurists-provocation
 [[redirects]]
 from = "/hr-videos/2026/test-video-title-1-1/index.html"
 to = "/hr-videos/2026/test-video-title-2/"
+
+[[redirects]]
+from = "/hr-entries/index.html"
+to = "/hr-genealogies/"
 
 [[redirects]]
 from = "/agenda/2026/11/index.html"
@@ -176,7 +184,7 @@ to = "/organizations/"
 
 [[redirects]]
 from = "/exhibitions/exhibitions-archives/index.html"
-to = "/hr-entries/exhibitions-archives/"
+to = "/hr-genealogies/exhibitions-archives/"
 
 [[redirects]]
 from = "/future-labs/2026/12/index.html"
@@ -312,7 +320,7 @@ to = "/futures-labs-agenda/2026/01/"
 
 [[redirects]]
 from = "/en/exhibitions/exhibitions-archives/index.html"
-to = "/hr-entries/exhibitions-archives/"
+to = "/hr-genealogies/exhibitions-archives/"
 
 [[redirects]]
 from = "/personnes/equipe-editoriale/index.html"
