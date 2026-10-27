@@ -55,4 +55,13 @@ items:
   descendants_targets: []
   path: "/pages/abous-us"
   file: content/en/pages/abous-us/_index.html
+- title: Human Rights Jams
+  slug: human-rights-jams
+  target: "/human-rights-jams-1/"
+  kind: page
+  new_tab: false
+  children: []
+  descendants_targets: []
+  path: "/pages/human-rights-jams-1"
+  file: content/en/pages/human-rights-jams-1/_index.html
 
