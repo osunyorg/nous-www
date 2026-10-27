@@ -55,4 +55,13 @@ items:
   descendants_targets: []
   path: "/pages/global-majority-futures-fellowship"
   file: content/en/pages/global-majority-futures-fellowship/_index.html
+- title: About Us
+  slug: about-us
+  target: "/abous-us/"
+  kind: page
+  new_tab: false
+  children: []
+  descendants_targets: []
+  path: "/pages/abous-us"
+  file: content/en/pages/abous-us/_index.html
 
