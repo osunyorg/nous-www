@@ -255,6 +255,10 @@ from = "/en/future-labs/2026/inception-design-united-kingdom/index.html"
 to = "/futures-labs-agenda/2026/inception-design-united-kingdom/"
 
 [[redirects]]
+from = "/repository/digital-rights-technology/index.html"
+to = "/repository/themes/"
+
+[[redirects]]
 from = "/agenda/2026/06/index.html"
 to = "/fr/agenda/2026/06/"
 
