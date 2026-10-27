@@ -37,15 +37,6 @@ items:
   descendants_targets: []
   path: "/pages/human-rights-jams"
   file: content/en/pages/human-rights-jams/_index.html
-- title: Fellowships
-  slug: fellowships
-  target: "/global-majority-futures-fellowship/"
-  kind: page
-  new_tab: false
-  children: []
-  descendants_targets: []
-  path: "/pages/global-majority-futures-fellowship"
-  file: content/en/pages/global-majority-futures-fellowship/_index.html
 - title: Alternative Human Rights Repository
   slug: alternative-human-rights-repository
   target: "/repository/"
@@ -55,22 +46,13 @@ items:
   descendants_targets: []
   path: "/projects"
   file: content/en/projects/_index.html
-- title: Persons
-  slug: persons
-  target: "/persons/"
+- title: Fellowships
+  slug: fellowships
+  target: "/global-majority-futures-fellowship/"
   kind: page
   new_tab: false
   children: []
   descendants_targets: []
-  path: "/persons"
-  file: content/en/persons/_index.html
-- title: Organizations
-  slug: organizations
-  target: "/organizations/"
-  kind: page
-  new_tab: false
-  children: []
-  descendants_targets: []
-  path: "/organizations"
-  file: content/en/organizations/_index.html
+  path: "/pages/global-majority-futures-fellowship"
+  file: content/en/pages/global-majority-futures-fellowship/_index.html
 
