@@ -323,6 +323,10 @@ from = "/en/agenda/2026/08/index.html"
 to = "/futures-labs-agenda/2026/08/"
 
 [[redirects]]
+from = "/repository/themes/digital-rights-technolog/index.html"
+to = "/repository/themes/digital-rights-technology/"
+
+[[redirects]]
 from = "/en/agenda/2026/10/index.html"
 to = "/futures-labs-agenda/2026/10/"
 
