@@ -243,6 +243,10 @@ from = "/en/persons/index.html"
 to = "/persons/"
 
 [[redirects]]
+from = "/hr-jams-2/index.html"
+to = "/human-rights-jams-1/"
+
+[[redirects]]
 from = "/en/agenda/2026/01/index.html"
 to = "/futures-labs-agenda/2026/01/"
 
