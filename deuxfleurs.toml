@@ -23,10 +23,6 @@ from = "/fichiers/index.html"
 to = "/fr/fichiers/"
 
 [[redirects]]
-from = "/files/index.html"
-to = "/repository/"
-
-[[redirects]]
 from = "/future-labs/2026/06/index.html"
 to = "/futures-labs-agenda/2026/06/"
 
@@ -183,6 +179,10 @@ from = "/en/future-labs/2026/index.html"
 to = "/futures-labs-agenda/2026/"
 
 [[redirects]]
+from = "/repository/index.html"
+to = "/files/"
+
+[[redirects]]
 from = "/en/index.html"
 to = "/"
 
@@ -244,7 +244,7 @@ to = "/fr/mentions-legales/"
 
 [[redirects]]
 from = "/en/files/index.html"
-to = "/repository/"
+to = "/files/"
 
 [[redirects]]
 from = "/en/persons/namatai-kwekweza/provocations/index.html"
@@ -405,6 +405,10 @@ to = "/futures-labs-agenda/2026/human-rights-in-transition/"
 [[redirects]]
 from = "/future-labs/featured-gathering/index.html"
 to = "/futures-labs-agenda/featured-gathering/"
+
+[[redirects]]
+from = "/projects/index.html"
+to = "/repository-1/"
 
 [[redirects]]
 from = "/en/agenda/index.html"
