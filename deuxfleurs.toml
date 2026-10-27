@@ -23,6 +23,10 @@ from = "/fichiers/index.html"
 to = "/fr/fichiers/"
 
 [[redirects]]
+from = "/repository/digital-rights-technology/education-knowledge-justice/index.html"
+to = "/repository/themes/education-knowledge-justice/"
+
+[[redirects]]
 from = "/future-labs/2026/06/index.html"
 to = "/futures-labs-agenda/2026/06/"
 
