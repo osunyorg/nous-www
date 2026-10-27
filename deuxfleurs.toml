@@ -135,6 +135,10 @@ from = "/en/provocations/2026-10-05-the-right-to-remain-human-a-futurists-provoc
 to = "/provocations/2026-10-05-the-right-to-remain-human-a-futurists-provocation-on-radical-care-techno-feudalism-and-the-politics/"
 
 [[redirects]]
+from = "/hr-videos/2026/test-video-title-1-1/index.html"
+to = "/hr-videos/2026/test-video-title-2/"
+
+[[redirects]]
 from = "/agenda/2026/11/index.html"
 to = "/fr/agenda/2026/11/"
 
