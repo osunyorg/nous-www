@@ -14,21 +14,29 @@
   var NS = "http://www.w3.org/2000/svg";
 
   root.innerHTML =
-    '<svg viewBox="0 0 960 500" role="img" aria-label="World map">' +
-      '<path class="nwm-sphere" d="' + SPHERE + '"/>' +
-      '<path class="nwm-land" d="' + LAND + '"/>' +
-      '<g class="nwm-points"></g>' +
-    '</svg>' +
-    '<div class="nwm-tools">' +
-      '<button type="button" data-z="in" aria-label="Zoom in">+</button>' +
-      '<button type="button" data-z="out" aria-label="Zoom out">\u2212</button>' +
-      '<button type="button" data-z="reset" aria-label="Reset the map">\u21ba</button>' +
+    '<div class="nwm-map">' +
+      '<svg viewBox="0 0 960 500" role="img" aria-label="World map">' +
+        '<path class="nwm-sphere" d="' + SPHERE + '"/>' +
+        '<path class="nwm-land" d="' + LAND + '"/>' +
+        '<g class="nwm-points"></g>' +
+      '</svg>' +
+      '<div class="nwm-tools">' +
+        '<button type="button" data-z="in" aria-label="Zoom in">+</button>' +
+        '<button type="button" data-z="out" aria-label="Zoom out">\u2212</button>' +
+        '<button type="button" data-z="reset" aria-label="Reset the map">\u21ba</button>' +
+      '</div>' +
+      '<div class="nwm-popup" hidden></div>' +
     '</div>' +
-    '<div class="nwm-popup" hidden></div>';
+    '<aside class="nwm-filters" aria-label="Theme filter" hidden>' +
+      '<p class="nwm-eyebrow">Theme filter</p>' +
+      '<ul class="nwm-filter-list"></ul>' +
+    '</aside>';
 
   var svg = root.querySelector("svg");
   var gPts = root.querySelector(".nwm-points");
   var popup = root.querySelector(".nwm-popup");
+  var filters = root.querySelector(".nwm-filters");
+  var filterList = root.querySelector(".nwm-filter-list");
 
   /* Projection Natural Earth (identique à d3.geoNaturalEarth1 pour cette carte) */
   function project(lon, lat) {
@@ -84,7 +92,9 @@
       '<div class="nwm-list">';
     g.items.forEach(function (d) {
       h += '<article class="nwm-item"><h3 class="nwm-title">' + esc(d.title) + "</h3>" +
-        (d.category ? '<div class="nwm-badges"><span class="nwm-badge">' + esc(d.category) + "</span></div>" : "") +
+        (d.cats && d.cats.length ? '<div class="nwm-badges">' + d.cats.map(function (c) {
+          return '<span class="nwm-badge">' + esc(c) + "</span>";
+        }).join("") + "</div>" : "") +
         (d.date || d.place ? '<p class="nwm-meta">' +
           (d.date ? '<span class="nwm-date">' + esc(d.date) + "</span>" : "") +
           (d.place ? '<span class="nwm-place">' + esc(d.place) + "</span>" : "") + "</p>" : "") +
@@ -120,10 +130,15 @@
   }
 
   /* Points : les entrées situées au même endroit sont regroupées */
-  function build(items) {
+  var all = [], active = "";
+
+  function render() {
+    close();
+    gPts.innerHTML = "";
+    nodes = [];
+    var items = active ? all.filter(function (d) { return d.cats.indexOf(active) >= 0; }) : all;
     var groups = {}, order = [];
     items.forEach(function (d) {
-      if (typeof d.lat !== "number" || typeof d.lon !== "number") { return; }
       var key = d.lat.toFixed(2) + "," + d.lon.toFixed(2);
       if (!groups[key]) { groups[key] = { lat: d.lat, lon: d.lon, items: [] }; order.push(key); }
       groups[key].items.push(d);
@@ -134,7 +149,7 @@
       c.setAttribute("class", "nwm-point");
       c.setAttribute("cx", pos[0]); c.setAttribute("cy", pos[1]);
       c.setAttribute("tabindex", 0); c.setAttribute("role", "button");
-      c.setAttribute("aria-label", multi ? g.items.length + " events: " + g.items[0].title + "…" : g.items[0].title);
+      c.setAttribute("aria-label", multi ? g.items.length + " events: " + g.items[0].title + "\u2026" : g.items[0].title);
       c.addEventListener("click", function (e) { e.stopPropagation(); if (!dragged) { open(g, c); } });
       c.addEventListener("keydown", function (e) {
         if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(g, c); }
@@ -152,6 +167,46 @@
       nodes.push(node);
     });
     apply();
+  }
+
+  /* Filtres : catégories du JSON (plusieurs possibles dans une cellule, séparées par « ; ») */
+  function filterButton(value, label, count) {
+    return '<li><button type="button" class="nwm-filter" data-cat="' + esc(value) + '" aria-pressed="' + (value === active) + '">' +
+      "<span>" + esc(label) + '</span><span class="nwm-filter-count">' + count + "</span></button></li>";
+  }
+  function buildFilters() {
+    var counts = {}, names = [];
+    all.forEach(function (d) {
+      d.cats.forEach(function (c) {
+        if (!counts[c]) { counts[c] = 0; names.push(c); }
+        counts[c]++;
+      });
+    });
+    if (!names.length) { return; }
+    names.sort(function (a, b) { return a.localeCompare(b); });
+    filterList.innerHTML = filterButton("", "All", all.length) +
+      names.map(function (c) { return filterButton(c, c, counts[c]); }).join("");
+    filters.hidden = false;
+  }
+  filterList.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("button") : null;
+    if (!b) { return; }
+    var value = b.getAttribute("data-cat");
+    active = value === active ? "" : value;
+    filterList.querySelectorAll("button").forEach(function (x) {
+      x.setAttribute("aria-pressed", x.getAttribute("data-cat") === active ? "true" : "false");
+    });
+    render();
+  });
+
+  function build(items) {
+    all = items.filter(function (d) { return typeof d.lat === "number" && typeof d.lon === "number"; })
+      .map(function (d) {
+        d.cats = d.category ? d.category.split(";").map(function (c) { return c.trim(); }).filter(Boolean) : [];
+        return d;
+      });
+    buildFilters();
+    render();
   }
 
   /* Interactions */

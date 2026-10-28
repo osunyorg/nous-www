@@ -10,9 +10,22 @@ $nwm-card-text: #222 !default
 $nwm-muted: #555 !default
 
 .nwm
-  position: relative
+  display: flex
+  align-items: flex-start
+  gap: 32px
   width: 100%
   margin: 0 auto
+
+  @media (max-width: 768px)
+    flex-direction: column
+    gap: 20px
+
+// Carte (colonne de gauche)
+.nwm-map
+  position: relative
+  flex: 1 1 0
+  min-width: 0
+  width: 100%
 
   svg
     width: 100%
@@ -23,6 +36,73 @@ $nwm-muted: #555 !default
 
     &:active
       cursor: grabbing
+
+// Filtres par catégorie (colonne de gauche)
+.nwm-filters
+  order: -1
+  flex: 0 0 260px
+  width: 260px
+
+  &[hidden]
+    display: none
+
+  @media (max-width: 768px)
+    order: 1
+    flex: 0 0 auto
+    width: 100%
+
+.nwm-filter-list
+  display: flex
+  flex-direction: column
+  gap: 4px
+  margin: 0
+  padding: 0
+  list-style: none
+
+  @media (max-width: 768px)
+    flex-direction: row
+    flex-wrap: wrap
+    gap: 8px
+
+.nwm-filter
+  display: flex
+  justify-content: space-between
+  align-items: baseline
+  gap: 12px
+  width: 100%
+  padding: 8px 12px
+  border: 0
+  border-radius: 8px
+  background: transparent
+  color: $nwm-card-text
+  font: inherit
+  font-size: 14px
+  line-height: 1.3
+  text-align: left
+  cursor: pointer
+  transition: background .15s
+
+  &:hover
+    background: rgba($nwm-sea, .45)
+
+  &:focus-visible
+    outline: 2px solid $nwm-accent
+    outline-offset: 2px
+
+  &[aria-pressed="true"]
+    background: $nwm-sea
+    color: $nwm-accent
+    font-weight: 600
+
+  @media (max-width: 768px)
+    width: auto
+    border-radius: 999px
+    background: rgba($nwm-sea, .45)
+
+.nwm-filter-count
+  font-size: 12px
+  font-weight: 400
+  color: $nwm-muted
 
 .nwm-sphere
   fill: $nwm-sea

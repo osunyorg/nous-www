@@ -16,3 +16,41 @@
 .projects__section
   .hero
     background: $header-background
+
+
+// Section vert clair
+.block-class-light-green-bg
+  background-color: $color-light-green
+  padding: 2.5rem 0.5rem
+  margin-bottom: 0
+
+
+.page-hr-map .block.block-class-light-green-bg
+  margin-top: 0
+
+.page-hr-map
+  .section-taxonomies-container
+    display: none
+
+  .document-content > .container
+    display: none
+
+// Règle d'origine, en syntaxe indentée
+main:not(.page-with-blocks, .page-with-map), body[class*="__section"] main
+  padding-bottom: 4rem
+
+// Annule le padding uniquement sur la page de la carte
+body.page-hr-map main.page-with-blocks
+  padding-bottom: 0
+
+// Titre « Map » : masqué à l'écran, conservé pour les lecteurs d'écran
+.page-hr-map .block-embed .top
+  position: absolute
+  width: 1px
+  height: 1px
+  margin: -1px
+  padding: 0
+  border: 0
+  overflow: hidden
+  clip: rect(0, 0, 0, 0)
+  white-space: nowrap
