@@ -207,6 +207,10 @@ from = "/en/future-labs/2026/index.html"
 to = "/futures-labs-agenda/2026/"
 
 [[redirects]]
+from = "/hr-entries/1791-01-01-haitian-revolution/index.html"
+to = "/hr-genealogies/1791-01-01-haitian-revolution/"
+
+[[redirects]]
 from = "/en/index.html"
 to = "/"
 
