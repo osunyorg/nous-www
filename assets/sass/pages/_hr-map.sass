@@ -1,186 +1,179 @@
-$nwm-sea: $color-green !default;
-$nwm-land: $header-background !default;
-$nwm-accent: $color-accent !default;
-$nwm-accent-hover: #7b2d72 !default;
-$nwm-card-bg: #fff !default;
-$nwm-card-text: #222 !default;
-$nwm-muted: #555 !default;
+// Carte du monde – page « Alternative Human Rights Genealogies »
+// À importer APRÈS les variables du thème ($color-green, $header-background, $color-accent).
 
-.nwm {
-  position: relative;
-  width: 100%;
-  margin: 0 auto;
+$nwm-sea: $color-green !default
+$nwm-land: $header-background !default
+$nwm-accent: $color-accent !default
+$nwm-accent-hover: #7b2d72 !default
+$nwm-card-bg: #fff !default
+$nwm-card-text: #222 !default
+$nwm-muted: #555 !default
 
-  svg {
-    width: 100%;
-    height: auto;
-    display: block;
-    cursor: grab;
-    touch-action: none;
+.nwm
+  position: relative
+  width: 100%
+  margin: 0 auto
 
-    &:active { cursor: grabbing; }
-  }
-}
+  svg
+    width: 100%
+    height: auto
+    display: block
+    cursor: grab
+    touch-action: none
 
-.nwm-sphere { fill: $nwm-sea; }
-.nwm-land { fill: $nwm-land; }
+    &:active
+      cursor: grabbing
 
-.nwm-point {
-  fill: $nwm-accent;
-  stroke: #fff;
-  cursor: pointer;
-  transition: fill .15s;
+.nwm-sphere
+  fill: $nwm-sea
+
+.nwm-land
+  fill: $nwm-land
+
+.nwm-point
+  fill: $nwm-accent
+  stroke: #fff
+  cursor: pointer
+  transition: fill .15s
 
   &:hover,
-  &.is-active { fill: $nwm-accent-hover; }
-}
+  &.is-active
+    fill: $nwm-accent-hover
 
-.nwm-count {
-  fill: #fff;
-  font-family: sans-serif;
-  font-weight: 700;
-  text-anchor: middle;
-  pointer-events: none;
-}
+.nwm-count
+  fill: #fff
+  font-family: sans-serif
+  font-weight: 700
+  text-anchor: middle
+  pointer-events: none
 
-/* Boutons de zoom */
-.nwm-tools {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+// Boutons de zoom
+.nwm-tools
+  position: absolute
+  top: 8px
+  left: 8px
+  display: flex
+  flex-direction: column
+  gap: 4px
 
-  button {
-    width: 32px;
-    height: 32px;
-    border: 0;
-    border-radius: 4px;
-    background: #fff;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, .25);
-    font-size: 18px;
-    line-height: 1;
-    cursor: pointer;
-    color: $nwm-card-text;
-  }
-}
+  button
+    width: 32px
+    height: 32px
+    border: 0
+    border-radius: 4px
+    background: #fff
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .25)
+    font-size: 18px
+    line-height: 1
+    cursor: pointer
+    color: $nwm-card-text
 
-/* Card */
-.nwm-popup {
-  position: absolute;
-  z-index: 5;
-  width: 320px;
-  max-width: 90%;
-  padding: 16px 18px;
-  background: $nwm-card-bg;
-  color: $nwm-card-text;
-  border-radius: 12px;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, .22);
-  font-size: 14px;
-  line-height: 1.45;
-  transform: translate(-50%, calc(-100% - 14px));
+// Card
+.nwm-popup
+  position: absolute
+  z-index: 5
+  width: 320px
+  max-width: 90%
+  padding: 16px 18px
+  background: $nwm-card-bg
+  color: $nwm-card-text
+  border-radius: 12px
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .22)
+  font-size: 14px
+  line-height: 1.45
+  transform: translate(-50%, calc(-100% - 14px))
 
-  &[hidden] { display: none; }
+  &[hidden]
+    display: none
 
-  &::after {
-    content: "";
-    position: absolute;
-    left: var(--ax, 50%);
-    bottom: -8px;
-    margin-left: -8px;
-    border: 8px solid transparent;
-    border-bottom: 0;
-    border-top-color: $nwm-card-bg;
-  }
+  &::after
+    content: ""
+    position: absolute
+    left: var(--ax, 50%)
+    bottom: -8px
+    margin-left: -8px
+    border: 8px solid transparent
+    border-bottom: 0
+    border-top-color: $nwm-card-bg
 
-  &.nwm-below {
-    transform: translate(-50%, 14px);
+  &.nwm-below
+    transform: translate(-50%, 14px)
 
-    &::after {
-      bottom: auto;
-      top: -8px;
-      border: 8px solid transparent;
-      border-top: 0;
-      border-bottom-color: $nwm-card-bg;
-    }
-  }
-}
+    &::after
+      bottom: auto
+      top: -8px
+      border: 8px solid transparent
+      border-top: 0
+      border-bottom-color: $nwm-card-bg
 
-.nwm-close {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  border: 0;
-  background: none;
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-  color: $nwm-muted;
-}
+.nwm-close
+  position: absolute
+  top: 8px
+  right: 10px
+  border: 0
+  background: none
+  font-size: 22px
+  line-height: 1
+  cursor: pointer
+  color: $nwm-muted
 
-.nwm-eyebrow {
-  margin: 0 28px 8px 0;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: $nwm-accent;
-}
+.nwm-eyebrow
+  margin: 0 28px 8px 0
+  font-size: 11px
+  font-weight: 700
+  letter-spacing: .1em
+  text-transform: uppercase
+  color: $nwm-accent
 
-.nwm-list {
-  max-height: 260px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
+.nwm-list
+  max-height: 260px
+  overflow-y: auto
+  padding-right: 4px
 
-.nwm-item + .nwm-item {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(0, 0, 0, .12);
-}
+.nwm-item + .nwm-item
+  margin-top: 16px
+  padding-top: 16px
+  border-top: 1px solid rgba(0, 0, 0, .12)
 
-.nwm-title {
-  margin: 0 0 8px;
-  font-size: 18px;
-  line-height: 1.25;
-}
+.nwm-title
+  margin: 0 0 8px
+  font-size: 18px
+  line-height: 1.25
 
-.nwm-badges { margin: 0 0 10px; }
+.nwm-badges
+  margin: 0 0 10px
 
-.nwm-badge {
-  display: inline-block;
-  padding: 3px 12px;
-  border-radius: 999px;
-  background: $nwm-sea;
-  color: $nwm-accent;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.5;
-}
+.nwm-badge
+  display: inline-block
+  padding: 3px 12px
+  border-radius: 999px
+  background: $nwm-sea
+  color: $nwm-accent
+  font-size: 12px
+  font-weight: 600
+  line-height: 1.5
 
-.nwm-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-  margin: 0 0 10px;
-  font-size: 12px;
-  color: $nwm-muted;
-}
+.nwm-meta
+  display: flex
+  justify-content: space-between
+  align-items: baseline
+  gap: 12px
+  margin: 0 0 10px
+  font-size: 12px
+  color: $nwm-muted
 
-.nwm-date {
-  flex: 1 1 0;
-  min-width: 0;
-}
+.nwm-date
+  flex: 1 1 0
+  min-width: 0
 
-.nwm-place {
-  flex: 1 1 0;
-  min-width: 0;
-  margin-left: auto;
-  text-align: right;
-}
+.nwm-place
+  flex: 1 1 0
+  min-width: 0
+  margin-left: auto
+  text-align: right
 
-.nwm-text { margin: 0 0 10px; }
+.nwm-text
+  margin: 0 0 10px
 
-.nwm-link { font-weight: 600; }
+.nwm-link
+  font-weight: 600
