@@ -29,3 +29,7 @@ params:
         summary: false
         subtitle: false
         with_more: true
+  exhibitions:
+      index:
+        taxonomies:
+          display: false
