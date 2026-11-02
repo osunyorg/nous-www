@@ -1,6 +1,7 @@
 theme: osuny
 _merge: deep
 params:
+  additional_csp: "img.youtube.com www.youtube-nocookie.com"
   summary:
     position: hero
   search:
