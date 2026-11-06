@@ -1,75 +1,92 @@
 .page-hr-jams
 
-  // On masque l'URL brute (le JS la lit avant)
-  .job-subtitle
-    display: none
+  // Featured Jam : cadre vert (1er bloc de la page)
+  .blocks > .block-jobs:first-child
+    > .container
+      width: var(--grid-width)
+      max-width: 100%
+      margin-left: auto
+      margin-right: auto
+      padding-left: var(--grid-gutter)
+      padding-right: var(--grid-gutter)
 
-  // Bouton "Watch the jam"
-  .jam-play
-    position: relative
-    z-index: 2
-    display: inline-flex
-    align-items: center
-    gap: 0.5rem
-    margin-top: 1rem
-    padding: 0.6rem 1.2rem
-    border: 1px solid $color-accent
-    border-radius: 6rem
-    background: $color-accent
-    color: $color-background
-    font-size: 0.9rem
-    font-weight: 700
-    cursor: pointer
-    transition: background 0.2s, color 0.2s
+    .top
+      display: none
 
-    &::before
-      content: ""
-      width: 0
-      height: 0
-      border-style: solid
-      border-width: 0.35rem 0 0.35rem 0.6rem
-      border-color: transparent transparent transparent currentColor
+    .block-content
+      margin: 0
 
-    &:hover,
-    &:focus-visible
-      background: transparent
-      color: $color-accent
+    .jobs
+      list-style: none
+      margin: 0
+      padding: 0
 
-// Popup (le <dialog> est ajouté dans le body, hors de .page-hr-jams)
-.jam-modal
-  width: 90vw
-  max-width: 64rem
-  padding: 0
-  border: 0
-  border-radius: 1rem
-  background: #000
-  overflow: hidden
+    .job
+      display: grid
+      grid-template-columns: 1fr 1fr
+      align-items: center
+      gap: 2.5rem
+      padding: 1.5rem
+      background: $color-green
+      color: $color-text
+      border-radius: 1rem
 
-  &::backdrop
-    background: rgba(0, 0, 0, 0.75)
+      a
+        color: inherit
+        text-decoration: none
 
-  &__frame
-    position: relative
-    aspect-ratio: 16 / 9
-
-    iframe
-      position: absolute
-      inset: 0
+    .job .media
       width: 100%
-      height: 100%
-      border: 0
 
-  &__close
-    position: absolute
-    top: 0.5rem
-    right: 0.5rem
-    z-index: 1
-    width: 2.25rem
-    height: 2.25rem
-    border: 0
-    border-radius: 50%
-    background: rgba(255, 255, 255, 0.9)
-    color: #000
-    font-size: 1.25rem
-    line-height: 1
-    cursor: pointer
+    .job[data-vertical] .media
+      height: 32rem
+      max-width: 100%
+      justify-self: center
+
+    .job-content
+      display: flex
+      flex-direction: column
+      align-items: flex-start
+      gap: 0.75rem
+
+      &::before
+        content: "Featured"
+        padding: 0.2rem 0.6rem
+        border: 1px solid $color-accent
+        border-radius: 6rem
+        background: $color-accent
+        color: $color-background
+        font-size: 0.7rem
+        font-weight: 700
+        text-transform: uppercase
+
+      hgroup,
+      .job-description
+        margin: 0
+
+      .job-title a
+        color: $color-accent
+        font-size: 2.5rem
+        font-weight: 700
+        line-height: 1
+        pointer-events: none
+
+        &:hover
+          color: darken($color-accent, 10%)
+
+      .more
+        display: none
+
+    @include media-breakpoint-down(md)
+      .job
+        grid-template-columns: 1fr
+        gap: 1.5rem
+
+  // Section "Jams in Brief" (shorts only) : max 480px en desktop
+  .blocks > .block-jobs:last-child
+    .job[data-vertical] .media
+      max-height: 480px
+
+    @include media-breakpoint-down(md)
+      .job[data-vertical] .media
+        max-height: none
