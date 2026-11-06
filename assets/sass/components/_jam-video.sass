@@ -79,17 +79,32 @@
       &:focus-visible
         transform: translate(-50%, -50%) scale(1.08)
 
-  // Vidéo verticale
-  .job[data-vertical] .media
+  // Section grid (Browse the jams) : hauteur uniforme pour toutes les cards
+  .block-jobs--grid
+    .job .media
+      aspect-ratio: 16 / 9
+
+    // Vidéos verticales : contain + fond flou
+    .job[data-vertical] .media
+      aspect-ratio: 16 / 9
+
+      &::before
+        display: block
+
+      img
+        object-fit: contain
+
+    // Images portrait sans data-vertical : fond flou
+    .job.portrait:not([data-vertical]) .media
+      &::before
+        display: block
+
+      img
+        object-fit: contain
+
+  // Vidéo verticale hors grid (ex: Jams in Brief) - cibler .block-jobs qui n'est pas grid
+  .block-jobs:not(.block-jobs--grid) .job[data-vertical] .media
     aspect-ratio: 9 / 16
-
-  // Cadre paysage + image portrait : flou derrière
-  .job.portrait:not([data-vertical]) .media
-    &::before
-      display: block
-
-    img
-      object-fit: contain
 
 // Popup (le <dialog> est dans le body, hors de .page-hr-jams)
 .jam-modal

@@ -81,3 +81,12 @@
       .job
         grid-template-columns: 1fr
         gap: 1.5rem
+
+  // Section "Jams in Brief" (shorts only) : max 480px en desktop
+  .blocks > .block-jobs:last-child
+    .job[data-vertical] .media
+      max-height: 480px
+
+    @include media-breakpoint-down(md)
+      .job[data-vertical] .media
+        max-height: none
