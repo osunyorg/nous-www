@@ -12,3 +12,13 @@
 @media (min-width: 992px)
   header#document-header .logo img
     height: 5rem
+
+// Supprime l'espace entre le dernier bloc light-green et le footer
+// Cible le padding-bottom appliqué par le thème Osuny
+body[class*="__section"] main:has(.block-class-light-green-bg:last-child),
+main.page-with-blocks:has(.block-class-light-green-bg:last-child)
+  padding-bottom: 0
+
+// Réduit l'espace entre deux blocs light-green-bg consécutifs
+.block-class-light-green-bg + .block-class-light-green-bg
+  margin-top: 0

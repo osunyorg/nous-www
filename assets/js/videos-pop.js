@@ -2,12 +2,14 @@ const initJams = () => {
   const jobs = document.querySelectorAll('.page-hr-jams .job')
   if (!jobs.length) return
 
-  // Extrait l'ID YouTube d'une URL (watch?v=, youtu.be, embed)
+  // Extrait l'ID YouTube d'une URL (watch?v=, youtu.be, embed, shorts)
   const getYoutubeId = (url) => {
     try {
       const u = new URL(url.replace(/\u00a0/g, ' ').trim())
       if (u.hostname.includes('youtu.be')) return u.pathname.slice(1)
-      if (u.pathname.startsWith('/embed/')) return u.pathname.split('/')[2]
+      if (u.pathname.startsWith('/embed/') || u.pathname.startsWith('/shorts/')) {
+        return u.pathname.split('/')[2]
+      }
       return u.searchParams.get('v')
     } catch (e) {
       return null
@@ -34,17 +36,22 @@ const initJams = () => {
 
   jobs.forEach((job) => {
     const subtitle = job.querySelector('.job-subtitle')
-    const content = job.querySelector('.job-content')
-    if (!subtitle || !content || job.dataset.jamReady) return
+    const media = job.querySelector('.media')
+    if (!subtitle || job.dataset.jamReady) return
 
-    const id = getYoutubeId(subtitle.textContent)
+    const url = subtitle.textContent
+    const id = getYoutubeId(url)
     if (!id) return
     job.dataset.jamReady = 'true'
+
+    // Short YouTube = vidéo verticale (cadre 9/16)
+    if (url.includes('/shorts/')) job.dataset.vertical = ''
 
     const button = document.createElement('button')
     button.type = 'button'
     button.className = 'jam-play'
     button.textContent = 'Watch the jam'
+    button.setAttribute('aria-label', 'Watch the jam')
 
     button.addEventListener('click', () => {
       frame.innerHTML = `<iframe
@@ -53,10 +60,21 @@ const initJams = () => {
         allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
         referrerpolicy="strict-origin-when-cross-origin"
         allowfullscreen></iframe>`
+      // Popup verticale pour les Shorts (optionnel, voir le Sass .jam-modal--vertical)
+      dialog.classList.toggle('jam-modal--vertical', 'vertical' in job.dataset)
       dialog.showModal()
     })
 
-    content.appendChild(button)
+    // Le bouton va sur l'image (sinon dans le contenu s'il n'y a pas d'image)
+    ;(media || job.querySelector('.job-content'))?.appendChild(button)
+
+    // Image pour le fond flouté
+    const img = media?.querySelector('img')
+    if (img) {
+      const setBg = () =>
+        media.style.setProperty('--jam-img', `url("${img.currentSrc || img.src}")`)
+      img.complete ? setBg() : img.addEventListener('load', setBg)
+    }
   })
 }
 
