@@ -66,7 +66,7 @@
 
       .job-title a
         color: $color-accent
-        font-size: 2.5rem
+        font-size: 2rem
         font-weight: 700
         line-height: 1
         pointer-events: none
@@ -82,11 +82,85 @@
         grid-template-columns: 1fr
         gap: 1.5rem
 
-  // Section "Jams in Brief" (shorts only) : max 480px en desktop
-  .blocks > .block-jobs:last-child
-    .job[data-vertical] .media
-      max-height: 480px
+  // "Jams in Brief" (shorts only, the green jobs block): vertical previews, 4 per row
+  .block-jobs.block-class-light-green-bg
+    ul.jobs
+      grid-template-columns: repeat(4, minmax(0, 1fr))
+      @include media-breakpoint-down(lg)
+        grid-template-columns: repeat(3, minmax(0, 1fr))
+      @include media-breakpoint-down(md)
+        display: grid
+        grid-template-columns: repeat(2, minmax(0, 1fr))
+        gap: var(--grid-gutter)
+        > li + li
+          margin-top: 0
 
-    @include media-breakpoint-down(md)
-      .job[data-vertical] .media
-        max-height: none
+    .job .media,
+    .job[data-vertical] .media
+      aspect-ratio: 9 / 16
+      max-height: none
+      // No blurred side bands: the short fills the frame
+      &::before
+        display: none
+      img
+        object-fit: cover
+  // Video titles in the cards ("Browse the jams", "Jams in Brief"): a bit smaller
+  .block-jobs .job-title
+    font-size: 1.5rem
+    font-weight: 600
+    line-height: 1.2
+
+  // Less space between the elements of each card (image, title, text, "Read more")
+  .blocks > .block-jobs:not(:first-child)
+    .job
+      gap: 0.75rem
+      // The theme adds a margin under the image
+      .media
+        margin-bottom: 0
+    .job-content
+      display: flex
+      flex-direction: column
+      gap: 0.35rem
+      > *
+        margin-top: 0
+        margin-bottom: 0
+    // No "Read more": the whole card is clickable
+    .more
+      display: none
+
+  // Block titles ("Browse the jams", "Jams in Brief", "Take the conversation further"): bold, as typed
+  .block .top .block-title
+    @include section-title
+
+  // "Take the conversation further"
+  .block-call_to_action
+    .call_to_action .description p
+      font-size: clamp(1rem, 1.4vw, 1.2rem)
+      font-weight: 400
+      line-height: 1.5
+
+    // "Explore Futures Labs" aligned on the right
+    // (!important: the theme aligns the actions on the left, in its 12-column grid)
+    .call_to_action .actions
+      align-items: flex-end !important
+      text-align: right
+
+    // Text link with a right arrow, no button
+    .call_to_action .actions a:first-child
+      --btn-background: transparent
+      --btn-border: 0
+      --btn-color: #{$color-accent}
+      --btn-hover-background: transparent
+      --btn-hover-border: 0
+      --btn-hover-color: #{$color-accent}
+      --btn-padding: 0
+      --btn-min-width: 0
+      font-weight: 700
+      &:hover,
+      &:focus-visible
+        text-decoration: underline
+        text-underline-offset: 0.2em
+      &::after
+        content: " →" !important
+        font-family: inherit
+        font-size: inherit

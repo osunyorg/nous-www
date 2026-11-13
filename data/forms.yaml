@@ -1,0 +1,99 @@
+# Form popups
+# Markup: layouts/_partials/footer/form-modals.html — JS: assets/js/form-modal.js — styles: components/_form-modal.sass
+# Server side (Infomaniak): hosting/infomaniak/contact.php — keep its field list in sync with this file.
+#
+# action: where the form is sent (POST, JSON).
+#   Infomaniak hosting: "/contact.php". Empty = the form cannot be sent yet (Deuxfleurs has no PHP).
+# Opened by a link to "#<key>" (e.g. "#contact"), or an element with data-modal-open="<key>".
+# Field types: text, email, url, select, textarea. maxlength on a textarea shows a character counter.
+
+contact:
+  # Also opened by the "Get in touch" link of the home page (URL "#" in Osuny)
+  trigger_text: Get in touch
+  title: Get in touch
+  intro: Tell us a bit about yourself and what you would like to talk about.
+  action: ""
+  submit: Send message
+  success: Thank you! Your message has been sent, we will get back to you soon.
+  error: Sorry, your message could not be sent. Please try again later.
+  fields:
+    - name: name
+      type: text
+      label: Name
+      required: true
+      autocomplete: name
+      error: Please enter your name.
+    - name: email
+      type: email
+      label: Email address
+      required: true
+      autocomplete: email
+      error: Please enter a valid email address.
+    - name: organisation
+      type: text
+      label: Organisation / Affiliation
+      autocomplete: organization
+    - name: interest
+      type: select
+      label: "I'm interested in:"
+      required: true
+      error: Please choose an option.
+      # TODO: confirm the list
+      options:
+        - Partnering with Nous
+        - Human Rights Jams
+        - Futures Labs
+        - Provocations
+        - Global Majority Futures Fellowship
+        - Other
+    - name: message
+      type: textarea
+      label: Message
+      required: true
+      rows: 5
+      error: Please write a message.
+
+pitch:
+  # Opened by the "Submit a Pitch!" button of the Provocations page
+  title: Submit a Pitch
+  intro: Have a Provocation to share? Tell us about your essay, question, or dialogue proposal.
+  action: ""
+  submit: Submit my pitch
+  success: Thank you! Your pitch has been sent, we will get back to you soon.
+  error: Sorry, your pitch could not be sent. Please try again later.
+  fields:
+    - name: name
+      type: text
+      label: Name
+      required: true
+      autocomplete: name
+      error: Please enter your name.
+    - name: email
+      type: email
+      label: Email address
+      required: true
+      autocomplete: email
+      error: Please enter a valid email address.
+    - name: organisation
+      type: text
+      label: Organisation / Affiliation
+      autocomplete: organization
+    - name: website
+      type: url
+      label: Website or portfolio link
+      placeholder: https://
+      autocomplete: url
+      error: Please enter a full link, starting with https://
+    - name: proposal
+      type: textarea
+      label: Your provocation proposal
+      required: true
+      rows: 7
+      maxlength: 1500
+      placeholder: Briefly describe the core argument of your provocation. What orthodoxies are you challenging? What futures are you imagining?
+      error: Please describe your provocation.
+    - name: why_now
+      type: textarea
+      label: Why this matters now
+      rows: 3
+      placeholder: What makes this intervention timely? (1-2 sentences)

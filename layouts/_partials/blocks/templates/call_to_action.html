@@ -1,0 +1,31 @@
+{{/* Override of the theme call to action block: optional kicker above the title (data/kickers.yaml) */}}
+{{ $block := .block }}
+{{ $block_class := partial "blocks/helpers/GetClass" .block }}
+{{ $kicker := index (site.Data.kickers | default dict) ($block.slug | default "") }}
+
+{{ with .block.data }}
+  {{ $buttons := and .button.text .button_secondary.text }}
+  <div class="{{ $block_class }}">
+    <div class="container">
+      <div class="block-content">
+        {{ $class := partial "blocks/templates/call_to_action/helpers/GetClass" (dict
+          "image" .image
+          "block" $block
+        ) }}
+        <div class="{{ $class }}">
+          <div>
+            {{ with $kicker }}<p class="block-kicker">{{ . }}</p>{{ end }}
+            {{ partial "blocks/top.html" $block.top }}
+            {{ partial "blocks/templates/call_to_action/actions.html" . }}
+          </div>
+          {{ with .image }}
+            {{ partial "commons/image/figure.html" (dict
+              "image" .
+              "sizes" site.Params.image_sizes.blocks.call_to_action
+            ) }}
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </div>
+{{ end }}

@@ -1,0 +1,137 @@
+// Global Majority Futures Fellowship page
+// (body class "page--global-majority-futures-fellowship", from layouts/_partials/body/helpers/GetBodyclass.html)
+.page--global-majority-futures-fellowship
+  // The first two blocks side by side:
+  // "Opening space for other futures" | "Program details · provisional"
+  .blocks
+    display: grid
+    grid-template-columns: [full-start] minmax(0, 1fr) [content-start] minmax(0, calc(var(--grid-width) / 2)) [middle] minmax(0, calc(var(--grid-width) / 2)) [content-end] minmax(0, 1fr) [full-end]
+
+    > *
+      grid-column: full
+      min-width: 0
+
+    > .block-chapter:first-child,
+    > .block-chapter:first-child + .block-chapter
+      .container
+        width: 100%
+      .chapter .text
+        width: 100% !important
+
+    > .block-chapter:first-child
+      grid-column: content-start / middle
+
+      // "Opening space for other futures": bold, as typed
+      .block-title
+        @include section-title
+
+    > .block-chapter:first-child + .block-chapter
+      grid-column: middle / content-end
+
+      // "Program details · provisional": small uppercase, like "How we work" on the home
+      .block-title
+        @extend %home-kicker
+
+    // Title close to the text below
+    > .block-chapter:first-child,
+    > .block-chapter:first-child + .block-chapter
+      .top
+        margin-bottom: $spacing-1
+      .rich-text
+        margin-top: 0
+
+    // Mobile: one under the other
+    @include media-breakpoint-down(md)
+      > .block-chapter:first-child,
+      > .block-chapter:first-child + .block-chapter
+        grid-column: full
+
+  // Green block "Meet the inaugural cohort": title, text and button one under the other, centred
+  .block-call_to_action .call_to_action.call_to_action--without-image
+    > div
+      // !important: the theme puts text and button in a 12-column grid
+      display: flex !important
+      flex-direction: column
+      align-items: center
+      text-align: center
+
+      .top
+        display: block
+
+      // "Meet the inaugural cohort": same style as "Opening space for other futures"
+      .block-title
+        @include section-title
+        margin-bottom: $spacing-1
+
+      // "Make space for…": normal text, like "Further details about the fellowship…"
+      .description p
+        @include body-text
+        font-weight: 400
+        letter-spacing: normal
+
+      .actions
+        align-items: center
+        margin-top: $spacing-4 !important
+
+  // "Partner institutions": up to 4 cards per row, violet frame, transparent background
+  .block-links.block-links--cards
+    .block-title
+      @include section-title
+
+    ul.links
+      display: grid
+      grid-template-columns: repeat(4, minmax(0, 1fr))
+      gap: $spacing-2
+      align-items: stretch
+      counter-reset: partner
+      @include media-breakpoint-down(lg)
+        grid-template-columns: repeat(2, minmax(0, 1fr))
+      @include media-breakpoint-down(sm)
+        grid-template-columns: minmax(0, 1fr)
+
+    // Card: "01 / Institution 1", then the photo, then the text
+    li
+      counter-increment: partner
+      flex-direction: column
+      gap: $spacing-3
+      padding: $spacing-4 $spacing-3
+      background: transparent
+      border: 1px solid rgba($color-accent, .3)
+      border-radius: 0
+      color: $color-text
+
+      &:hover
+        background: transparent
+        &, a
+          color: $color-text
+
+      .link-content
+        display: contents
+
+      // "01 / INSTITUTION 1": same style as "Global Majority Futures Fellows"
+      a
+        order: 1
+        @extend %home-kicker
+        font-weight: 400
+        // No "external link" icon at the bottom right
+        &::after
+          content: none
+        span[itemprop="name"]::before
+          content: counter(partner, decimal-leading-zero) " / "
+
+      .media
+        order: 2
+        margin: 0
+
+      p
+        order: 3
+        margin: 0
+
+        // Temporary: same text on every card, until the real names are set in Osuny
+        &::before
+          content: "Institution placeholder"
+          display: block
+          margin-bottom: $spacing-1
+          font-size: 1.125rem
+          font-weight: 700
+          line-height: 1.3

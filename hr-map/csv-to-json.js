@@ -16,14 +16,17 @@ const placesFile = path.join(__dirname, "places.csv");
 const read = f => fs.readFileSync(f, "utf8").replace(/^\uFEFF/, "");
 const num = v => parseFloat(String(v || "").trim().replace(",", "."));
 
-/* Table des lieux : place -> [lat, lon] */
-const placeCoords = {};
+/* Table des lieux : place -> [lat, lon], et lieux approximatifs (colonne approx = yes) */
+const placeCoords = {}, approxPlaces = {}, globalPlaces = {};
 if (fs.existsSync(placesFile)) {
   const t = read(placesFile), rows = parse(t, detectDelimiter(t));
   const h = rows.shift().map(x => x.trim().toLowerCase());
-  const ip = h.indexOf("place"), ila = h.indexOf("lat"), ilo = h.indexOf("lon");
+  const ip = h.indexOf("place"), ila = h.indexOf("lat"), ilo = h.indexOf("lon"), iap = h.indexOf("approx"), ist = h.indexOf("status");
   rows.forEach(r => {
+    /* status « no point » : entrée globale / internationale, listée sous la légende */
+    if (ist >= 0 && String(r[ist] || "").trim() === "no point") globalPlaces[norm(r[ip])] = true;
     const lat = num(r[ila]), lon = num(r[ilo]);
+    if (iap >= 0 && /^(yes|oui|x|1|true)$/i.test(String(r[iap] || "").trim())) approxPlaces[norm(r[ip])] = true;
     if (!isNaN(lat) && !isNaN(lon)) placeCoords[norm(r[ip])] = [lat, lon];
   });
 }
@@ -45,7 +48,7 @@ if (idx.title < 0) {
 const get = (r, i) => (i >= 0 && r[i] ? norm(r[i]) : "");
 
 const items = [], missing = [], invalid = [];
-let fromPlaces = 0;
+let fromPlaces = 0, globals = 0;
 rows.forEach((r, n) => {
   const line = n + 2;
   const title = get(r, idx.title), place = get(r, idx.place);
@@ -54,12 +57,21 @@ rows.forEach((r, n) => {
   if ((isNaN(lat) || isNaN(lon)) && placeCoords[place]) {
     lat = placeCoords[place][0]; lon = placeCoords[place][1]; fromPlaces++;
   }
+  const isGlobal = (isNaN(lat) || isNaN(lon)) && globalPlaces[place];
+  if (isGlobal) {
+    const g = { title: title, date: get(r, idx.date), place: place, text: get(r, idx.text),
+      category: get(r, idx.category), url: get(r, idx.url), global: true };
+    Object.keys(g).forEach(k => { if (g[k] === "") delete g[k]; });
+    items.push(g); globals++;
+    return;
+  }
   if (isNaN(lat) || isNaN(lon)) { missing.push("ligne " + line + " : " + title + " [" + place + "]"); return; }
   if (Math.abs(lat) > 90 || Math.abs(lon) > 180) { invalid.push("ligne " + line + " : " + title + " (" + lat + ", " + lon + ")"); return; }
   const item = {
     title: title, date: get(r, idx.date), place: place, text: get(r, idx.text),
     category: get(r, idx.category), url: get(r, idx.url),
-    lat: Math.round(lat * 10000) / 10000, lon: Math.round(lon * 10000) / 10000
+    lat: Math.round(lat * 10000) / 10000, lon: Math.round(lon * 10000) / 10000,
+    approx: approxPlaces[place] ? true : ""
   };
   Object.keys(item).forEach(k => { if (item[k] === "") delete item[k]; });
   items.push(item);
@@ -70,5 +82,6 @@ fs.writeFileSync(output, "[\n" + items.map(i => JSON.stringify(i)).join(",\n") +
 
 console.log(items.length + " entrées écrites dans " + output + " (" + Math.round(fs.statSync(output).size / 1024) + " Ko)");
 if (fromPlaces) console.log(fromPlaces + " placées grâce à places.csv");
+if (globals) console.log(globals + " entrées globales (sans point, listées sous la légende)");
 if (missing.length) console.warn("\n" + missing.length + " sans coordonnées (ignorées) :\n  " + missing.join("\n  "));
 if (invalid.length) console.warn("\n" + invalid.length + " coordonnées invalides (lat/lon inversées ?) :\n  " + invalid.join("\n  "));
