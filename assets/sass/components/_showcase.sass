@@ -79,6 +79,7 @@
     &-tabs
       display: flex
       flex-wrap: wrap
+      justify-content: center
       gap: $spacing-2
       margin-top: $spacing-3
 
@@ -100,7 +101,7 @@
   .showcase-cards
     display: grid
     grid-template-columns: 1fr
-    gap: var(--grid-gutter)
+    gap: $spacing-2
     margin: $spacing-4 0 0
     padding: 0
     list-style: none
@@ -116,7 +117,8 @@
     gap: $spacing-2
     height: 100%
     padding: $spacing-4
-    border: 1px solid $color-accent
+    // Light border, same as the "Partner institutions" cards
+    border: 1px solid rgba($color-accent, .3)
     border-radius: 1rem
     background: transparent
     &-title

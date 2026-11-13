@@ -14,6 +14,11 @@
   var NS = "http://www.w3.org/2000/svg";
 
   root.innerHTML =
+    '<div class="nwm-main">' +
+    '<p class="nwm-stats" hidden>' +
+      '<span class="nwm-stat nwm-stat--located"></span>' +
+      '<span class="nwm-stat nwm-stat--global"></span>' +
+    '</p>' +
     '<div class="nwm-map">' +
       '<svg viewBox="0 0 960 500" role="img" aria-label="World map">' +
         '<path class="nwm-sphere" d="' + SPHERE + '"/>' +
@@ -27,16 +32,58 @@
       '</div>' +
       '<div class="nwm-popup" hidden></div>' +
     '</div>' +
+    '<div class="nwm-global" hidden>' +
+      '<p class="nwm-eyebrow nwm-global-title">Global / Regional</p>' +
+      '<ul class="nwm-global-list"></ul>' +
+      '<button type="button" class="nwm-global-more" aria-expanded="false" hidden></button>' +
+    '</div>' +
+    '</div>' +
     '<aside class="nwm-filters" aria-label="Theme filter" hidden>' +
       '<p class="nwm-eyebrow">Theme filter</p>' +
       '<ul class="nwm-filter-list"></ul>' +
+      '<p class="nwm-eyebrow nwm-legend-title">Map legend</p>' +
+      '<ul class="nwm-legend">' +
+        '<li><span class="nwm-legend-dot nwm-legend-dot--active" aria-hidden="true"></span>Selected / open entry</li>' +
+        '<li><span class="nwm-legend-dot" aria-hidden="true"></span>Located entry</li>' +
+        '<li><span class="nwm-legend-dot nwm-legend-dot--approx" aria-hidden="true"></span>Regional / broad area</li>' +
+      '</ul>' +
+      '<p class="nwm-box nwm-legend-note">Markers show approximate historical geographies. Global / international entries are listed separately below the map.</p>' +
     '</aside>';
+
+  /* Note sous la carte (« Open circles… ») : le texte du bloc Osuny qui suit la carte
+     est déplacé juste sous la carte, précédé du point « Regional / broad area » */
+  var noteBlock = root.closest(".block");
+  noteBlock = noteBlock && noteBlock.nextElementSibling;
+  var note = noteBlock && noteBlock.classList.contains("block-chapter") ? noteBlock.querySelector(".rich-text") : null;
+  if (note) {
+    note.classList.add("nwm-box", "nwm-note");
+    var noteP = note.querySelector("p");
+    if (noteP) {
+      noteP.insertAdjacentHTML("afterbegin", '<span class="nwm-legend-dot nwm-legend-dot--approx" aria-hidden="true"></span>');
+    }
+    root.querySelector(".nwm-main").insertBefore(note, root.querySelector(".nwm-global"));
+    noteBlock.style.display = "none";
+  }
 
   var svg = root.querySelector("svg");
   var gPts = root.querySelector(".nwm-points");
   var popup = root.querySelector(".nwm-popup");
   var filters = root.querySelector(".nwm-filters");
   var filterList = root.querySelector(".nwm-filter-list");
+  var globalBox = root.querySelector(".nwm-global");
+  var globalList = root.querySelector(".nwm-global-list");
+  var globalMore = root.querySelector(".nwm-global-more");
+  var GLOBAL_SHOWN = 4, globalOpen = false;
+  var stats = root.querySelector(".nwm-stats");
+  /* Badges : déplacés dans le bloc Osuny juste avant la carte (« Explore by geography »),
+     à droite du titre et de la description */
+  var introBlock = root.closest(".block");
+  introBlock = introBlock && introBlock.previousElementSibling;
+  var introChapter = introBlock && introBlock.classList.contains("block-chapter") ? introBlock.querySelector(".chapter") : null;
+  if (introChapter) {
+    introChapter.appendChild(stats);
+    introChapter.classList.add("nwm-intro");
+  }
 
   /* Projection Natural Earth (identique à d3.geoNaturalEarth1 pour cette carte) */
   function project(lon, lat) {
@@ -90,19 +137,36 @@
     var h = '<button class="nwm-close" aria-label="Close">\u00d7</button>' +
       '<p class="nwm-eyebrow">' + (many ? "Selected records (" + g.items.length + ")" : "Selected record") + "</p>" +
       '<div class="nwm-list">';
-    g.items.forEach(function (d) {
-      h += '<article class="nwm-item"><h3 class="nwm-title">' + esc(d.title) + "</h3>" +
+    g.items.forEach(function (d, i) {
+      h += '<article class="nwm-item"' + (i > 0 ? " hidden" : "") + '><h3 class="nwm-title">' + esc(d.title) + "</h3>" +
         (d.cats && d.cats.length ? '<div class="nwm-badges">' + d.cats.map(function (c) {
           return '<span class="nwm-badge">' + esc(c) + "</span>";
         }).join("") + "</div>" : "") +
         (d.date || d.place ? '<p class="nwm-meta">' +
-          (d.date ? '<span class="nwm-date">' + esc(d.date) + "</span>" : "") +
-          (d.place ? '<span class="nwm-place">' + esc(d.place) + "</span>" : "") + "</p>" : "") +
+          (d.date ? '<span class="nwm-date"><span class="nwm-label">Date / Period</span>' + esc(d.date) + "</span>" : "") +
+          (d.place ? '<span class="nwm-place"><span class="nwm-label">Place / Geography</span>' + esc(d.place) + "</span>" : "") + "</p>" : "") +
         (d.text ? '<p class="nwm-text">' + esc(d.text) + "</p>" : "") +
         (d.url ? '<a class="nwm-link" href="' + esc(d.url) + '">Read more \u2192</a>' : "") +
         "</article>";
     });
-    return h + "</div>";
+    h += "</div>";
+    /* Plusieurs entrées : une seule affichée, avec Previous / Next */
+    if (many) {
+      h += '<div class="nwm-nav">' +
+        '<button type="button" class="nwm-prev" disabled>\u2190 Previous</button>' +
+        '<span class="nwm-pos" aria-live="polite">1 / ' + g.items.length + "</span>" +
+        '<button type="button" class="nwm-next">Next \u2192</button>' +
+        "</div>";
+    }
+    return h;
+  }
+  function show(index) {
+    var items = popup.querySelectorAll(".nwm-item");
+    items.forEach(function (item, i) { item.hidden = i !== index; });
+    popup.querySelector(".nwm-prev").disabled = index === 0;
+    popup.querySelector(".nwm-next").disabled = index === items.length - 1;
+    popup.querySelector(".nwm-pos").textContent = (index + 1) + " / " + items.length;
+    place();
   }
   function open(g, el) {
     current = g;
@@ -111,6 +175,11 @@
     popup.innerHTML = popupHtml(g);
     popup.hidden = false;
     popup.querySelector(".nwm-close").addEventListener("click", close);
+    if (g.items.length > 1) {
+      var index = 0;
+      popup.querySelector(".nwm-prev").addEventListener("click", function () { show(--index); });
+      popup.querySelector(".nwm-next").addEventListener("click", function () { show(++index); });
+    }
     place();
   }
   function close() {
@@ -137,6 +206,13 @@
     gPts.innerHTML = "";
     nodes = [];
     var items = active ? all.filter(function (d) { return d.cats.indexOf(active) >= 0; }) : all;
+    var globals = items.filter(function (d) { return d.global; });
+    renderGlobal(globals);
+    items = items.filter(function (d) { return !d.global; });
+    /* Badges au-dessus de la carte : nombre d'entrées placées / globales (selon le filtre) */
+    stats.querySelector(".nwm-stat--located").textContent = items.length + " located";
+    stats.querySelector(".nwm-stat--global").textContent = globals.length + " global / regional";
+    stats.hidden = false;
     var groups = {}, order = [];
     items.forEach(function (d) {
       var key = d.lat.toFixed(2) + "," + d.lon.toFixed(2);
@@ -145,8 +221,10 @@
     });
     order.forEach(function (key) {
       var g = groups[key], pos = project(g.lon, g.lat), multi = g.items.length > 1;
+      /* Lieu approximatif (région, continent) si toutes les entrées du point le sont */
+      var approx = g.items.every(function (d) { return d.approx; });
       var c = document.createElementNS(NS, "circle");
-      c.setAttribute("class", "nwm-point");
+      c.setAttribute("class", "nwm-point" + (approx ? " nwm-point--approx" : ""));
       c.setAttribute("cx", pos[0]); c.setAttribute("cy", pos[1]);
       c.setAttribute("tabindex", 0); c.setAttribute("role", "button");
       c.setAttribute("aria-label", multi ? g.items.length + " events: " + g.items[0].title + "\u2026" : g.items[0].title);
@@ -158,7 +236,7 @@
       var node = { circle: c, label: null, r: multi ? R * 1.6 : R };
       if (multi) {
         var t = document.createElementNS(NS, "text");
-        t.setAttribute("class", "nwm-count");
+        t.setAttribute("class", "nwm-count" + (approx ? " nwm-count--approx" : ""));
         t.setAttribute("x", pos[0]); t.setAttribute("y", pos[1]); t.setAttribute("dy", "0.35em");
         t.textContent = g.items.length;
         gPts.appendChild(t);
@@ -168,6 +246,29 @@
     });
     apply();
   }
+
+  /* Entrées globales / internationales (sans point) : listées sous la légende */
+  function renderGlobal(items) {
+    globalList.innerHTML = items.map(function (d, i) {
+      return '<li class="nwm-box nwm-global-item"' + (i >= GLOBAL_SHOWN ? " data-extra" : "") + ">" +
+        (d.date ? '<span class="nwm-global-date">' + esc(d.date) + "</span>" : "") +
+        '<span class="nwm-global-name">' + esc(d.title) + "</span>" +
+        (d.place ? '<span class="nwm-global-place">' + esc(d.place) + "</span>" : "") +
+        "</li>";
+    }).join("");
+    globalBox.hidden = !items.length;
+    globalMore.hidden = items.length <= GLOBAL_SHOWN;
+    globalMore.setAttribute("data-count", items.length);
+    toggleGlobal(globalOpen);
+  }
+  /* Les premières entrées globales sont visibles, « Show all » affiche les autres */
+  function toggleGlobal(openAll) {
+    globalOpen = openAll;
+    globalList.querySelectorAll("[data-extra]").forEach(function (li) { li.hidden = !openAll; });
+    globalMore.setAttribute("aria-expanded", openAll ? "true" : "false");
+    globalMore.textContent = openAll ? "Show less" : "Show all (" + globalMore.getAttribute("data-count") + ")";
+  }
+  globalMore.addEventListener("click", function () { toggleGlobal(!globalOpen); });
 
   /* Filtres : catégories du JSON (plusieurs possibles dans une cellule, séparées par « ; ») */
   function filterButton(value, label, count) {
@@ -200,7 +301,7 @@
   });
 
   function build(items) {
-    all = items.filter(function (d) { return typeof d.lat === "number" && typeof d.lon === "number"; })
+    all = items.filter(function (d) { return d.global || (typeof d.lat === "number" && typeof d.lon === "number"); })
       .map(function (d) {
         d.cats = d.category ? d.category.split(";").map(function (c) { return c.trim(); }).filter(Boolean) : [];
         return d;
