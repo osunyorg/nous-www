@@ -22,3 +22,7 @@ main.page-with-blocks:has(.block-class-light-green-bg:last-child)
 // Réduit l'espace entre deux blocs light-green-bg consécutifs
 .block-class-light-green-bg + .block-class-light-green-bg
   margin-top: 0
+// Masque les blocs « Call to action » vides (sans titre, texte ni bouton) :
+// ils créaient un espace, par exemple entre le dernier bloc et le footer sur Futures Labs
+.block-call_to_action:not(.block-titled):has(.call_to_action--without-text):not(:has(.actions a))
+  display: none

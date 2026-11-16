@@ -58,12 +58,12 @@ async function run(opts) {
   rows.forEach(r => { const p = norm(r[ip]); if (p && wanted.indexOf(p) < 0) wanted.push(p); });
 
   /* places.csv existant */
-  const header = ["place", "lat", "lon", "status", "matched"];
+  const header = ["place", "lat", "lon", "status", "matched", "approx"];
   let table = [];
   if (fs.existsSync(placesFile)) {
     const pt = fs.readFileSync(placesFile, "utf8").replace(/^\uFEFF/, "");
     const pr = parse(pt, detectDelimiter(pt)); pr.shift();
-    table = pr.map(r => [norm(r[0]), r[1] || "", r[2] || "", r[3] || "", r[4] || ""]);
+    table = pr.map(r => [norm(r[0]), r[1] || "", r[2] || "", r[3] || "", r[4] || "", r[5] || ""]);
   }
   const save = () => fs.writeFileSync(placesFile, stringify([header].concat(table), ";"));
   const find = p => table.find(r => r[0] === p);
@@ -74,7 +74,7 @@ async function run(opts) {
   for (let i = 0; i < todo.length; i++) {
     const place = todo[i];
     let row = find(place);
-    if (!row) { row = [place, "", "", "", ""]; table.push(row); }
+    if (!row) { row = [place, "", "", "", "", ""]; table.push(row); }
     if (NO_POINT.test(place)) { row[3] = "no point"; save(); continue; }
     let hit = null, used = "";
     for (const q of buildQueries(place)) {

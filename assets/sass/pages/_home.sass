@@ -1,3 +1,12 @@
+// Small uppercase label: "Our Mission", "How we work"
+%home-kicker
+  font-family: $heading-font-family
+  font-size: 1rem
+  font-weight: 800
+  letter-spacing: 0.08em
+  line-height: 1.2
+  text-transform: uppercase
+
 .page__home
 
   // Hero
@@ -84,11 +93,17 @@
         font-size: clamp(1.1rem, 1.6vw, 1.4rem)
         line-height: 1.5
       p:first-child
+        @extend %home-kicker
         margin-bottom: $spacing-3
-        font-family: $heading-font-family
-        font-size: clamp(2rem, 5vw, 3.5rem)
-        font-weight: 800
-        line-height: 1.1
+
+  // "How we work", above "Principal Tools and Intent"
+  .showcase-kicker
+    @extend %home-kicker
+    margin-bottom: $spacing-2
+
+  .block-class-showcase .block-title
+    font-weight: 800
+    text-transform: none
 
   // Call to action
   .block.block-call_to_action
@@ -155,3 +170,8 @@
         padding-top: 0
         > div, > figure
           grid-column: auto
+
+// Kicker above a block title (data/kickers.yaml), same style as "How we work"
+.block-kicker
+  @extend %home-kicker
+  margin: 0 0 $spacing-2

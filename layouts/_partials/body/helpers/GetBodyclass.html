@@ -1,0 +1,28 @@
+{{/* Override of the theme helper:
+     - every provocation page (post) uses the standard layout (meta in a column on the left),
+       even when "full width" is ticked in Osuny;
+     - every page gets a class from its slug, e.g. "page--global-majority-futures-fellowship",
+       to style a page without a body class set in Osuny. */}}
+{{ $is_post := and (eq .Type "posts") (eq .Kind "page") }}
+
+{{ $bodyclass := .Params.bodyclass | default "" }}
+
+{{ $bodyclass = printf "%s__%s %s" .Type .Kind $bodyclass }}
+
+{{ if and (eq .Type "pages") .Params.slug }}
+  {{ $bodyclass = printf "%s page--%s" $bodyclass (.Params.slug | urlize) }}
+{{ end }}
+
+{{ if and (not $is_post) (or .Params.design.full_width site.Params.design.force_full_width) }}
+  {{ $bodyclass = printf "%s full-width" $bodyclass }}
+{{ end }}
+
+{{ if and (not $is_post) (or .Params.design.toc.offcanvas site.Params.toc.force_offcanvas) }}
+  {{ $bodyclass = printf "%s offcanvas-toc" $bodyclass }}
+{{ end }}
+
+{{ range .Params.posts_categories }}
+  {{ $bodyclass = printf "%s category--%s" $bodyclass . }}
+{{ end }}
+
+{{ return $bodyclass }}

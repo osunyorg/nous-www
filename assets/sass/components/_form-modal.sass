@@ -1,0 +1,125 @@
+// Form popups (contact, pitch…) — markup: layouts/_partials/footer/form-modals.html
+$form-error-color: #b3261e
+
+.form-modal
+  width: 36rem
+  max-width: calc(100vw - 2rem)
+  max-height: calc(100vh - 2rem)
+  overflow-y: auto
+  padding: $spacing-4
+  border: 0
+  border-radius: 1rem
+  background: $color-light-green
+  // Rendered inside the footer: reset its colours
+  color: $color-text
+  text-align: left
+
+  &::backdrop
+    background: rgba($color-accent, .6)
+
+  &__close
+    position: absolute
+    top: 0.75rem
+    right: 1rem
+    padding: 0
+    border: 0
+    background: none
+    color: $color-accent
+    font-size: 2rem
+    line-height: 1
+    cursor: pointer
+
+  &__title
+    margin: 0 0 $spacing-1
+    padding-right: 2rem
+    font-size: clamp(1.5rem, 2.5vw, 2rem)
+    font-weight: 800
+    line-height: 1.15
+    text-transform: none
+
+  &__intro
+    margin: 0 0 $spacing-3
+
+.modal-form
+  display: flex
+  flex-direction: column
+  gap: 1rem
+
+  &__field
+    display: flex
+    flex-direction: column
+    gap: 0.35rem
+
+  label
+    font-size: 0.875rem
+    font-weight: 700
+
+  &__optional
+    font-weight: 400
+    opacity: .7
+
+  input,
+  select,
+  textarea
+    width: 100%
+    height: auto
+    margin: 0
+    padding: 0.6rem 0.75rem
+    border: 2px solid $color-green
+    border-radius: 0.5rem
+    background: $header-background
+    color: $color-text
+    font: inherit
+    font-size: 1rem
+
+    &::placeholder
+      color: rgba($color-text, .5)
+
+    &:focus-visible
+      outline: 2px solid $color-accent
+      outline-offset: 1px
+
+    &[aria-invalid="true"]
+      border-color: $form-error-color
+
+  textarea
+    resize: vertical
+
+  &__counter
+    margin: 0
+    align-self: flex-end
+    font-size: 0.75rem
+    opacity: .7
+
+  &__error
+    margin: 0
+    color: $form-error-color
+    font-size: 0.8125rem
+    &[hidden]
+      display: none
+
+  &__hp
+    position: absolute
+    left: -9999px
+
+  &__status
+    margin: 0
+    font-size: 0.875rem
+    &:empty
+      display: none
+    &[data-type="success"]
+      font-weight: 700
+    &[data-type="error"]
+      color: $form-error-color
+
+  &__submit
+    --btn-color: #{$color-accent}
+    --btn-background: transparent
+    --btn-border: 1px solid #{$color-accent}
+    --btn-hover-color: #{$color-light-green}
+    --btn-hover-background: #{$color-accent}
+    --btn-hover-border: 1px solid #{$color-accent}
+    align-self: flex-start
+    border-radius: 1rem
+    &:disabled
+      opacity: .5

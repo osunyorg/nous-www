@@ -1,0 +1,54 @@
+// Footer — markup: layouts/_partials/footer/footer-simple.html
+footer#document-footer
+  padding-top: $spacing-4
+  padding-bottom: $spacing-4
+
+  .container.footer-nous
+    display: block
+    padding-top: 0
+    padding-bottom: 0
+
+  ul
+    margin: 0
+    padding: 0
+    list-style: none
+    li + li
+      margin-top: 0
+
+  .footer-nous-links
+    display: flex
+    flex-wrap: wrap
+    gap: $spacing-1 $spacing-4
+    font-size: 0.9375rem
+
+  .footer-nous-bottom
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    justify-content: space-between
+    gap: $spacing-2
+    margin-top: $spacing-3
+
+  .footer-nous-tagline
+    margin: 0
+    font-size: 0.875rem
+    opacity: 0.6
+
+  .footer-nous-socials
+    display: flex
+    gap: $spacing-3
+    li
+      position: relative
+      &.youtube
+        @include icon(youtube-fill, before)
+      &.instagram
+        @include icon(instagram-fill, before)
+      &.linkedin
+        @include icon(linkedin-fill, before)
+      &::before
+        font-size: 1.25rem
+      a
+        @include stretched-link(before)
+        // No "new tab" icon from the theme, the network icon is enough
+        &::after
+          content: none !important

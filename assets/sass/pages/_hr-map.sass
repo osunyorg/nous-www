@@ -5,7 +5,7 @@ $nwm-sea: $color-green !default
 $nwm-land: $header-background !default
 $nwm-accent: $color-accent !default
 $nwm-accent-hover: #7b2d72 !default
-$nwm-card-bg: #fff !default
+$nwm-card-bg: $nwm-land !default
 $nwm-card-text: #222 !default
 $nwm-muted: #555 !default
 
@@ -21,10 +21,37 @@ $nwm-muted: #555 !default
     gap: 20px
 
 // Carte (colonne de gauche)
-.nwm-map
-  position: relative
+// Colonne de droite : la carte, puis la note (« Open circles… »)
+.nwm-main
   flex: 1 1 0
   min-width: 0
+  width: 100%
+
+// Badges above the map, on the right: "116 located", "22 global / regional"
+.nwm-stats
+  display: flex
+  justify-content: flex-end
+  flex-wrap: wrap
+  gap: 8px
+  margin: 0 0 12px
+  &[hidden]
+    display: none
+
+.nwm-stat
+  padding: 3px 12px
+  border: 2px solid $nwm-sea
+  border-radius: 999px
+  background: $nwm-land
+  color: $color-text
+  font-size: 13px
+  font-weight: 600
+  line-height: 1.4
+
+  &--located
+    background: $nwm-sea
+
+.nwm-map
+  position: relative
   width: 100%
 
   svg
@@ -54,7 +81,7 @@ $nwm-muted: #555 !default
 .nwm-filter-list
   display: flex
   flex-direction: column
-  gap: 4px
+  gap: 6px
   margin: 0
   padding: 0
   list-style: none
@@ -71,10 +98,11 @@ $nwm-muted: #555 !default
   gap: 12px
   width: 100%
   padding: 8px 12px
-  border: 0
-  border-radius: 8px
-  background: transparent
-  color: $nwm-card-text
+  // Same box as the note under the map
+  border: 2px solid $nwm-sea
+  border-radius: 12px
+  background: $nwm-land
+  color: $color-text
   font: inherit
   font-size: 14px
   line-height: 1.3
@@ -83,12 +111,13 @@ $nwm-muted: #555 !default
   transition: background .15s
 
   &:hover
-    background: rgba($nwm-sea, .45)
+    background: mix($nwm-sea, $nwm-land, 40%)
 
   &:focus-visible
     outline: 2px solid $nwm-accent
     outline-offset: 2px
 
+  // Active filter: background in the border colour
   &[aria-pressed="true"]
     background: $nwm-sea
     color: $nwm-accent
@@ -97,7 +126,113 @@ $nwm-muted: #555 !default
   @media (max-width: 768px)
     width: auto
     border-radius: 999px
-    background: rgba($nwm-sea, .45)
+
+// Map legend, under the theme filters (same colours as the points)
+.nwm-eyebrow.nwm-legend-title
+  margin-top: 24px
+
+.nwm-legend
+  display: flex
+  flex-direction: column
+  gap: 8px
+  margin: 0
+  padding: 0 12px
+  list-style: none
+  font-size: 14px
+  line-height: 1.3
+  color: $color-text
+
+  li
+    display: flex
+    align-items: center
+    gap: 10px
+
+  @media (max-width: 768px)
+    flex-direction: row
+    flex-wrap: wrap
+    gap: 8px 16px
+    padding: 0
+
+.nwm-legend-dot
+  flex: 0 0 auto
+  width: 12px
+  height: 12px
+  border: 2px solid $nwm-sea
+  border-radius: 50%
+  background: $nwm-accent
+
+  &--active
+    border-color: $nwm-accent
+
+  &--approx
+    border-color: $nwm-accent
+    background: $nwm-sea
+
+// Boxes in the sidebar: same as the note under the map
+.nwm-box
+  padding: 12px 14px
+  background: $nwm-land
+  border: 2px solid $nwm-sea
+  border-radius: 12px
+  font-size: 14px
+  line-height: 1.4
+  color: $color-text
+
+.nwm-legend-note
+  margin: 16px 0 0
+
+// Global / international entries (no point on the map)
+.nwm-global
+  &[hidden]
+    display: none
+
+.nwm-eyebrow.nwm-global-title
+  margin-top: 24px
+
+// Under the map: a grid, one row (4 entries) before "Show all"
+.nwm-global-list
+  display: grid
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))
+  gap: 8px
+  margin: 0
+  padding: 0
+  list-style: none
+
+.nwm-global-item
+  display: flex
+  flex-direction: column
+  gap: 2px
+  &[hidden]
+    display: none
+
+// "Show all (21)" / "Show less" under the global entries
+.nwm-global-more
+  margin-top: 10px
+  padding: 4px 12px
+  border: 1px solid $nwm-accent
+  border-radius: 4px
+  background: transparent
+  color: $nwm-accent
+  font: inherit
+  font-size: 13px
+  font-weight: 600
+  cursor: pointer
+  &[hidden]
+    display: none
+  &:hover
+    background: $nwm-accent
+    color: $nwm-land
+  &:focus-visible
+    outline: 2px solid $nwm-accent
+    outline-offset: 2px
+
+.nwm-global-date,
+.nwm-global-place
+  font-size: 12px
+  color: $nwm-muted
+
+.nwm-global-name
+  font-weight: 600
 
 .nwm-filter-count
   font-size: 12px
@@ -110,15 +245,34 @@ $nwm-muted: #555 !default
 .nwm-land
   fill: $nwm-land
 
+// Points: precise place = violet with a green border,
+// approximate place (region, continent) = green with a violet border,
+// selected = violet with a violet border
 .nwm-point
   fill: $nwm-accent
-  stroke: #fff
+  stroke: $nwm-sea
   cursor: pointer
-  transition: fill .15s
+  transition: fill .15s, stroke .15s
 
-  &:hover,
-  &.is-active
+  &:hover
     fill: $nwm-accent-hover
+
+  &--approx
+    fill: $nwm-sea
+    stroke: $nwm-accent
+    &:hover
+      fill: mix($nwm-accent, $nwm-sea, 25%)
+
+  &.is-active
+    fill: $nwm-accent
+    stroke: $nwm-accent
+
+  // No blue browser outline on click; violet ring for keyboard navigation only
+  &:focus
+    outline: none
+  &:focus-visible
+    outline: 2px solid $nwm-accent
+    outline-offset: 2px
 
 .nwm-count
   fill: #fff
@@ -126,6 +280,13 @@ $nwm-muted: #555 !default
   font-weight: 700
   text-anchor: middle
   pointer-events: none
+
+  &--approx
+    fill: $nwm-accent
+
+// Selected open circle: the count turns white on the violet fill
+.nwm-point.is-active + .nwm-count--approx
+  fill: #fff
 
 // Boutons de zoom
 .nwm-tools
@@ -187,6 +348,11 @@ $nwm-muted: #555 !default
       border-bottom-color: $nwm-card-bg
 
 .nwm-close
+  &:focus
+    outline: none
+  &:focus-visible
+    outline: 2px solid $nwm-accent
+    outline-offset: 2px
   position: absolute
   top: 8px
   right: 10px
@@ -210,10 +376,42 @@ $nwm-muted: #555 !default
   overflow-y: auto
   padding-right: 4px
 
-.nwm-item + .nwm-item
-  margin-top: 16px
-  padding-top: 16px
+.nwm-item[hidden]
+  display: none
+
+// Previous / Next between the records of a same place
+.nwm-nav
+  display: flex
+  justify-content: space-between
+  align-items: center
+  gap: 8px
+  margin-top: 12px
+  padding-top: 12px
   border-top: 1px solid rgba(0, 0, 0, .12)
+
+  button
+    padding: 4px 12px
+    border: 1px solid $nwm-accent
+    border-radius: 4px
+    background: transparent
+    color: $nwm-accent
+    font: inherit
+    font-size: 13px
+    font-weight: 600
+    cursor: pointer
+    &:hover:not(:disabled)
+      background: $nwm-accent
+      color: $nwm-land
+    &:focus-visible
+      outline: 2px solid $nwm-accent
+      outline-offset: 2px
+    &:disabled
+      opacity: .35
+      cursor: default
+
+.nwm-pos
+  font-size: 12px
+  color: $nwm-muted
 
 .nwm-title
   margin: 0 0 8px
@@ -252,8 +450,84 @@ $nwm-muted: #555 !default
   margin-left: auto
   text-align: right
 
+// "DATE / PERIOD", "PLACE / GEOGRAPHY" above the values
+.nwm-label
+  display: block
+  margin-bottom: 2px
+  font-size: 10px
+  font-weight: 700
+  letter-spacing: .1em
+  text-transform: uppercase
+  color: $nwm-accent
+
 .nwm-text
   margin: 0 0 10px
 
 .nwm-link
   font-weight: 600
+
+// Width of the filters column and gap with the map (see .nwm-filters, .nwm)
+$nwm-filters-width: 260px
+$nwm-gap: 32px
+
+// Less space between the intro and the map
+.page-hr-map .block-chapter:has(+ .block-embed)
+  padding-bottom: 0 !important
+  margin-bottom: 0
+
+.page-hr-map .block-chapter + .block-embed
+  margin-top: 0
+  padding-top: 24px !important
+
+  .block-content
+    margin-top: 0
+    padding-top: 0
+
+// Intro above the map ("Explore by geography"): aligned with the map
+.page-hr-map .block-chapter:has(+ .block-embed)
+  .block-title
+    @include section-title
+
+  // Title close to the description
+  .top
+    margin-bottom: 8px
+  .rich-text
+    margin-top: 0
+
+  .chapter .text
+    width: 100% !important
+
+  @media (min-width: 769px)
+    .top,
+    .rich-text
+      margin-left: $nwm-filters-width + $nwm-gap
+
+  // With the badges moved here by hr-map.js: text on the left, badges on the right
+  .chapter.nwm-intro
+    flex-direction: row
+    align-items: flex-end
+    justify-content: space-between
+    gap: 16px
+    .text
+      flex: 1 1 auto
+      width: auto !important
+    .nwm-stats
+      flex: 0 0 auto
+      margin: 0
+    @media (max-width: 768px)
+      flex-direction: column
+      align-items: flex-start
+      .nwm-stats
+        justify-content: flex-start
+
+// Note under the map ("Open circles mark records…"): moved under the map by hr-map.js
+.nwm-note
+  margin-top: 16px
+  p
+    margin: 0
+  p + p
+    margin-top: 8px
+  .nwm-legend-dot
+    display: inline-block
+    margin-right: 8px
+    vertical-align: -1px

@@ -1,0 +1,24 @@
+{{/* Override of the theme: author with photo (round) and description (person summary).
+     Photo and description are shown only on the featured post of the Provocations page
+     (see components/_posts-highlight.sass), the other cards keep the name only. */}}
+{{ range .GetTerms "authors" }}
+  {{ $person := site.GetPage (printf "/persons/%s" .Slug) }}
+  {{ with $person }}
+    <div class="post-author" itemscope itemtype="https://schema.org/Person" itemprop="author">
+      {{- with .Params.image -}}
+        <div class="post-author-avatar">
+          {{ partial "commons/image.html" (dict
+            "image" .
+            "sizes" (dict "mobile" 112 "tablet" 112 "desktop" 112)
+          ) }}
+        </div>
+      {{- end -}}
+      <div class="post-author-text">
+        <p itemprop="name">{{ .Title | safeHTML }}</p>
+        {{- with .Params.summary -}}
+          <div class="post-author-description" itemprop="description">{{ . | safeHTML }}</div>
+        {{- end -}}
+      </div>
+    </div>
+  {{ end }}
+{{ end }}

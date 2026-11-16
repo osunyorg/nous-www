@@ -11,6 +11,9 @@
       <div class="block-content">
         <div class="chapter">
           <div class="text">
+            {{ if $is_showcase }}
+              <p class="showcase-kicker">How we work</p>
+            {{ end }}
             {{ partial "blocks/top.html" $block.top }}
             {{ partial "blocks/templates/chapter/text.html" . }}
             {{ partial "blocks/templates/chapter/notes.html" . }}

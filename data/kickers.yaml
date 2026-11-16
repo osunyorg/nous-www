@@ -1,0 +1,4 @@
+# Small uppercase line above a call-to-action block title ("kicker"), same style as "How we work" on the home.
+# Key: the block slug (from the block title in Osuny), value: the text.
+# Used by layouts/_partials/blocks/templates/call_to_action.html
+meet-the-inaugural-cohort: Global Majority Futures Fellows

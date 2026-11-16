@@ -1,0 +1,22 @@
+# Footer links (the footer itself: layouts/_partials/footer/footer-simple.html)
+links:
+  - title: About us
+    url: /abous-us/
+  - title: Resources
+    url: "#" # TODO: page to link
+  - title: Privacy Policy
+    url: /privacy-policy/
+
+tagline: "Nous: Powering the Future of Human Rights."
+
+# Order of the icons; an empty url hides the icon
+socials:
+  - key: youtube
+    label: YouTube
+    url: "https://www.youtube.com/" # TODO
+  - key: instagram
+    label: Instagram
+    url: "https://www.instagram.com/" # TODO
+  - key: linkedin
+    label: LinkedIn
+    url: "https://www.linkedin.com/" # TODO

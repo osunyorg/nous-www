@@ -1,0 +1,58 @@
+{{/* Form popups (contact, pitch…) described in data/forms.yaml, opened by assets/js/form-modal.js */}}
+{{ range $key, $form := site.Data.forms }}
+  {{ $id := printf "%s-modal" $key }}
+  <dialog class="form-modal" id="{{ $id }}" aria-labelledby="{{ $id }}-title"
+          {{ with $form.trigger_text }}data-trigger-text="{{ . }}"{{ end }}>
+    <button type="button" class="form-modal__close" aria-label="Close" data-modal-close>&times;</button>
+    <h2 class="form-modal__title" id="{{ $id }}-title">{{ $form.title }}</h2>
+    {{ with $form.intro }}<p class="form-modal__intro">{{ . }}</p>{{ end }}
+
+    <form class="modal-form" method="post" action="{{ $form.action }}" novalidate
+          data-success="{{ $form.success }}" data-error="{{ $form.error }}">
+      <input type="hidden" name="_form" value="{{ $key }}">
+
+      {{ range $form.fields }}
+        {{ $fid := printf "%s-%s" $key .name }}
+        <div class="modal-form__field">
+          <label for="{{ $fid }}">
+            {{ .label }}
+            {{ if not .required }}<span class="modal-form__optional">(optional)</span>{{ end }}
+          </label>
+
+          {{ if eq .type "textarea" }}
+            <textarea id="{{ $fid }}" name="{{ .name }}" rows="{{ .rows | default 4 }}"
+              {{ with .placeholder }}placeholder="{{ . }}"{{ end }}
+              {{ with .maxlength }}maxlength="{{ . }}"{{ end }}
+              {{ if .required }}required{{ end }}></textarea>
+            {{ with .maxlength }}
+              <p class="modal-form__counter" data-counter-for="{{ $fid }}" aria-live="polite">0 / {{ . }}</p>
+            {{ end }}
+
+          {{ else if eq .type "select" }}
+            <select id="{{ $fid }}" name="{{ .name }}" {{ if .required }}required{{ end }}>
+              <option value="" selected {{ if .required }}disabled{{ end }}>Choose an option</option>
+              {{ range .options }}<option>{{ . }}</option>{{ end }}
+            </select>
+
+          {{ else }}
+            <input type="{{ .type | default "text" }}" id="{{ $fid }}" name="{{ .name }}"
+              {{ with .autocomplete }}autocomplete="{{ . }}"{{ end }}
+              {{ with .placeholder }}placeholder="{{ . }}"{{ end }}
+              {{ with .maxlength }}maxlength="{{ . }}"{{ end }}
+              {{ if .required }}required{{ end }}>
+          {{ end }}
+
+          {{ with .error }}
+            <p class="modal-form__error" id="{{ $fid }}-error" data-for="{{ $fid }}" hidden>{{ . }}</p>
+          {{ end }}
+        </div>
+      {{ end }}
+
+      {{/* Honeypot against spam bots */}}
+      <input type="text" name="_gotcha" class="modal-form__hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <p class="modal-form__status" role="status" aria-live="polite"></p>
+      <button type="submit" class="btn modal-form__submit">{{ $form.submit | default "Send" }}</button>
+    </form>
+  </dialog>
+{{ end }}

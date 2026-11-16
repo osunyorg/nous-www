@@ -1,0 +1,39 @@
+// "Have a Provocation to share?" — markup: layouts/_partials/posts/section/pitch.html
+.posts__section
+  // No white space between the frame and the footer
+  main
+    padding-bottom: 0 !important
+
+  .pitch
+    display: flex
+    align-items: center
+    min-height: 50vh
+    margin-top: $spacing-5
+    padding: $spacing-5 0
+    background: $color-light-green
+    text-align: center
+
+    .container
+      width: 100%
+
+    &-title
+      margin: 0 0 $spacing-3
+      font-size: clamp(2rem, 4vw, 3rem)
+      font-weight: 800
+      line-height: 1.1
+      text-transform: none
+
+    &-text
+      max-width: 40rem
+      margin: 0 auto $spacing-4
+      font-size: clamp(1rem, 1.4vw, 1.2rem)
+      line-height: 1.5
+
+    &-button
+      --btn-color: #{$color-accent}
+      --btn-background: transparent
+      --btn-border: 1px solid #{$color-accent}
+      --btn-hover-color: #{$color-light-green}
+      --btn-hover-background: #{$color-accent}
+      --btn-hover-border: 1px solid #{$color-accent}
+      border-radius: 1rem

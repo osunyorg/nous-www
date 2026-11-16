@@ -1,0 +1,31 @@
+{{/* Override of the theme footer: one line of links, then the tagline and the social icons */}}
+{{ with site.Data.footer }}
+  <div class="container footer-nous">
+    {{ with .links }}
+      <nav aria-label="Footer">
+        <ul class="footer-nous-links">
+          {{ range . }}
+            <li><a href="{{ .url }}">{{ .title }}</a></li>
+          {{ end }}
+        </ul>
+      </nav>
+    {{ end }}
+
+    <div class="footer-nous-bottom">
+      {{ with .tagline }}
+        <p class="footer-nous-tagline">{{ . }}</p>
+      {{ end }}
+      {{ $socials := where .socials "url" "!=" "" }}
+      {{ with $socials }}
+        <ul class="footer-nous-socials">
+          {{ range . }}
+            <li class="{{ .key }}">
+              <a href="{{ .url }}" rel="noreferrer" target="_blank" title="{{ .label }}"><span class="sr-only">{{ .label }}</span></a>
+            </li>
+          {{ end }}
+        </ul>
+      {{ end }}
+    </div>
+  </div>
+{{ end }}
+{{ partial "footer/form-modals.html" . }}

@@ -12,7 +12,32 @@
         order: 1
         width: 100%
         margin-bottom: $spacing-3
-        text-align: start
+        // Image centred
+        text-align: center
 
         img
-          margin-left: 0
+          // A bit smaller than the text column
+          width: 75%
+          margin-left: auto
+          margin-right: auto
+          @include media-breakpoint-down(md)
+            width: 100%
+
+  // Block titles ("Rooted in Resilience", "Un-Disciplining…"): same style as the Fellowship titles
+  .block-chapter .block-title
+    @include section-title
+
+  // Green block: everything centred
+  .block-chapter.block-class-light-green-bg
+    // More space above and below the text
+    padding-top: 5rem
+    padding-bottom: 5rem
+    .chapter
+      justify-content: center
+    .chapter .text
+      // Wider text column: less space on the sides (theme: 7 columns)
+      width: columns(10) !important
+      max-width: 100%
+      margin-left: auto
+      margin-right: auto
+      text-align: center
