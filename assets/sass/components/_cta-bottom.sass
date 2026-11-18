@@ -1,0 +1,49 @@
+// CTA de bas de page (jams, repository) : description large, action en lien
+// texte avec flèche à droite, sans bouton. Partagé entre les deux pages.
+.page-hr-jams,
+.projects__section
+  // Titres de blocs en section-title (gras, tel quel) — le thème les met en
+  // h5 donc uppercase par défaut
+  .block .top .block-title
+    @include section-title
+
+  // "Take the conversation further"
+  .block-call_to_action
+    .call_to_action .description p
+      font-size: clamp(1rem, 1.4vw, 1.2rem)
+      font-weight: 400
+      line-height: 1.5
+
+    // "Explore Futures Labs" aligned on the right
+    // (!important: the theme aligns the actions on the left, in its 12-column grid)
+    .call_to_action .actions
+      align-items: flex-end !important
+      text-align: right
+
+    // Text link with a right arrow, no button
+    .call_to_action .actions a:first-child
+      --btn-background: transparent
+      --btn-border: 0
+      --btn-color: #{$color-accent}
+      --btn-hover-background: transparent
+      --btn-hover-border: 0
+      --btn-hover-color: #{$color-accent}
+      --btn-padding: 0
+      --btn-min-width: 0
+      font-weight: 700
+      &:hover,
+      &:focus-visible
+        text-decoration: underline
+        text-underline-offset: 0.2em
+
+      // Même flèche que les liens "read more" (.more) : icône arrow-right-line
+      // (espace insécable inclus, donc détachée du label) qui glisse au survol
+      @include icon(arrow-right-line, after, true)
+
+      &::after
+        display: inline-block
+        transition: transform $arrow-duration $arrow-ease-transition
+
+      &:hover::after,
+      &:focus-visible::after
+        transform: translateX($spacing-1)

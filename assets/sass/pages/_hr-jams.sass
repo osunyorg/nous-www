@@ -128,39 +128,3 @@
     .more
       display: none
 
-  // Block titles ("Browse the jams", "Jams in Brief", "Take the conversation further"): bold, as typed
-  .block .top .block-title
-    @include section-title
-
-  // "Take the conversation further"
-  .block-call_to_action
-    .call_to_action .description p
-      font-size: clamp(1rem, 1.4vw, 1.2rem)
-      font-weight: 400
-      line-height: 1.5
-
-    // "Explore Futures Labs" aligned on the right
-    // (!important: the theme aligns the actions on the left, in its 12-column grid)
-    .call_to_action .actions
-      align-items: flex-end !important
-      text-align: right
-
-    // Text link with a right arrow, no button
-    .call_to_action .actions a:first-child
-      --btn-background: transparent
-      --btn-border: 0
-      --btn-color: #{$color-accent}
-      --btn-hover-background: transparent
-      --btn-hover-border: 0
-      --btn-hover-color: #{$color-accent}
-      --btn-padding: 0
-      --btn-min-width: 0
-      font-weight: 700
-      &:hover,
-      &:focus-visible
-        text-decoration: underline
-        text-underline-offset: 0.2em
-      &::after
-        content: " →" !important
-        font-family: inherit
-        font-size: inherit

@@ -70,3 +70,43 @@ Travail fait sur la branche `repo-page` (4 commits : cartes en liens externes, l
 - `return` dans un `{{ if }}` échoue dans les partials Hugo — assigner puis return.
 - Vérifié par : build + curl du serveur de dev (localhost:1313) + exécution jsdom du
   HTML/JS servis (génération de la nav, items masqués).
+- Les commits faits par l'assistant portent un trailer `Co-authored-by: Mistral Vibe`.
+
+## Mises à jour (même jour, après les 4 commits)
+
+- **Favicon** : point violet `#3E0A38` généré en Node pur (zlib) dans
+  `static/assets/images/favicons/` — set minimal retenu : `favicon.svg` (navigateurs
+  modernes) + `apple-touch-icon.png` (iOS) + `android-chrome-192/512.png`
+  (référencés par `site.webmanifest`). Le `.ico`/PNG 16-32 ont été jugés inutiles.
+
+- **Barre au-dessus de la liste** (JS, dans `repository-filters.js`) :
+  `.projects-toolbar` — compteur « Showing X-Y of N resources » à gauche
+  (`aria-live="polite"`, message « No resource matches these filters. » à 0),
+  tri « Sort by » à droite. Le tri est un **dropdown custom** (bouton + menu
+  `role="listbox"`), pas un `<select>` natif (popup OS non stylable) : options
+  Newest first / Oldest first / Title A-Z, clavier (flèches/Entrée/Échap,
+  `aria-activedescendant`). Style : même texte que le compteur (0.9rem gris, pas
+  de majuscules, pas de cadre), hover violet, focus `outline: 2px solid accent`.
+  Marge sous la barre : 1.5rem.
+
+- **Blocs CMS en bas de page** : override `layouts/_partials/projects/section.html`
+  rend `contents` **après** `.document-content` (hors de la grille 2 colonnes, donc
+  pas de chevauchement avec la colonne filtres sticky), avant le footer.
+
+- **CTA de bas de page mutualisé** : `assets/sass/components/_cta-bottom.sass`
+  (importé dans `main.sass`), scopé `.page-hr-jams, .projects__section` :
+  titres de blocs en `section-title` (le thème met `.block-title` en h5 = uppercase,
+  d'où le texte en majuscules sinon), CTA en lien texte aligné à droite avec
+  **icône `arrow-right-line`** (police Icon, espace insécable inclus) qui glisse
+  `translateX($spacing-1)` au hover/focus — identique aux liens « read more ».
+  Lien interne dans le CMS = **chemin relatif racine** (`url: /futures-labs/`),
+  `target_blank: false` — pas d'URL absolue ; `#` = placeholder/modale.
+
+- **Style pagination en global** : déplacé dans `_theme-fixes.sass` (`.pagination`),
+  plus besoin du scope `.projects__section`. Boutons flèches supprimés partout
+  (override `commons/section/pagination.html`) + icônes `::before` du thème
+  neutralisées globalement (`content: none` sur les 4 li de bord).
+
+- **Dropdown filtres** : bouton = simple titre texte (pas de case, pas de flèche),
+  panneau toujours ouvert via le JS ; cases à cocher : bordure 2px verte, radius
+  0.2rem, cochée = fond vert, label en gras.
