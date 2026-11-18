@@ -1,5 +1,13 @@
 theme: osuny
 _merge: deep
+# Pas de page single ("show") pour les entrées projects (repository) :
+# seules les pages de liste (kind: page uniquement, la section /repository/ est conservée)
+cascade:
+  - _target:
+      path: "/projects/**"
+      kind: page
+    build:
+      render: never
 params:
   additional_csp: "img.youtube.com www.youtube-nocookie.com"
   summary:
@@ -34,3 +42,6 @@ params:
       index:
         taxonomies:
           display: false
+  projects:
+    index:
+      truncate_description: 0 # 0 = pas de troncature, le summary s'affiche en entier

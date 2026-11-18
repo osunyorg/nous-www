@@ -170,6 +170,15 @@
       display: flex
       flex-direction: column
 
+    // Sous-titre (référence) : même taille que le résumé en dessous, en gris, en IBM Plex Mono
+    .project-subtitle
+      font-family: "IBM Plex Mono", monospace
+      font-size: var(--body-size)
+      font-weight: normal
+      line-height: var(--small-line-height)
+      color: var(--color-text-alt)
+
+    // Catégories au-dessus du titre, en IBM Plex Mono
     .project-categories
       order: -1
       display: flex
@@ -178,14 +187,32 @@
       list-style: none
       margin: 0 0 0.75rem
       padding: 0
+      font-family: "IBM Plex Mono", monospace
 
       > li
         margin: 0
         padding: 0
 
-      // Type en premier
+      // Catégories après la barre verticale : capitales, séparées par ";"
+      > li:not(.has-separator)
+        text-transform: uppercase
+
+        &::after
+          content: ";"
+
+        // Pas de ";" après la dernière catégorie affichée
+        &:last-child::after,
+        &:has(+ .is-type)::after
+          content: none
+
+      // Type en premier, en gras
       > li.is-type
         order: -1
+        font-weight: 700
+
+      // Liens non soulignés
+      a
+        text-decoration: none
 
       // Petite ligne verticale entre le type et les autres catégories
       > li.has-separator
