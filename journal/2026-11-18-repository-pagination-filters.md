@@ -23,11 +23,14 @@ Travail fait sur la branche `repo-page` (4 commits : cartes en liens externes, l
    `.pagination` n'est utilisé que par les navs de section (les sliders utilisent
    `.slider-pagination`).
 
-3. **Les cartes projet sont des liens externes, sans page single.** `config/_default/config.yaml`
-   cascade `outputs: [RSS]` sur `/projects/**` ; override `GetPermalink.html` →
-   `header_cta.target` ; `heading.html` ouvre dans un nouvel onglet ; `summary.html`
-   affiche le CTA sous le résumé de la carte. Conséquence : les entrées ne sont ni dans
-   le sitemap ni dans la recherche — acceptable, elles pointent vers l'extérieur.
+3. **Cartes projet = ressource externe, sans page single, et titre NON cliquable.**
+   `config/_default/config.yaml` cascade `outputs: [RSS]` sur `/projects/**` ;
+   `GetPermalink.html` renvoie `""` pour les projets (pas de lien sur le titre) ;
+   `heading.html` ne rend le `<a>` que si permalink non vide (sinon `<a href="">`) ;
+   **seul lien de la carte** : le CTA `header_cta` « Open external resource » sous le
+   résumé (`summary.html`), ouvert dans un nouvel onglet. Conséquence : les entrées
+   ne sont ni dans le sitemap ni dans la recherche — acceptable, elles pointent vers
+   l'extérieur.
 
 4. **Filtres = cases à cocher en JS** (OU dans un groupe, ET entre groupes ; le libellé
    « All <slug> » vient de `aria-controls="categories-<slug>"`, pas du titre du bouton).
@@ -110,3 +113,6 @@ Travail fait sur la branche `repo-page` (4 commits : cartes en liens externes, l
 - **Dropdown filtres** : bouton = simple titre texte (pas de case, pas de flèche),
   panneau toujours ouvert via le JS ; cases à cocher : bordure 2px verte, radius
   0.2rem, cochée = fond vert, label en gras.
+
+- **Carte projet (mise à jour)** : le titre n'est plus un lien — seul le CTA
+  « Open external resource » (sous le résumé) pointe vers la ressource externe.

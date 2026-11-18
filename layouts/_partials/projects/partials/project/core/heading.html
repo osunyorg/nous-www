@@ -1,5 +1,7 @@
-{{/* Override of the theme: when the title links to an external resource
-     (header_cta, see GetPermalink override), open it in a new tab. */}}
+{{/* Override of the theme: for projects, GetPermalink returns "" (no single page,
+     title not a link — only the header_cta in the summary links out), so guard
+     against rendering <a href=""> around the title. Otherwise same as the theme's
+     commons/item/heading.html. */}}
 {{ $item := .item }}
 {{ $level := .level }}
 {{ $type := .type | default $item.Type | default "page" }}
@@ -20,17 +22,13 @@
   "attributes" $title_attributes
 ) }}
 
-{{ $cta := $item.Params.header_cta }}
-{{ $opens_external := and $cta.target (or ($cta.external | default false) (strings.HasPrefix $cta.target "http")) }}
-
 {{ if and $options.subtitle $subtitle }}
   <hgroup>
 {{ end }}
 {{ $heading_tag.open }}
   {{ $permalink := partial "commons/item/helpers/GetPermalink" $item }}
   {{ if $permalink }}
-    <a href="{{ $permalink }}" title="{{ $link_title }}" {{ if $itemprop }} itemprop="url" {{ end }}
-      {{- if $opens_external }} target="_blank" rel="noopener"{{ end }} >
+    <a href="{{ $permalink }}" title="{{ $link_title }}" {{ if $itemprop }} itemprop="url" {{ end }} >
       {{ $title }}
     </a>
   {{ else }}
