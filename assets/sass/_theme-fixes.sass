@@ -26,3 +26,48 @@ main.page-with-blocks:has(.block-class-light-green-bg:last-child)
 // ils créaient un espace, par exemple entre le dernier bloc et le footer sur Futures Labs
 .block-call_to_action:not(.block-titled):has(.call_to_action--without-text):not(:has(.actions a))
   display: none
+
+// Pagination : numéros seuls (les flèches first/prev/next/last sont retirées
+// par l'override layouts/_partials/commons/section/pagination.html), alignés
+// à gauche, en carré à bordure verte ; page active en violet foncé.
+.pagination
+  justify-content: flex-start
+  gap: 0.5rem
+
+  // neutralise les icônes fléchées du thème sur les li de bord
+  // (sinon les numéros extrêmes affichent une flèche)
+  li:first-child a::before,
+  li:nth-child(2) a::before,
+  li:nth-last-child(2) a::before,
+  li:last-child a::before
+    content: none
+
+  li
+    a,
+    span,
+    button
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 2.5rem
+      height: 2.5rem
+      min-width: 0
+      min-height: 0
+      padding: 0
+      line-height: 1
+      font: inherit
+      background: transparent
+      border: 2px solid $color-green
+      border-radius: 0.25rem
+      color: var(--color-text)
+      cursor: pointer
+
+    &:not(.active) a:hover,
+    &:not(.active) button:hover
+      background-color: $color-light-green
+
+    &.active a,
+    &.active span
+      background-color: $color-accent
+      border-color: $color-accent
+      color: #fff
