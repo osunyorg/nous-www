@@ -1,11 +1,20 @@
 // Page des projets : transforme les liens de catégories en cases à cocher
-// et filtre la liste sans recharger la page.
+// et filtre la liste sans recharger la page, puis pagine le résultat côté client.
 // Au sein d'un groupe : OU. Entre groupes : ET.
 // Chaque groupe a une entrée "All" cochée quand rien d'autre ne l'est.
+// La pagination serveur est désactivée (GetPaginator -> 10000) : toutes les entrées
+// doivent être dans le DOM pour que filtre + pagination fonctionnent ensemble.
 ( function () {
     'use strict';
 
-    var groups = [],
+    // Garde-fou : ce script ne sert que sur la page section projects
+    if (!document.querySelector('.projects__section')) {
+        return;
+    }
+
+    var PAGE_SIZE = 3, // taille de page côté client
+        currentPage = 1,
+        groups = [],
         items = [];
 
     function toArray (list) {
@@ -38,6 +47,7 @@
 
     function onSpecificChange (group) {
         group.all.checked = !hasChecked(group);
+        currentPage = 1;
         apply();
     }
 
@@ -46,6 +56,7 @@
             input.checked = false;
         } );
         group.all.checked = true;
+        currentPage = 1;
         apply();
     }
 
@@ -55,7 +66,9 @@
         toArray(dropdowns).forEach( function (dropdown) {
             var list = dropdown.querySelector('.taxonomy-categories-list'),
                 button = dropdown.querySelector('button'),
-                title = button ? button.textContent.replace(/\s+/g, ' ').trim() : '',
+                // slug de la taxonomie (aria-controls="categories-themes" -> "themes"),
+                // pour libeller "All themes" / "All types" indépendamment du titre du bouton
+                slug = button ? (button.getAttribute('aria-controls') || '').replace(/^categories-/, '') : '',
                 links = dropdown.querySelectorAll('.taxonomy-categories-list a'),
                 group = { all: null, inputs: [] },
                 all,
@@ -75,7 +88,7 @@
                 group.inputs.push(option.input);
             } );
 
-            all = createLabel('All ' + title.toLowerCase(), '');
+            all = createLabel('All ' + slug, '');
             all.input.checked = true;
             all.input.addEventListener('change', function () {
                 onAllChange(group);
@@ -136,16 +149,128 @@
         return false;
     }
 
-    function apply () {
-        items.forEach( function (item) {
-            var visible = groups.every( function (group) {
+    function visibleItems () {
+        return items.filter( function (item) {
+            return groups.every( function (group) {
                 return matchesGroup(item, group);
             } );
-            item.element.hidden = !visible;
         } );
     }
 
+    function ensurePaginationNav () {
+        var container = document.querySelector('.projects__section .document-content > .container'),
+            projects = document.querySelector('.projects__section div.projects'),
+            nav,
+            ul;
+
+        if (!container) {
+            return null;
+        }
+        nav = container.querySelector('nav[aria-label="Pagination"]');
+        if (!nav) {
+            nav = document.createElement('nav');
+            nav.setAttribute('aria-label', 'Pagination');
+            ul = document.createElement('ul');
+            ul.className = 'pagination';
+            nav.appendChild(ul);
+            if (projects && projects.parentNode === container) {
+                container.insertBefore(nav, projects.nextSibling);
+            } else {
+                container.appendChild(nav);
+            }
+        }
+        return nav;
+    }
+
+    function renderPagination (totalPages) {
+        var nav = ensurePaginationNav(),
+            ul,
+            i,
+            li;
+
+        if (!nav) {
+            return;
+        }
+        ul = nav.querySelector('ul.pagination');
+        ul.textContent = '';
+        nav.style.display = totalPages > 1 ? '' : 'none';
+
+        for (i = 1; i <= totalPages; i++) {
+            li = document.createElement('li');
+            if (i === currentPage) {
+                li.className = 'active';
+                li.innerHTML = '<span aria-current="page">' + i + '</span>';
+            } else {
+                li.innerHTML = '<button type="button" aria-label="Go to page ' + i + '">' + i + '</button>';
+                li.querySelector('button').addEventListener('click', ( function (page) {
+                    return function () {
+                        currentPage = page;
+                        apply();
+                        var list = document.querySelector('.projects__section ul.projects--grid');
+                        if (list && list.scrollIntoView) {
+                            list.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    };
+                } )(i) );
+            }
+            ul.appendChild(li);
+        }
+    }
+
+    function apply () {
+        var visible = visibleItems(),
+            totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE)),
+            start;
+
+        if (currentPage > totalPages) {
+            currentPage = totalPages;
+        }
+        start = (currentPage - 1) * PAGE_SIZE;
+
+        items.forEach( function (item) {
+            var index = visible.indexOf(item);
+            item.element.hidden = index === -1 || index < start || index >= start + PAGE_SIZE;
+        } );
+
+        renderPagination(totalPages);
+    }
+
+    // Bouton "Show/Hide filters" (mobile) : replie tout le panneau de filtres.
+    // Fermé par défaut en mobile (< 768px), ouvert sinon ; le bouton est masqué
+    // en desktop par le CSS (.filters-toggle { display: none }).
+    function buildCollapseToggle () {
+        var container = document.querySelector('.projects__section .section-taxonomies-container'),
+            list = container ? container.querySelector('.taxonomies-list') : null,
+            toggle;
+
+        if (!container || !list) {
+            return;
+        }
+
+        toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'btn filters-toggle';
+        toggle.setAttribute('aria-expanded',
+            (window.matchMedia && window.matchMedia('(max-width: 767.98px)').matches) ? 'false' : 'true');
+
+        function render () {
+            var open = toggle.getAttribute('aria-expanded') === 'true';
+            toggle.textContent = open ? 'Hide filters' : 'Show filters';
+            container.classList.toggle('filters-collapsed', !open);
+        }
+
+        toggle.addEventListener('click', function () {
+            toggle.setAttribute('aria-expanded',
+                toggle.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+            render();
+        });
+
+        container.insertBefore(toggle, list);
+        render();
+    }
+
     function init () {
+        buildCollapseToggle();
         buildGroups();
         buildItems();
         groups.forEach( function (group) {

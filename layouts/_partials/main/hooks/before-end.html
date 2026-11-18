@@ -1,0 +1,6 @@
+{{/* repository-filters.js uniquement sur la page section projects
+     (filtres à cocher + pagination client-side). Les autres pages n'en ont pas besoin. */}}
+{{ if and (eq .Type "projects") (eq .Kind "section") }}
+  {{ $js := resources.Get "js/repository-filters.js" | js.Build (dict "minify" hugo.IsProduction) | fingerprint }}
+  <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+{{ end }}
