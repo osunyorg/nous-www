@@ -1,0 +1,21 @@
+{{/* Override of the theme: repository entries (projects) have no HTML single page
+     (cascade outputs: RSS in config), so .Permalink would point to a stub index.xml.
+     Link to the external resource (header_cta target) instead; empty when absent
+     (the heading partial then renders the title without a link). */}}
+{{ $permalink := .Permalink }}
+{{ with .Params.federation }}
+  {{ if .active }}
+    {{ $permalink = .canonical_url }}
+  {{ end }}
+{{ end }}
+
+{{ if eq .Type "projects" }}
+  {{ $permalink = "" }}
+  {{ with .Params.header_cta }}
+    {{ with .target }}
+      {{ $permalink = . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ return $permalink }}

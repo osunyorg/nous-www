@@ -6,8 +6,8 @@ cascade:
   - _target:
       path: "/projects/**"
       kind: page
-    build:
-      render: never
+    outputs:
+      - RSS # pas de HTML -> pas de page single, mais l'entrée reste dans toutes les listes (section + taxonomies)
 params:
   additional_csp: "img.youtube.com www.youtube-nocookie.com"
   summary:
