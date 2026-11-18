@@ -170,15 +170,23 @@
       display: flex
       flex-direction: column
 
-    // Sous-titre (référence) : même taille que le résumé en dessous, en gris, en IBM Plex Mono
+    // Titre de la carte : ~24px
+    .project-title
+      font-size: 1.5rem // 24px
+
+    // Sous-titre (référence) : ~12px, gris, en IBM Plex Mono
     .project-subtitle
       font-family: "IBM Plex Mono", monospace
-      font-size: var(--body-size)
+      font-size: 0.75rem // 12px
       font-weight: normal
       line-height: var(--small-line-height)
       color: var(--color-text-alt)
 
-    // Catégories au-dessus du titre, en IBM Plex Mono
+    // Pas de lien étendu sur toute la carte : seuls les liens (titre, CTA) naviguent
+    .project-title a::before
+      content: none
+
+    // Catégories au-dessus du titre, en IBM Plex Mono, ~12px
     .project-categories
       order: -1
       display: flex
@@ -188,6 +196,7 @@
       margin: 0 0 0.75rem
       padding: 0
       font-family: "IBM Plex Mono", monospace
+      font-size: 0.75rem // 12px
 
       > li
         margin: 0
@@ -220,17 +229,36 @@
         margin-right: 0.25rem
         border-right: 2px solid $color-green
 
-    // Liens dans le résumé : soulignés, suivis d'une flèche
+    // Lien CTA sous le résumé : un peu d'espace au-dessus
+    .project-cta
+      margin: 0.75rem 0 0
+
+    // URL brute sous le lien CTA, pour copier-coller
+    .project-cta-url
+      margin: 0.25rem 0 0
+      font-family: "IBM Plex Mono", monospace
+      font-size: 0.85rem
+      line-height: 1.3
+      color: var(--color-text-alt)
+      overflow-wrap: anywhere
+
+    // Liens dans le résumé (dont le CTA) : soulignés, suivis de la flèche icône
+    // "arrow-right-line" comme le lien "Read more" du thème, avec translate au survol
     .project-summary a
       text-decoration: underline
       text-underline-offset: 0.2em
       text-decoration-thickness: 1px
 
-      @include trailing-arrow
+      @include icon(arrow-right-line, after, true)
+        display: inline-block
+        transition: $arrow-duration $arrow-ease-transition
 
       &:hover,
       &:focus-visible
         text-decoration-thickness: 2px
+
+        &::after
+          transform: translateX($spacing-1)
 
 
   // Surcharge de la règle du thème :
@@ -243,11 +271,28 @@
     word-break: normal
     overflow-wrap: anywhere
 
+  // Bouton "Show/Hide filters" (classe .btn du site) injecté par repository-filters.js :
+  // masqué en desktop, pleine largeur en mobile
+  .filters-toggle
+    display: none
+
   // Mobile : on empile
+  // (sélecteur imbriqué sous .document-content pour battre la spécificité
+  //  de la règle "position: sticky" de base, sinon la barre de filtres reste
+  //  sticky et recouvre les items au scroll)
   @include media-breakpoint-down(md)
     .document-content
       display: block
 
-    .section-taxonomies-container
-      position: static
-      margin-bottom: 2rem
+      > .section-taxonomies-container
+        position: static
+        margin-bottom: 2rem
+
+    // En mobile, le bouton permet de replier tout le panneau de filtres
+    .filters-toggle
+      display: block
+      width: 100%
+      margin: 0 0 1rem
+
+    .section-taxonomies-container.filters-collapsed .taxonomies-list
+      display: none
