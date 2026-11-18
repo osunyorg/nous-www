@@ -128,7 +128,12 @@
                 typeItem.classList.add('has-separator');
             }
 
-            items.push( { element: li, paths: paths } );
+            items.push( {
+                element: li,
+                paths: paths,
+                title: (li.querySelector('.project-title') || {}).textContent || '',
+                order: items.length
+            } );
         } );
     }
     
@@ -217,6 +222,167 @@
         }
     }
 
+    var SORT_OPTIONS = [
+        ['default', 'Newest first'],
+        ['oldest', 'Oldest first'],
+        ['title', 'Title A-Z']
+    ];
+
+    // Dropdown custom pour le tri (le popup natif du <select> n'est pas stylable)
+    function buildSortDropdown (sortLabel) {
+        var toggle = document.createElement('button'),
+            menu = document.createElement('ul'),
+            activeIndex = 0;
+
+        toggle.type = 'button';
+        toggle.className = 'sort-toggle';
+        toggle.setAttribute('aria-haspopup', 'listbox');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.textContent = SORT_OPTIONS[0][1];
+
+        menu.className = 'sort-menu';
+        menu.setAttribute('role', 'listbox');
+        menu.setAttribute('aria-label', 'Sort by');
+        menu.hidden = true;
+
+        SORT_OPTIONS.forEach( function (opt, i) {
+            var li = document.createElement('li');
+            li.setAttribute('role', 'option');
+            li.id = 'sort-option-' + opt[0];
+            li.dataset.value = opt[0];
+            li.textContent = opt[1];
+            li.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+            menu.appendChild(li);
+        } );
+
+        function closeMenu () {
+            menu.hidden = true;
+            toggle.setAttribute('aria-expanded', 'false');
+        }
+
+        function choose (index) {
+            var opt = SORT_OPTIONS[index];
+            activeIndex = index;
+            toggle.textContent = opt[1];
+            toArray(menu.children).forEach( function (li, i) {
+                li.setAttribute('aria-selected', i === index ? 'true' : 'false');
+            } );
+            closeMenu();
+            toggle.focus();
+            sortItems(opt[0]);
+            currentPage = 1;
+            apply();
+        }
+
+        toggle.addEventListener('click', function () {
+            var open = menu.hidden;
+            menu.hidden = !open;
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            if (open) {
+                toggle.setAttribute('aria-activedescendant', menu.children[activeIndex].id);
+            }
+        } );
+
+        toggle.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (menu.hidden) {
+                    menu.hidden = false;
+                    toggle.setAttribute('aria-expanded', 'true');
+                }
+                activeIndex = (activeIndex + (e.key === 'ArrowDown' ? 1 : -1) + SORT_OPTIONS.length) % SORT_OPTIONS.length;
+                toggle.setAttribute('aria-activedescendant', menu.children[activeIndex].id);
+                menu.children[activeIndex].scrollIntoView({ block: 'nearest' });
+            } else if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                choose(activeIndex);
+            } else if (e.key === 'Escape') {
+                closeMenu();
+            }
+        } );
+
+        menu.addEventListener('click', function (e) {
+            var li = e.target.closest('li[role="option"]');
+            if (li) {
+                choose(SORT_OPTIONS.findIndex( function (opt) { return opt[0] === li.dataset.value; } ));
+            }
+        } );
+
+        document.addEventListener('click', function (e) {
+            if (!sortLabel.contains(e.target)) {
+                closeMenu();
+            }
+        } );
+
+        sortLabel.appendChild(toggle);
+        sortLabel.appendChild(menu);
+    }
+
+    function ensureToolbar () {
+        var list = document.querySelector('.projects__section ul.projects--grid'),
+            toolbar,
+            count,
+            sortLabel;
+
+        if (!list) {
+            return null;
+        }
+        toolbar = list.parentNode.querySelector('.projects-toolbar');
+        if (!toolbar) {
+            toolbar = document.createElement('div');
+            toolbar.className = 'projects-toolbar';
+            count = document.createElement('p');
+            count.className = 'projects-count';
+            count.setAttribute('aria-live', 'polite');
+            sortLabel = document.createElement('div');
+            sortLabel.className = 'projects-sort';
+            sortLabel.appendChild(document.createTextNode('Sort by '));
+            buildSortDropdown(sortLabel);
+            toolbar.appendChild(count);
+            toolbar.appendChild(sortLabel);
+            list.parentNode.insertBefore(toolbar, list);
+        }
+        return {
+            count: toolbar.querySelector('.projects-count'),
+            sort: toolbar.querySelector('.projects-sort')
+        };
+    }
+
+    function sortItems (mode) {
+        var list = document.querySelector('.projects__section ul.projects--grid');
+
+        if (mode === 'title') {
+            items.sort( function (a, b) {
+                return a.title.localeCompare(b.title);
+            } );
+        } else {
+            items.sort( function (a, b) {
+                return mode === 'oldest' ? b.order - a.order : a.order - b.order;
+            } );
+        }
+        if (list) {
+            items.forEach( function (item) {
+                list.appendChild(item.element);
+            } );
+        }
+    }
+
+    function renderCount (visibleCount, start) {
+        var toolbar = ensureToolbar(),
+            count = toolbar && toolbar.count,
+            from,
+            to;
+
+        if (!count) {
+            return;
+        }
+        from = visibleCount === 0 ? 0 : start + 1;
+        to = Math.min(start + PAGE_SIZE, visibleCount);
+        count.textContent = visibleCount === 0
+            ? 'No resource matches these filters.'
+            : 'Showing ' + from + '-' + to + ' of ' + visibleCount + ' resources';
+    }
+
     function apply () {
         var visible = visibleItems(),
             totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE)),
@@ -232,6 +398,7 @@
             item.element.hidden = index === -1 || index < start || index >= start + PAGE_SIZE;
         } );
 
+        renderCount(visible.length, start);
         renderPagination(totalPages);
     }
 
