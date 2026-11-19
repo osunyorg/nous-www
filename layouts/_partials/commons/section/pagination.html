@@ -1,0 +1,18 @@
+{{/* Override of the theme: no pagination UI on the projects section (repository),
+     see the GetPaginator override in projects/section/helpers. Other sections keep
+     the theme behavior. */}}
+{{ if ne .Type "projects" }}
+  {{ $paginator := .Paginator }}
+  {{/* If there's more than one page. */}}
+  {{ if gt $paginator.TotalPages 1 }}
+    <nav aria-label="{{ i18n "commons.pagination.label" }}">
+      <ul class="pagination">
+        {{ partial "commons/section/pagination/first-page.html" $paginator }}
+        {{ partial "commons/section/pagination/previous-page.html" $paginator }}
+        {{ partial "commons/section/pagination/page-numbers.html" $paginator }}
+        {{ partial "commons/section/pagination/next-page.html" $paginator }}
+        {{ partial "commons/section/pagination/last-page.html" $paginator }}
+      </ul>
+    </nav>
+  {{- end -}}
+{{ end }}

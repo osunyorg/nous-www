@@ -139,6 +139,13 @@
     &:hover .showcase-card-title a
       text-decoration: underline
 
+  @include media-breakpoint-down(desktop)
+    .showcase-panel,
+    .showcase-card
+      padding: space(8)
+    .showcase-featured
+      padding: space(4)
+
   @include media-breakpoint-up(desktop)
     --showcase-height: 35rem
 

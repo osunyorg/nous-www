@@ -1,0 +1,11 @@
+{{/* Override of the theme.
+     - Page section (repository index): pagination is done client-side
+       (assets/js/repository-filters.js, PAGE_SIZE), so every entry must be on the
+       same page — otherwise an item on another page could never match a filter.
+     - Term pages (filtered lists): keep server-side pagination (theme default). */}}
+{{ $projects := .Pages | uniq }}
+{{ $paginator := .Paginate $projects }}
+{{ if eq .Kind "section" }}
+  {{ $paginator = .Paginate $projects 10000 }}
+{{ end }}
+{{ return $paginator }}

@@ -1,0 +1,17 @@
+{{/* Override of the theme: repository entries (projects) have no HTML single page
+     (cascade outputs: RSS in config) and their title is NOT a link — the only link
+     on a card is the header_cta ("Open external resource", rendered by the
+     summary.html override). So GetPermalink returns empty for projects, and the
+     heading override renders the title as plain text when the permalink is empty. */}}
+{{ $permalink := .Permalink }}
+{{ with .Params.federation }}
+  {{ if .active }}
+    {{ $permalink = .canonical_url }}
+  {{ end }}
+{{ end }}
+
+{{ if eq .Type "projects" }}
+  {{ $permalink = "" }}
+{{ end }}
+
+{{ return $permalink }}

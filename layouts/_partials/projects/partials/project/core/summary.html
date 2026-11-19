@@ -1,0 +1,20 @@
+{{/* Override of the theme: render the entry's header_cta (external link) under the
+     summary on list cards, using its label as the link text. Placed inside
+     .project-summary so it inherits the card's link styling. */}}
+<div itemprop="abstract" class="project-summary">
+  {{ partial "commons/item/summary.html" . }}
+  {{ with .Params.header_cta }}
+    {{ if .label }}
+      {{ $target := .target | default "#" }}
+      {{/* external flag, or any absolute http(s) URL: always open in a new tab */}}
+      {{ $is_external := or (.external | default false) (strings.HasPrefix $target "http") }}
+      <p class="project-cta">
+        <a href="{{ $target }}"
+          {{- if $is_external }} target="_blank" rel="noopener" title="{{ safeHTML (i18n "commons.link.blank_aria" (dict "Title" .label)) }}"{{ end }}>
+          {{ .label }}
+        </a>
+      </p>
+      <p class="project-cta-url">Link: {{ $target }}</p>
+    {{ end }}
+  {{ end }}
+</div>

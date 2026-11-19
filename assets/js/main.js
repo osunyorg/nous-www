@@ -3,7 +3,6 @@
 import './theme/';
 import './home-title';
 import './home-showcase';
-import './repository-filters.js';
 import './videos-pop.js';
 import './form-modal.js';
 import './event-page.js';
