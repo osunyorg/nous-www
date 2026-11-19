@@ -121,7 +121,8 @@
     padding: space(8) 0
     background: $cta-background-color url("/assets/images/cta-background.png") center / cover no-repeat
 
-    .call_to_action.call_to_action--with-image
+    .call_to_action.call_to_action--with-image,
+    .call_to_action.call_to_action--without-image
       display: grid
       grid-template-columns: 1fr
       gap: var(--grid-gutter)
@@ -170,6 +171,13 @@
           min-height: 20rem
           @include cover-image
 
+    // No image anymore: same card style, pushed to the right
+    @include media-breakpoint-down(desktop)
+      .call_to_action.call_to_action--without-image
+        grid-template-columns: 1fr 4fr
+        > div
+          grid-column: 2
+
   @include media-breakpoint-up(desktop)
     .block.block-call_to_action
       padding: $spacing-5 0
@@ -181,6 +189,10 @@
         padding-top: 0
         > div, > figure
           grid-column: auto
+      .call_to_action.call_to_action--without-image
+        grid-template-columns: repeat(2, minmax(0, 1fr))
+        > div
+          grid-column: 2
 
 // Kicker above a block title (data/kickers.yaml), same style as "How we work"
 .block-kicker
