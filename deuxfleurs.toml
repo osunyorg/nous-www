@@ -92,7 +92,7 @@ to = "/fr/politique-de-confidentialite/"
 
 [[redirects]]
 from = "/future-labs/2026/tech-futures-lab/index.html"
-to = "/futures-labs-agenda/2026/tech-futures-lab/"
+to = "/futures-labs-agenda/2027/tech-futures-lab/"
 
 [[redirects]]
 from = "/en/posts/2026-10-05-the-right-to-remain-human-a-futurists-provocation-on-radical-care-techno-feudalism-and-the-politics/index.html"
@@ -168,7 +168,7 @@ to = "/provocations/"
 
 [[redirects]]
 from = "/en/agenda/2026/tech-futures-lab/index.html"
-to = "/futures-labs-agenda/2026/tech-futures-lab/"
+to = "/futures-labs-agenda/2027/tech-futures-lab/"
 
 [[redirects]]
 from = "/future-labs/2026/human-rights-in-transition/index.html"
@@ -229,6 +229,10 @@ to = "/fr/agenda/2026/04/"
 [[redirects]]
 from = "/expositions/archives-expositions/index.html"
 to = "/fr/expositions/archives-expositions/"
+
+[[redirects]]
+from = "/futures-labs-agenda/2026/tech-futures-lab/index.html"
+to = "/futures-labs-agenda/2027/tech-futures-lab/"
 
 [[redirects]]
 from = "/en/persons/raqib-naik/index.html"
