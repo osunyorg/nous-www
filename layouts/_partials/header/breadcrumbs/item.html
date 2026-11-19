@@ -1,0 +1,23 @@
+{{/* Override of the theme (header/breadcrumbs/item.html).
+     The Futures Labs agenda (/futures-labs-agenda/) is not meant to be visited:
+     in the breadcrumb, it is replaced by the Futures Labs page (/futures-labs/). */}}
+{{ $item := .item }}
+{{ if eq $item.path "/futures-labs-agenda/" }}
+  {{ with site.GetPage "/pages/futures-labs" }}
+    {{ $item = dict "title" .Title "path" .RelPermalink }}
+  {{ end }}
+{{ end }}
+<li itemprop="itemListElement"
+  itemscope
+  itemtype="https://schema.org/ListItem"
+  class="breadcrumb-item {{- if not $item.path }} active {{- end }}"
+  {{ if not $item.path }} aria-current="page" {{ end }}>
+  {{ if $item.path }}
+    <a itemprop="item" href="{{ $item.path }}">
+  {{ end -}}
+    <span itemprop="name">{{ safeHTML $item.title }}</span>
+  {{- if $item.path }}
+    </a>
+  {{ end }}
+  <meta itemprop="position" content="{{ add .index 1 }}">
+</li>

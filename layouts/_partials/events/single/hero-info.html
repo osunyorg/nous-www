@@ -1,0 +1,14 @@
+{{/* Event hero: calendar icon + summary (place and dates, typed in Osuny),
+     under the title. Used by events/single/hero.html.
+     Without a summary, the dates computed by Osuny are shown instead.
+     The CTA ("Watch the Highlights") is not shown here: it is only used
+     on the Featured Gathering card of /futures-labs/ (events/partials/event/core.html). */}}
+<div class="event-hero-info">
+  {{ with .Params.summary }}
+    <p class="event-place-date">{{ . | plainify | htmlUnescape | strings.TrimSpace }}</p>
+  {{ else }}
+    {{ with .Params.dates.computed.long }}
+      <p class="event-place-date">{{ . | plainify }}</p>
+    {{ end }}
+  {{ end }}
+</div>

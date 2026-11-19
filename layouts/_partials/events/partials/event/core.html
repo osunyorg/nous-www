@@ -1,0 +1,68 @@
+{{/* Surcharge du thème (events/partials/event/core.html).
+     Layout "large" (Featured Gathering, page Futures Labs) :
+     catégorie, lieu + dates (résumé) avec icône calendrier,
+     puis bouton "Watch the Highlights" (header_cta) et lien "Key Insights".
+     Les autres layouts gardent le comportement du thème. */}}
+{{ $with_more := .with_more | default site.Params.events.list.with_more }}
+
+{{ if eq .layout "large" }}
+  {{ $event := .event }}
+
+  {{/* Ancres des blocs de la page événement (slugs Osuny) */}}
+  {{ $video_anchor := "" }}
+  {{ $report_anchor := "" }}
+  {{ range $event.Params.contents }}
+    {{ if and (eq .template "video") (not $video_anchor) }}{{ $video_anchor = .slug }}{{ end }}
+    {{ if and (eq .template "chapter") (not $report_anchor) }}{{ $report_anchor = .slug }}{{ end }}
+  {{ end }}
+
+  {{ if .options.categories }}
+    {{ partial "events/partials/event/core/categories.html" $event }}
+  {{ end }}
+
+  {{ with $event.Params.summary }}
+    <div class="event-place-date" itemprop="description">{{ . | plainify | htmlUnescape | strings.TrimSpace }}</div>
+  {{ end }}
+
+  <div class="event-actions">
+    {{ with $event.Params.header_cta }}
+      {{ if .label }}
+        {{ if and .target (ne .target "#") }}
+          <a class="btn event-actions-primary" href="{{ .target }}"
+            {{ if .external }}target="_blank" rel="noopener"{{ end }}>{{ .label }}</a>
+        {{ else }}
+          {{/* Pas encore de lien dans Osuny : on renvoie vers le bloc vidéo de l'événement */}}
+          <a class="btn event-actions-primary" href="{{ $event.RelPermalink }}{{ with $video_anchor }}#{{ . }}{{ end }}">{{ .label }}</a>
+        {{ end }}
+      {{ end }}
+    {{ end }}
+    <a class="event-actions-secondary" href="{{ $event.RelPermalink }}{{ with $report_anchor }}#{{ . }}{{ end }}">Key Insights</a>
+  </div>
+{{ else if eq .layout "grid" }}
+  {{/* Grilles Futures Labs (Upcoming, Past Gatherings) :
+       "Coming soon!" (pas commencé) ou "Happening now!" (en cours),
+       puis le résumé (lieu + dates) à la place des dates du thème. */}}
+  {{ with .event.Params.dates.status }}
+    {{ if eq . "future" }}
+      <p class="event-status-label event-status-label--future">Coming soon!</p>
+    {{ else if eq . "current" }}
+      <p class="event-status-label event-status-label--current">Happening now!</p>
+    {{ end }}
+  {{ end }}
+  {{ with .event.Params.summary }}
+    <div class="event-place-date" itemprop="description">{{ . | plainify | htmlUnescape | strings.TrimSpace }}</div>
+  {{ end }}
+  {{ if .options.categories }}
+    {{ partial "events/partials/event/core/categories.html" .event }}
+  {{- end -}}
+{{ else }}
+  {{ if .options.summary }}
+    {{ partial "events/partials/event/core/summary.html" .event }}
+  {{ end }}
+  {{ if .options.categories }}
+    {{ partial "events/partials/event/core/categories.html" .event }}
+  {{- end -}}
+  {{ if $with_more }}
+    {{ partial "events/partials/event/core/more.html" .event }}
+  {{- end -}}
+{{ end }}
