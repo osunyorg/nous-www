@@ -1,9 +1,9 @@
 # Footer links (the footer itself: layouts/_partials/footer/footer-simple.html)
 links:
+  - title: Home
+    url: /
   - title: About us
     url: /abous-us/
-  - title: Resources
-    url: "#" # TODO: page to link
   - title: Privacy Policy
     url: /privacy-policy/
 
