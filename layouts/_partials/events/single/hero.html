@@ -1,0 +1,25 @@
+{{/* Override of the theme: adds the date and the place
+     in the hero, next to the image (events/single/hero-info.html). */}}
+{{ $title := partial "header/helpers/GetTitle" . }}
+
+{{/* No "Share" button on the Futures Labs event pages */}}
+{{ $share := false }}
+
+{{ $sizes := "" }}
+
+{{ $image := .Params.image }}
+{{ with $image }}
+  {{ $image_format := partial "commons/image/helpers/GetDirection" . }}
+  {{ $sizes = index site.Params.image_sizes.sections.events.hero_single $image_format }}
+{{ end }}
+
+{{ partial "header/hero.html" (dict
+  "title" $title
+  "image" $image
+  "sizes" $sizes
+  "context" .
+  "share" $share
+  "button" false
+  "meta" ( partial "events/single/meta.html" . )
+  "hero_content_complement" ( partial "events/single/hero-info.html" . )
+) }}

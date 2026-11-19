@@ -1,0 +1,279 @@
+// Event page (Futures Labs agenda): compact hero, table of contents,
+// sections Concept note (files) / Report (text) / Photos (gallery) / Video.
+// Templates: layouts/_partials/events/single*.html — JS: assets/js/event-page.js
+
+.events__page
+
+  // --- Hero, in a green card: category badge, title, calendar icon + summary
+  // on the left, image on the right.
+  // .hero-text is "display: contents" so that the badge (theme meta), the title
+  // and the summary are placed in the same grid.
+  // Without image: same green card, on one column (see below).
+  .hero
+    .content
+      display: grid
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr)
+      // 1fr rows above and below: the left column is centred vertically next to the image
+      grid-template-rows: 1fr auto auto auto 1fr
+      column-gap: 2.5rem
+      row-gap: 1rem
+      align-items: center
+      padding: 3rem 1.5rem
+      background: $color-green
+      border-radius: 1rem
+
+    .hero-text
+      display: contents
+
+      h1
+        grid-column: 1
+        grid-row: 3
+        // !important: the theme sets a width and a right margin on the title
+        // when there are categories (sections/events/single.sass)
+        width: auto !important
+        min-width: 0
+        max-width: none
+        margin: 0 !important
+        color: $color-accent
+        font-weight: 700
+        line-height: 1
+
+    // Category: badge, same style as on /futures-labs/
+    .hero-meta
+      grid-column: 1
+      grid-row: 2
+      margin: 0
+      padding: 0
+      list-style: none
+
+      .taxonomies-single
+        display: flex
+        flex-wrap: wrap
+        gap: 0.5rem
+        margin: 0
+        padding: 0
+        list-style: none
+
+        li
+          margin: 0
+
+        a
+          display: inline-block
+          padding: 0.2rem 0.6rem
+          border: 1px solid rgba($color-accent, 0.4)
+          border-radius: 6rem
+          font-size: 0.7rem
+          text-transform: uppercase
+          text-decoration: none
+          background: transparent
+          color: $color-accent
+
+          // filled badge for Featured Gathering
+          &[href$="/featured-gathering/"]
+            background: $color-accent
+            border-color: $color-accent
+            color: $color-background
+
+    // Calendar icon + summary (place and dates)
+    .event-hero-info
+      grid-column: 1
+      grid-row: 4
+
+    .event-place-date
+      display: flex
+      align-items: center
+      gap: 0.5rem
+      margin: 0
+      font-size: 1.125rem
+      line-height: 1.4
+      @include icon(calendar-line, before)
+        font-size: 1.1em
+
+    .hero-image
+      grid-column: 2
+      grid-row: 1 / -1
+      align-self: center
+      width: 100% !important
+      margin: 0
+
+      // Photo credit (©): inside the image, bottom right
+      figcaption
+        top: auto
+        right: 0.5rem
+        bottom: 0.5rem
+
+      img
+        width: 100%
+        aspect-ratio: 3 / 2
+        object-fit: cover
+        border-radius: 0.75rem
+
+    // Without image: one column, no empty rows to centre against
+    &:not(.hero--with-image) .content
+      grid-template-columns: minmax(0, 1fr)
+      grid-template-rows: none
+      row-gap: 1rem
+
+      .hero-meta
+        grid-row: 1
+      .hero-text h1
+        grid-row: 2
+      .event-hero-info
+        grid-row: 3
+
+    @include media-breakpoint-down(md)
+      .content
+        grid-template-columns: 1fr
+        grid-template-rows: none
+        padding: 1.5rem
+      // One column: badge, title, summary, image
+      .hero-meta,
+      .hero-text h1,
+      .event-hero-info,
+      .hero-image
+        grid-column: 1
+      .hero-image
+        grid-row: 5
+
+  // --- Content area: the theme gives it a min-height of 600px.
+  // Without blocks yet (upcoming event), only the green card is shown,
+  // so the empty content area is hidden (no big space before the footer).
+  .document-content
+    // !important: the theme's rule is more specific (sections/events/single.sass)
+    min-height: 0 !important
+
+    &:not(:has(.blocks .block))
+      display: none
+
+  // --- Table of contents (left column), sticky while scrolling
+  .event-toc
+    @include sticky(1.5rem)
+
+    ol
+      list-style: none
+      margin: 0
+      padding: 0 0 0 1rem
+      border-left: 2px solid rgba($color-accent, 0.15)
+
+    li + li
+      margin-top: 0.5rem
+
+    a
+      color: rgba($color-accent, 0.7)
+      text-decoration: none
+      font-weight: 600
+
+      &:hover,
+      &[aria-current]
+        color: $color-accent
+
+      &[aria-current]
+        text-decoration: underline
+        text-underline-offset: 0.2em
+
+    // On small screens, the sections follow each other: no table of contents
+    @include media-breakpoint-down(desktop)
+      display: none
+
+  // --- Sections: real titles, a line between each section
+  .blocks > .block-titled
+    scroll-margin-top: 6rem
+
+    // The line stays in the content column (not over the table of contents)
+    .top
+      padding-top: 2.5rem
+      border-top: 1px solid rgba($color-accent, 0.15)
+
+    .block-title
+      @include section-title
+
+  // First block: no line above (nothing to separate from the green card)
+  // and less space under the green card
+  .blocks > .block:first-child
+    margin-top: 0
+
+    .top
+      padding-top: 0
+      border-top: 0
+
+  // --- Concept note (files block): a card with a "Download" button
+  .block-files
+    .files
+      display: flex
+      flex-direction: column
+      gap: 1rem
+      list-style: none
+      padding: 0
+
+    .file
+      width: 100%
+
+      // The theme's download icon (a square on the left): replaced by the "Download" button
+      &::before
+        display: none
+
+      figure
+        width: 100%
+        position: relative
+        display: grid
+        grid-template-columns: 1fr auto
+        align-items: center
+        column-gap: 1.5rem
+        margin: 0
+        padding: 1.25rem 1.5rem
+        background: rgba($color-violet, 0.1)
+        border-radius: 0.5rem
+
+      a
+        grid-column: 1
+        color: $color-accent
+        font-weight: 700
+        text-decoration: none
+
+        // The whole card is clickable
+        &::after
+          content: ""
+          position: absolute
+          inset: 0
+
+      figcaption
+        grid-column: 1
+        font-size: 0.875rem
+        color: $color-violet
+
+      // Button look, on the right
+      figure::after
+        content: "Download"
+        grid-column: 2
+        grid-row: 1 / span 2
+        padding: 0.5rem 1rem
+        border-radius: 0.25rem
+        background: $color-violet
+        color: $color-white
+        font-weight: 600
+
+      figure:hover::after
+        background: $color-accent
+
+  // --- Photos (gallery): 3 columns of same-size thumbnails, enlarged on click (theme lightbox)
+  .block-gallery--grid
+    .gallery
+      display: grid
+      grid-template-columns: repeat(3, minmax(0, 1fr))
+      gap: 1rem
+
+      figure
+        width: auto !important
+        margin: 0
+
+      img
+        width: 100%
+        aspect-ratio: 4 / 3
+        object-fit: cover
+        border-radius: 0.5rem
+
+      figcaption
+        font-size: 0.75rem
+
+      @include media-breakpoint-down(md)
+        grid-template-columns: repeat(2, minmax(0, 1fr))

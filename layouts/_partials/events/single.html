@@ -1,0 +1,33 @@
+{{/* Override of the theme (themes/osuny/layouts/_partials/events/single.html) */}}
+{{ partial "events/single/hero.html" . }}
+{{ partial "events/single/pagefind.html" . }}
+
+<div itemscope itemtype="https://schema.org/Event">
+  {{/* Date, place and CTA are in the hero (events/single/hero-info.html).
+       The theme's "Practical information" block is kept only for what the hero
+       doesn't show: notes and multiple time slots. */}}
+  {{ if or .Params.notes .Params.time_slots }}
+    {{ partial "commons/agenda/access.html" . }}
+  {{ end }}
+  <div class="document-content">
+    {{ partial "events/single/schema.html" . }}
+    {{ partial "events/single/sidebar.html" . }}
+    {{/* No summary block here: the summary (place and dates) is in the hero */}}
+    {{ partial "contents/list.html" (dict
+      "context" .
+      "contents" .Params.contents
+    ) }}
+    {{ if site.Params.events.single.navigation.active }}
+      {{ partial "commons/single/siblings-navigation.html" (dict
+        "context" .
+        "previous_label" (i18n "events.previous")
+        "next_label" (i18n "events.next")
+        "reversed" (not .Params.dates.archive)
+      ) }}
+    {{ end }}
+    {{ partial "commons/single/hooks/before-content-end.html" . }}
+  </div>
+
+  {{ partial "events/single/programme.html" .Params.children }}
+  {{ partial "events/single/parent.html" .Params.parent }}
+</div>
