@@ -171,13 +171,7 @@
           min-height: 20rem
           @include cover-image
 
-    // No image anymore: same card style, pushed to the right
-    @include media-breakpoint-down(desktop)
-      .call_to_action.call_to_action--without-image
-        grid-template-columns: 1fr 4fr
-        > div
-          grid-column: 2
-
+  // No image anymore: full width on mobile (single column above), pushed to the right on desktop
   @include media-breakpoint-up(desktop)
     .block.block-call_to_action
       padding: $spacing-5 0

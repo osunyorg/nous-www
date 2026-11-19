@@ -15,7 +15,7 @@ params:
   search:
     active: true
   logo:
-    header: '/assets/images/black-logo-nous.png'
+    header: '/assets/images/nous-slogan-logo.svg'
     footer: ''
   home:
     head:

@@ -15,24 +15,42 @@ footer#document-footer
     li + li
       margin-top: 0
 
-  .footer-nous-links
-    display: flex
-    flex-wrap: wrap
-    gap: $spacing-1 $spacing-4
-    font-size: 0.9375rem
-
+  // Top line: menu links on the left, social icons on the right
+  // Bottom line: tagline on the left, credit on the right
+  .footer-nous-top,
   .footer-nous-bottom
     display: flex
     flex-wrap: wrap
     align-items: center
     justify-content: space-between
     gap: $spacing-2
+
+  .footer-nous-bottom
     margin-top: $spacing-3
 
-  .footer-nous-tagline
+  .footer-nous-links
+    display: flex
+    flex-wrap: wrap
+    gap: $spacing-1 $spacing-4
+    font-size: 0.9375rem
+
+  .footer-nous-tagline,
+  .footer-nous-credit
     margin: 0
     font-size: 0.875rem
     opacity: 0.6
+
+  // Two stacked centered lines on mobile, but links and social icons stay side by side
+  @include media-breakpoint-down(desktop)
+    .footer-nous-top,
+    .footer-nous-bottom
+      flex-direction: column
+      align-items: center
+      text-align: center
+
+    .footer-nous-links,
+    .footer-nous-socials
+      justify-content: center
 
   .footer-nous-socials
     display: flex

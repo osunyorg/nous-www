@@ -1,19 +1,15 @@
-{{/* Override of the theme footer: one line of links, then the tagline and the social icons */}}
+{{/* Override of the theme footer: links + social icons on one line, tagline + credit below */}}
 {{ with site.Data.footer }}
   <div class="container footer-nous">
-    {{ with .links }}
-      <nav aria-label="Footer">
-        <ul class="footer-nous-links">
-          {{ range . }}
-            <li><a href="{{ .url }}">{{ .title }}</a></li>
-          {{ end }}
-        </ul>
-      </nav>
-    {{ end }}
-
-    <div class="footer-nous-bottom">
-      {{ with .tagline }}
-        <p class="footer-nous-tagline">{{ . }}</p>
+    <div class="footer-nous-top">
+      {{ with .links }}
+        <nav aria-label="Footer">
+          <ul class="footer-nous-links">
+            {{ range . }}
+              <li><a href="{{ .url }}">{{ .title }}</a></li>
+            {{ end }}
+          </ul>
+        </nav>
       {{ end }}
       {{ $socials := where .socials "url" "!=" "" }}
       {{ with $socials }}
@@ -25,6 +21,13 @@
           {{ end }}
         </ul>
       {{ end }}
+    </div>
+
+    <div class="footer-nous-bottom">
+      {{ with .tagline }}
+        <p class="footer-nous-tagline">{{ . }}</p>
+      {{ end }}
+      <p class="footer-nous-credit">A low impact website crafted with <a href="https://www.osuny.org/" title="osuny - external link" target="_blank" rel="noreferrer">osuny</a> by <a href="https://leonstudio.app/" title="Leon Studio - external link" target="_blank" rel="noreferrer">Leon Studio</a></p>
     </div>
   </div>
 {{ end }}

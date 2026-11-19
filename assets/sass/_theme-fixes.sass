@@ -11,7 +11,13 @@
 // Taille logo
 @media (min-width: 992px)
   header#document-header .logo img
-    height: 5rem
+    height: 3.5rem
+
+// Nav principale compacte sur desktop pour tenir sur une seule ligne
+@media (min-width: 992px)
+  header#document-header .primary-menu .nav-level-1 > li
+    > a, > span
+      font-size: pxToRem(13)
 
 // Supprime l'espace entre le dernier bloc light-green et le footer
 // Cible le padding-bottom appliqué par le thème Osuny
