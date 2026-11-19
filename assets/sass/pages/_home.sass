@@ -9,6 +9,9 @@
 
 .page__home
 
+  @include media-breakpoint-down(desktop)
+    --block-space-y: #{space(8)}
+
   // Hero
   .hero.hero--with-image
     display: flex
@@ -16,6 +19,10 @@
     min-height: 100vh
     margin-bottom: 0
     color: $color-white
+    @include media-breakpoint-down(desktop)
+      // Leave room for the next block to peek at the bottom of the screen
+      min-height: 85vh
+      min-height: 85svh
 
     &::before
       content: ""
@@ -43,7 +50,8 @@
 
       h1
         color: $color-white
-        font-size: 5.5rem
+        font-size: clamp(2.5rem, 12vw, 5.5rem)
+        overflow-wrap: break-word
 
         .hero-rotating
           display: block
@@ -78,9 +86,11 @@
     align-items: center
     min-height: 50vh
     margin: 0
-    padding: $spacing-5 0
+    padding: space(8) 0
     background: $color-light-green
     text-align: center
+    @include media-breakpoint-up(desktop)
+      padding: $spacing-5 0
 
     .container
       width: 100%
@@ -108,7 +118,7 @@
   // Call to action
   .block.block-call_to_action
     margin-bottom: 0
-    padding: $spacing-5 0
+    padding: space(8) 0
     background: $cta-background-color url("/assets/images/cta-background.png") center / cover no-repeat
 
     .call_to_action.call_to_action--with-image
@@ -162,6 +172,7 @@
 
   @include media-breakpoint-up(desktop)
     .block.block-call_to_action
+      padding: $spacing-5 0
       .block-content
         padding-top: 0
         padding-bottom: 0
