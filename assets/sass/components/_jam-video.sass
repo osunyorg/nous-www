@@ -26,12 +26,17 @@
       margin-left: 0.25rem
       border-style: solid
       border-width: 0.65rem 0 0.65rem 1.1rem
-      border-color: transparent transparent transparent currentColor
+      // Pas de currentColor ici : le minifier de prod le réécrit en "initial",
+      // invalide dans le raccourci border-color -> règle ignorée -> carré
+      border-color: transparent transparent transparent $color-background
 
     &:hover,
     &:focus-visible
       background: $color-background
       color: $color-accent
+
+      &::before
+        border-left-color: $color-accent
 
   // Card : image au-dessus du texte
   .job
