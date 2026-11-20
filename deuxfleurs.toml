@@ -303,10 +303,6 @@ from = "/agenda/2026/06/index.html"
 to = "/fr/agenda/2026/06/"
 
 [[redirects]]
-from = "/repository-1/2021-truth-post-truth-and-technology-ella-mcpherson/index.html"
-to = "/repository/2021-truth-post-truth-and-technology-ella-mcpherson/"
-
-[[redirects]]
 from = "/agenda/2026/09/index.html"
 to = "/fr/agenda/2026/09/"
 
@@ -413,10 +409,6 @@ to = "/fr/expositions/"
 [[redirects]]
 from = "/personnes/index.html"
 to = "/fr/personnes/"
-
-[[redirects]]
-from = "/repository-1/2024-post-election-2024-the-future-of-human-rights-in-the-us/index.html"
-to = "/repository/2024-post-election-2024-the-future-of-human-rights-in-the-us/"
 
 [[redirects]]
 from = "/future-labs/2026/09/index.html"
