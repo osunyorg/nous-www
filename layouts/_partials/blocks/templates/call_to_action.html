@@ -1,7 +1,9 @@
-{{/* Override of the theme call to action block: optional kicker above the title (data/kickers.yaml) */}}
+{{/* Override du thème : quand la page n'a PAS de header_cta, le bloc call_to_action
+     sert de source au bouton du hero (voir layouts/_partials/header/hero/content/actions.html)
+     et n'est pas re-rendu dans le corps. */}}
+{{ if .context.Params.header_cta }}
 {{ $block := .block }}
 {{ $block_class := partial "blocks/helpers/GetClass" .block }}
-{{ $kicker := index (site.Data.kickers | default dict) ($block.slug | default "") }}
 
 {{ with .block.data }}
   {{ $buttons := and .button.text .button_secondary.text }}
@@ -14,7 +16,6 @@
         ) }}
         <div class="{{ $class }}">
           <div>
-            {{ with $kicker }}<p class="block-kicker">{{ . }}</p>{{ end }}
             {{ partial "blocks/top.html" $block.top }}
             {{ partial "blocks/templates/call_to_action/actions.html" . }}
           </div>
@@ -28,4 +29,5 @@
       </div>
     </div>
   </div>
+{{ end }}
 {{ end }}

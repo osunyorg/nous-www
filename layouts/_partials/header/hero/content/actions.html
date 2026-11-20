@@ -1,0 +1,26 @@
+{{/* Override du thème (themes/osuny est un submodule) :
+     bouton du hero = header_cta si présent, sinon fallback sur le premier
+     bouton d'un bloc call_to_action de la page (utile tant que l'API Osuny
+     n'autorise pas header_cta sur les projets portfolio). */}}
+{{ $button := .button | default .context.Params.header_cta }}
+{{ if not $button }}
+  {{ range .context.Params.contents }}
+    {{ if and (eq .kind "block") (eq .template "call_to_action") }}
+      {{ with .data.buttons }}
+        {{ with index . 0 }}
+          {{ $button = dict "label" .title "target" .url "external" .target_blank }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ if or $button .share }}
+  <div class="hero-actions">
+    {{ with $button }}
+      {{ partial "header/cta.html" . }}
+    {{ end }}
+    {{ if .share }}
+      {{ partial "commons/share/dropdown.html" .context }}
+    {{ end }}
+  </div>
+{{ end }}
