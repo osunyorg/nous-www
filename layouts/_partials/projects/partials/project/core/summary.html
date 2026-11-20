@@ -1,9 +1,26 @@
 {{/* Override of the theme: render the entry's header_cta (external link) under the
      summary on list cards, using its label as the link text. Placed inside
-     .project-summary so it inherits the card's link styling. */}}
+     .project-summary so it inherits the card's link styling.
+
+     Fallback: header_cta n'est pas posable via l'API sur les projets portfolio
+     (whitelist du contrôleur Osuny, PR en cours sur osunyorg/admin). Les entrées
+     importées par scripts/import-osuny portent un bloc call_to_action : on en prend
+     le premier bouton comme CTA de la card. */}}
+{{ $cta := .Params.header_cta }}
+{{ if not $cta }}
+  {{ range .Params.contents }}
+    {{ if and (eq .kind "block") (eq .template "call_to_action") }}
+      {{ with .data.buttons }}
+        {{ with index . 0 }}
+          {{ $cta = dict "label" .title "target" .url "external" .target_blank }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
 <div itemprop="abstract" class="project-summary">
   {{ partial "commons/item/summary.html" . }}
-  {{ with .Params.header_cta }}
+  {{ with $cta }}
     {{ if .label }}
       {{ $target := .target | default "#" }}
       {{/* external flag, or any absolute http(s) URL: always open in a new tab */}}
