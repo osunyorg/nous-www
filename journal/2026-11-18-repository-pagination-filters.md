@@ -42,7 +42,7 @@ Travail fait sur la branche `repo-page` (4 commits : cartes en liens externes, l
    `layouts/_partials/main/hooks/before-end.html` (`Type=projects` + `Kind=section`),
    retiré du bundle global `main.js` ; garde-fou en haut de l'IIFE.
 
-6. **Import des 153 entrées** (source : `hr-map/NOUS_Repository.csv`, tracké ;
+6. **Import des 153 entrées** (source : `scripts/import-osuny/NOUS_Repository.csv`, tracké ;
    colonnes `Type,Title,Source/Citation,Theme,Key Takeaway,Link`, valeurs multiples
    séparées par `;`, 14 thèmes / 17 types dans le CSV vs 7 / 3 existants) :
    - Privilégié : API Osuny v1 sur `https://nous.osuny.org/api/osuny/v1`, header

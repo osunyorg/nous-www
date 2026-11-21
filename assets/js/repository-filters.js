@@ -12,7 +12,7 @@
         return;
     }
 
-    var PAGE_SIZE = 3, // taille de page côté client
+    var PAGE_SIZE = 12, // taille de page côté client
         currentPage = 1,
         groups = [],
         items = [];
