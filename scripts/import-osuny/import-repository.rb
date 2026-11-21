@@ -8,6 +8,8 @@
 #   bundle exec ruby import-repository.rb                # dry-run : lit le CSV, affiche le mapping, AUCUN appel réseau
 #   bundle exec ruby import-repository.rb --categories   # liste les catégories portfolio (lecture seule)
 #   bundle exec ruby import-repository.rb --apply        # importe réellement (upsert idempotent)
+#   bundle exec ruby import-repository.rb --verify       # lecture seule : vérifie côté CMS que chaque
+#                                                        # entrée du CSV a bien son CTA (bloc call_to_action) persisté
 #
 # Config : cp .env.example .env puis coller le jeton dans OSUNY_API_TOKEN (.env est gitignoré).
 
@@ -31,6 +33,7 @@ HOST     = ENV.fetch('OSUNY_API_HOST', 'nous.osuny.org')
 WEBSITE_ID = ENV.fetch('OSUNY_WEBSITE_ID') { abort 'OSUNY_WEBSITE_ID manquant (voir .env.example)' }
 
 MODE = if ARGV.include?('--apply')       then :apply
+       elsif ARGV.include?('--verify')     then :verify
        elsif ARGV.include?('--categories') then :categories
        else :dry
        end
@@ -49,6 +52,12 @@ def slugify(str)
      .gsub(/[^a-z0-9]+/, '-')
      .gsub(/\A-+|-+\z/, '')
 end
+
+# Le serveur tronque le slug à 100 caractères et strippe le tiret final si la
+# troncature tombe dessus (mais PAS le migration_identifier, qui contient le slug
+# complet) : pour retrouver un projet existant par son slug, il faut faire pareil.
+SLUG_MAX = 100
+def cms_slug(str) = slugify(str)[0, SLUG_MAX].gsub(/-+\z/, '')
 
 # Les modèles Swagger répondent aux accessors, mais on reste tolérant aux Hash.
 def field(obj, name)
@@ -76,6 +85,40 @@ def fetch_categories
   categories_api.communication_websites_website_id_portfolio_categories_get(
     WEBSITE_ID, per_page: 10_000, page_num: 1
   )
+end
+
+# Tous les projets du site, paginés (per_page=100 au-delà => toutes les pages)
+def fetch_all_projects
+  all  = []
+  page = 1
+  loop do
+    batch = projects_api.communication_websites_website_id_portfolio_projects_get(WEBSITE_ID, per_page: 100, page_num: page)
+    break if batch.nil? || batch.empty?
+    all.concat(batch)
+    break if batch.size < 100
+    page += 1
+  end
+  all
+end
+
+# Localization EN d'un projet (le hash rendu par to_hash a des clés symbol)
+def en_loc(project)
+  locs = project.to_hash[:localizations] || {}
+  locs[:en] || locs['en'] || {}
+end
+
+# URL du premier élément du premier bloc call_to_action d'une localization
+def cta_url(loc)
+  blocks = loc[:blocks] || loc['blocks'] || []
+  blocks.each do |b|
+    next unless (b[:template_kind] || b['template_kind']).to_s == 'call_to_action'
+    data     = b[:data] || b['data'] || {}
+    elements = data[:elements] || data['elements'] || []
+    first    = elements.first || {}
+    url      = first[:url] || first['url']
+    return url if url
+  end
+  nil
 end
 
 # Retourne [parents, children] :
@@ -180,6 +223,39 @@ when :categories
           field(loc, :slug), field(loc, :name)].join(' | ')
   end
 
+when :verify
+  # Lecture seule : pour chaque ligne du CSV, vérifie que le projet existe côté CMS
+  # et que son bloc call_to_action contient bien l'URL du CSV. Utile après un import
+  # pour distinguer "l'API a persisté le CTA" de "le sync Hugo ne l'a pas sérialisé".
+  connect!
+  rows  = read_rows
+  index = {}
+  fetch_all_projects.each do |p|
+    loc = en_loc(p)
+    slug = loc[:slug] || loc['slug']
+    index[slug] = loc if slug
+  end
+  ok = 0
+  ko = []
+  rows.each do |row|
+    slug = cms_slug(row['Title'].to_s.strip)
+    link = row['Link'].to_s.strip
+    loc  = index[slug]
+    if loc.nil?
+      ko << [slug, 'projet absent du CMS']
+      next
+    end
+    url = cta_url(loc)
+    if link.empty? ? url.nil? : url == link
+      ok += 1
+    else
+      ko << [slug, "url persistée=#{url.inspect} vs CSV=#{link.inspect}"]
+    end
+  end
+  puts "#{ok}/#{rows.size} entrées avec CTA vérifié côté CMS (lecture seule, aucun écrit)"
+  ko.each { |slug, why| puts "  KO #{slug} — #{why}" }
+  abort "#{ko.size} entrée(s) en écart — relancer --apply ou vérifier le sync" unless ko.empty?
+
 when :apply
   connect!
   rows = read_rows
@@ -215,18 +291,11 @@ when :apply
   #    un slug déjà présent => PATCH par id (on adopte l'entrée avec notre migration_identifier),
   #    sinon => upsert (création).
   existing_by_slug = {}
-  page = 1
-  loop do
-    batch = projects_api.communication_websites_website_id_portfolio_projects_get(WEBSITE_ID, per_page: 100, page_num: page)
-    break if batch.nil? || batch.empty?
-    batch.each do |p|
-      h = p.to_hash
-      (h[:localizations] || {}).each_value do |loc|
-        existing_by_slug[loc[:slug]] = { id: h[:id], migration_identifier: h[:migration_identifier] } if loc[:slug]
-      end
+  fetch_all_projects.each do |p|
+    h = p.to_hash
+    (h[:localizations] || {}).each_value do |loc|
+      existing_by_slug[loc[:slug]] = { id: h[:id], migration_identifier: h[:migration_identifier] } if loc[:slug]
     end
-    break if batch.size < 100
-    page += 1
   end
   puts "#{existing_by_slug.size} projets existants indexés par slug"
 
@@ -238,7 +307,7 @@ when :apply
     ids  = split_multi(row['Theme']).map { |t| children[themes_parent][slugify(t)] } +
            split_multi(row['Type']).map  { |t| children[types_parent][slugify(t)] }
     payload = project_payload(row, ids.compact, slug)
-    ex = existing_by_slug[slug]
+    ex = existing_by_slug[cms_slug(row['Title'].to_s.strip)]
     if ex && ex[:migration_identifier]
       # Le PATCH exige le migration_identifier de l'entrée (match exact, sinon 422)
       to_patch << [ex[:id], ex[:migration_identifier], payload]

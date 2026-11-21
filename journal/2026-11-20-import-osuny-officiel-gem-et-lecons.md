@@ -62,6 +62,21 @@ Une fois déployé : relancer `bundle exec ruby scripts/import-osuny/import-repo
 pour poser le `header_cta` natif, puis simplifier l'override de `summary.html`
 (le fallback bloc deviendra inutile).
 
+## Mise à jour 2026-11-20 (soir) — les 13 CTA manquants n'étaient PAS un problème d'import
+
+Symptôme : build local = 153 cartes mais 140 CTA seulement. Diagnostic :
+
+- Côté CMS, **153/153** blocs `call_to_action` ont bien leur URL (vérifié en lecture seule
+  via l'API, et nouveau mode `--verify` du script : `bundle exec ruby import-repository.rb --verify`).
+- Les 13 fichiers locaux concernés avaient un `buttons:` vide : le dernier « Sync from osuny »
+  vers git (18:44) datait d'avant la correction serveur des blocs (18:54). **Le sync local était
+  simplement en retard** → re-sync admin + `git pull` (merge origin/main) + rebuild = 153/153 CTA.
+- Piège : le serveur **tronque le slug à 100 caractères** (et strippe le tiret final) mais garde
+  le `migration_identifier` complet. Le script a un `cms_slug` (truncate 100) pour matcher les
+  projets existants ; ne pas confondre avec `slugify` utilisé dans les payloads (idempotence upsert).
+- La gem `osuny_api` lève une `ApiError` sur tout non-2xx : un échec d'écriture n'est PAS silencieux,
+  il fait planter le script (contrairement à ce qu'on a suspecté un moment).
+
 ## Commandes
 
 ```bash
@@ -72,6 +87,7 @@ bundle exec ruby import-repository.rb                # dry-run, aucun appel rés
 bundle exec ruby import-repository.rb --categories   # liste les catégories (lecture seule)
 bundle exec ruby import-repository.rb --apply        # importe/met à jour les 153 entrées
 bundle exec ruby import-repository.rb --apply --limit 2   # test sur 2 entrées
+bundle exec ruby import-repository.rb --verify       # lecture seule : CTA persisté côté CMS pour chaque ligne du CSV
 ```
 
 Puis « Sync from osuny » dans l'admin → `git pull` → rebuild → vérifier `/repository/`.

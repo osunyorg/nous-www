@@ -62,6 +62,12 @@ Travail fait sur la branche `repo-page` (4 commits : cartes en liens externes, l
 
 ## Pièges appris
 
+- **`.Paginate` ne s'appelle qu'une seule fois par page** : un second appel retourne
+  silencieusement le premier paginator (testé sur Hugo 0.165 : `.Paginate .Pages` puis
+  `.Paginate .Pages 10000` → les deux renvoient 36, le `pagerSize` du thème). Conséquence :
+  l'ancien `GetPaginator.html` en deux appels gardait 36 entrées/page sur `/repository/`
+  même en « demandant » 10000 — visible seulement après l'import des 153 entrées.
+  Décider la taille AVANT l'unique appel (if/else, assigner puis `return`).
 - `.env` n'est PAS dans `.gitignore` — ne jamais mettre de token dans un fichier du repo ;
   utiliser `export OSUNY_TOKEN=...` dans le shell.
 - Build local : hugo-extended 0.165 via mise
