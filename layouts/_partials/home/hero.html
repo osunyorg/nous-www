@@ -1,0 +1,28 @@
+{{/* Override of the theme home hero: rotating title, editable in Osuny.
+     In the "Header text" field of the Home page, the words are separated by " / ",
+     e.g. "Radical Imagination / Reparations / Other example".
+     The h1 contains the first word only (SEO, screen readers, no JS),
+     the list of words is given to assets/js/home-title.js. */}}
+{{ $words := slice }}
+{{ range split (or .Params.header_text .Title) " / " }}
+  {{ with trim . " " }}
+    {{ $words = $words | append . }}
+  {{ end }}
+{{ end }}
+
+{{ $title := index $words 0 }}
+{{ with .Params.subtitle }}
+  {{ $title = printf "%s <span>%s</span>" $title . }}
+{{ end }}
+
+{{ partial "header/hero.html" (dict
+  "title" $title
+  "image" .Params.image
+  "breadcrumb" false
+  "sizes" site.Params.image_sizes.sections.home.hero
+  "context" .
+) }}
+
+{{ if gt (len $words) 1 }}
+  <div hidden id="home-title-words" data-words="{{ $words | jsonify }}"></div>
+{{ end }}

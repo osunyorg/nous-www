@@ -1,13 +1,13 @@
-const WORDS = [
-  'Reparations',
-  'Other example'
-];
+// Rotating words of the home title: "Header text" field of the Home page in Osuny,
+// words separated by " / " (see layouts/_partials/home/hero.html)
+const wordsData = document.getElementById('home-title-words');
+const WORDS = wordsData ? JSON.parse(wordsData.dataset.words).slice(1) : [];
 const DELAY = 3000;
 const FADE = 400;
 
 const title = document.querySelector('.page__home .hero h1');
 
-if (title) {
+if (title && WORDS.length) {
   const textNode = Array.from(title.childNodes).find((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
 
   if (textNode) {
