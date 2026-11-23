@@ -12,6 +12,10 @@
 .posts__section .posts--highlight
   display: grid
   grid-template-columns: repeat(2, minmax(0, 1fr))
+  // 1st row (featured post) at its own height, all the rows of green cards
+  // as tall as the tallest card
+  grid-template-rows: auto
+  grid-auto-rows: 1fr
   gap: 1.25rem
   list-style: none
   padding: 0
@@ -134,7 +138,25 @@
   > li:not(:first-child)
     article
       @include light-card
+      display: flex
+      flex-direction: column
       height: 100%
+    // Separator line, author and "Read more" always at the bottom of the card:
+    // grid instead of the wrapping flex above, the title row takes the free height
+    .post-content
+      flex: 1 1 auto
+      display: grid
+      grid-template-columns: minmax(0, 1fr) auto
+      grid-template-rows: auto 1fr auto
+      align-items: start
+      > *
+        grid-column: 1 / -1
+      .post-meta
+        grid-column: 1
+        align-self: end
+      .more
+        grid-column: 2
+        align-self: end
     .media
       display: none
     .post-meta
@@ -146,3 +168,30 @@
     > li:first-child article
       grid-template-columns: 1fr
       grid-template-areas: "media" "content"
+
+// "Show all provocations" / "Show less" under the green cards (assets/js/provocations.js),
+// same style as "Load More Gatherings" (Futures Labs) and "Show all" (HR map)
+.posts__section
+  .posts--highlight > li[hidden]
+    display: none
+
+  .posts-more
+    display: block
+    margin: 1.5rem auto 0
+    padding: 4px 12px
+    border: 1px solid $color-accent
+    border-radius: 4px
+    background: transparent
+    color: $color-accent
+    font: inherit
+    font-size: 13px
+    font-weight: 600
+    cursor: pointer
+
+    &:hover
+      background: $color-accent
+      color: $header-background
+
+    &:focus-visible
+      outline: 2px solid $color-accent
+      outline-offset: 2px
