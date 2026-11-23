@@ -13,3 +13,6 @@ yarn-error.log
 .clineignore
 .clinerules
 
+# Secrets API Osuny (jeton d'app) — ne jamais commiter
+scripts/import-osuny/.env
+

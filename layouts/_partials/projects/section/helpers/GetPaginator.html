@@ -2,10 +2,16 @@
      - Page section (repository index): pagination is done client-side
        (assets/js/repository-filters.js, PAGE_SIZE), so every entry must be on the
        same page — otherwise an item on another page could never match a filter.
-     - Term pages (filtered lists): keep server-side pagination (theme default). */}}
+     - Term pages (filtered lists): keep server-side pagination (theme default).
+     - Hugo: .Paginate can only be called ONCE per page — a second call silently
+       returns the first paginator, so the size must be decided BEFORE the single
+       call (the previous two-call version kept the theme pagerSize 36 and only
+       rendered the first 36 entries on /repository/). */}}
 {{ $projects := .Pages | uniq }}
-{{ $paginator := .Paginate $projects }}
+{{ $paginator := 0 }}
 {{ if eq .Kind "section" }}
   {{ $paginator = .Paginate $projects 10000 }}
+{{ else }}
+  {{ $paginator = .Paginate $projects }}
 {{ end }}
 {{ return $paginator }}
