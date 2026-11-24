@@ -245,27 +245,27 @@ $nwm-muted: #555 !default
 .nwm-land
   fill: $nwm-land
 
-// Points: precise place = violet with a green border,
-// approximate place (region, continent) = green with a violet border,
-// selected = violet with a violet border
+// Points on the dark Blue Marble background: cream with a violet border,
+// approximate place (region, continent) = violet with a cream border,
+// selected = solid cream
 .nwm-point
-  fill: $nwm-accent
-  stroke: $nwm-sea
+  fill: $header-background
+  stroke: $nwm-accent
   cursor: pointer
   transition: fill .15s, stroke .15s
 
   &:hover
-    fill: $nwm-accent-hover
+    fill: mix($nwm-accent, $header-background, 25%)
 
   &--approx
-    fill: $nwm-sea
-    stroke: $nwm-accent
+    fill: $nwm-accent
+    stroke: $header-background
     &:hover
-      fill: mix($nwm-accent, $nwm-sea, 25%)
+      fill: mix($nwm-accent, $header-background, 75%)
 
   &.is-active
-    fill: $nwm-accent
-    stroke: $nwm-accent
+    fill: $header-background
+    stroke: $header-background
 
   // No blue browser outline on click; violet ring for keyboard navigation only
   &:focus
@@ -275,18 +275,18 @@ $nwm-muted: #555 !default
     outline-offset: 2px
 
 .nwm-count
-  fill: #fff
+  fill: $nwm-accent
   font-family: sans-serif
   font-weight: 700
   text-anchor: middle
   pointer-events: none
 
   &--approx
-    fill: $nwm-accent
+    fill: $header-background
 
-// Selected open circle: the count turns white on the violet fill
+// Selected open circle: the count turns violet on the cream fill
 .nwm-point.is-active + .nwm-count--approx
-  fill: #fff
+  fill: $nwm-accent
 
 // Boutons de zoom
 .nwm-tools

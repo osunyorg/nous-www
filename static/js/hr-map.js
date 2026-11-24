@@ -13,6 +13,24 @@
   var W = 960, H = 500, R = 6, MAXZ = 12;
   var NS = "http://www.w3.org/2000/svg";
 
+  /* Fond « Blue Marble » (vue satellite, NASA / Tom Patterson, CC0) en projection
+     Equal Earth, sans toponymes, converti en WebP. L'image couvre exactement la
+     sphère : cadrage x 0..960, y 16.4..483.6, elle suit le zoom et le pan.
+     Pyramide de 3 niveaux : on affiche le niveau le plus proche du zoom courant
+     et on ne charge que ceux visités (évite de réduire une grosse image à l'écran = flou).
+       low  3840 px   zoom < 1.7
+       mid  7680 px   zoom < 3.4
+       high 14288 px  au-delà (net jusqu'au zoom max x12)
+     L'image est clippée sur la sphère : hors de l'ellipse, le SVG reste transparent
+     et laisse voir le fond vert du bloc (les « angles » de la carte).
+     Variante « carte physique » gardée à côté : world-map-physical-low/mid/high.webp */
+  var BG_LEVELS = [
+    { maxZoom: 1.7, src: "/assets/images/map/blue-marble-low.webp" },
+    { maxZoom: 3.4, src: "/assets/images/map/blue-marble-mid.webp" },
+    { maxZoom: Infinity, src: "/assets/images/map/blue-marble-high.webp" }
+  ];
+  var BG_X = 0, BG_Y = 16.4, BG_W = 960, BG_H = 467.2;
+
   root.innerHTML =
     '<div class="nwm-main">' +
     '<p class="nwm-stats" hidden>' +
@@ -21,8 +39,10 @@
     '</p>' +
     '<div class="nwm-map">' +
       '<svg viewBox="0 0 960 500" role="img" aria-label="World map">' +
+        '<defs><clipPath id="nwm-sphere-clip"><path d="' + SPHERE + '"/></clipPath></defs>' +
         '<path class="nwm-sphere" d="' + SPHERE + '"/>' +
         '<path class="nwm-land" d="' + LAND + '"/>' +
+        '<image class="nwm-physical" clip-path="url(#nwm-sphere-clip)" href="' + BG_LEVELS[0].src + '" xlink:href="' + BG_LEVELS[0].src + '" x="' + BG_X + '" y="' + BG_Y + '" width="' + BG_W + '" height="' + BG_H + '" preserveAspectRatio="none"/>' +
         '<g class="nwm-points"></g>' +
       '</svg>' +
       '<div class="nwm-tools">' +
@@ -66,6 +86,8 @@
   }
 
   var svg = root.querySelector("svg");
+  var bgImg = root.querySelector(".nwm-physical");
+  var bgLevel = 0;
   var gPts = root.querySelector(".nwm-points");
   var popup = root.querySelector(".nwm-popup");
   var filters = root.querySelector(".nwm-filters");
@@ -102,8 +124,11 @@
     });
   }
 
-  /* Vue : zoom et déplacement via le viewBox */
-  var view = { x: 0, y: 0, w: W, h: H };
+  /* Vue : zoom et déplacement via le viewBox.
+     Vue initiale zoomée (x1.31, centrée) : le viewBox tient entierement dans la sphere,
+     donc les coins verts du bloc n'apparaissent pas a l'ouverture. */
+  var HOME = { x: 137.04, y: 59.75, w: 685.92, h: 357.25 };
+  var view = { x: HOME.x, y: HOME.y, w: HOME.w, h: HOME.h };
   var nodes = [], current = null, dragged = false;
 
   function apply() {
@@ -112,6 +137,21 @@
     view.x = Math.min(W - view.w, Math.max(0, view.x));
     view.y = Math.min(H - view.h, Math.max(0, view.y));
     svg.setAttribute("viewBox", view.x + " " + view.y + " " + view.w + " " + view.h);
+    /* Niveau de fond adapté au zoom courant : on précharge le niveau visé et on
+       ne l'applique que s'il est toujours d'actualité (évite les courses au swap) */
+    var z = W / view.w, want = 0;
+    while (want < BG_LEVELS.length - 1 && z > BG_LEVELS[want].maxZoom) { want++; }
+    if (want !== bgLevel) {
+      bgLevel = want;
+      var src = BG_LEVELS[want].src, pre = new Image();
+      pre.onload = function () {
+        if (bgLevel === want) {
+          bgImg.setAttribute("href", src);
+          bgImg.setAttribute("xlink:href", src);
+        }
+      };
+      pre.src = src;
+    }
     var k = W / view.w;
     nodes.forEach(function (n) {
       n.circle.setAttribute("r", n.r / k);
@@ -359,7 +399,7 @@
   root.querySelectorAll(".nwm-tools button").forEach(function (b) {
     b.addEventListener("click", function () {
       var r = svg.getBoundingClientRect(), z = b.dataset.z;
-      if (z === "reset") { view.x = 0; view.y = 0; view.w = W; apply(); }
+      if (z === "reset") { view.x = HOME.x; view.y = HOME.y; view.w = HOME.w; apply(); }
       else { zoomAt(r.left + r.width / 2, r.top + r.height / 2, z === "in" ? 1.6 : 1 / 1.6); }
     });
   });
