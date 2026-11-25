@@ -36,7 +36,6 @@
       "featured" $featured
       "authors" $authors
       "text" (.text | default ($page.Params.summary | plainify | strings.TrimSpace))
-      "summary" ($page.Params.summary | plainify | strings.TrimSpace)
     ) }}
   {{ end }}
 {{ end }}
@@ -79,20 +78,5 @@
         <button type="button" class="showcase-tab" id="{{ $id }}-tab-{{ $index }}" role="tab" aria-controls="{{ $id }}-panel-{{ $index }}" aria-selected="{{ if eq $index 0 }}true{{ else }}false{{ end }}" {{ if gt $index 0 }}tabindex="-1"{{ end }}>{{ $tab.page.Title }}</button>
       {{ end }}
     </div>
-
-    {{/* The other tabs as cards, the selected one is hidden */}}
-    <ul class="showcase-cards">
-      {{ range $index, $tab := $tabs }}
-        <li data-showcase-card="{{ $id }}-tab-{{ $index }}" {{ if eq $index 0 }}hidden{{ end }}>
-          <article class="showcase-card">
-            <h3 class="showcase-card-title"><a href="{{ $tab.page.Permalink }}">{{ $tab.page.Title }}</a></h3>
-            {{ with $tab.summary }}
-              <p class="showcase-card-text">{{ . }}</p>
-            {{ end }}
-            <span class="showcase-card-more" aria-hidden="true">{{ i18n "commons.more" }}</span>
-          </article>
-        </li>
-      {{ end }}
-    </ul>
   </div>
 {{ end }}

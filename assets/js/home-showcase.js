@@ -1,4 +1,4 @@
-// Showcase tabs: a badge shows its panel in the purple frame, the other tabs are shown as cards
+// Showcase tabs: a badge shows its panel in the purple frame
 document.querySelectorAll('[data-showcase]').forEach((showcase) => {
   const tabs = Array.from(showcase.querySelectorAll('[role="tab"]'));
 
@@ -8,10 +8,6 @@ document.querySelectorAll('[data-showcase]').forEach((showcase) => {
       tab.setAttribute('aria-selected', isSelected);
       tab.tabIndex = isSelected ? 0 : -1;
       document.getElementById(tab.getAttribute('aria-controls')).hidden = !isSelected;
-      const card = showcase.querySelector(`[data-showcase-card="${tab.id}"]`);
-      if (card) {
-        card.hidden = isSelected;
-      }
     });
   };
 
