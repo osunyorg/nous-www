@@ -17,8 +17,8 @@ items:
   new_tab: false
   children: []
   descendants_targets: []
-  path: "/exhibitions"
-  file: content/en/exhibitions/_index.html
+  path: "/pages/hr-genealogies"
+  file: content/en/pages/hr-genealogies/_index.html
 - title: Futures Labs
   slug: futures-labs
   target: "/futures-labs/"

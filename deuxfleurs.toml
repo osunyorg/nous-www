@@ -23,6 +23,10 @@ from = "/fichiers/index.html"
 to = "/fr/fichiers/"
 
 [[redirects]]
+from = "/exhibitions/hr-map-data/index.html"
+to = "/exhibitions/hr-map-data-old/"
+
+[[redirects]]
 from = "/repository/digital-rights-technology/education-knowledge-justice/index.html"
 to = "/repository/themes/education-knowledge-justice/"
 
@@ -55,10 +59,6 @@ from = "/human-rights-jams-1/index.html"
 to = "/human-rights-jams/"
 
 [[redirects]]
-from = "/exhibitions/index.html"
-to = "/hr-genealogies/"
-
-[[redirects]]
 from = "/en/persons/namatai-kwekweza/posts/index.html"
 to = "/persons/namatai-kwekweza/provocations/"
 
@@ -88,7 +88,7 @@ to = "/futures-labs-agenda/2026/07/"
 
 [[redirects]]
 from = "/hr-entries/exhibitions-archives/index.html"
-to = "/hr-genealogies/exhibitions-archives/"
+to = "/exhibitions/exhibitions-archives/"
 
 [[redirects]]
 from = "/politique-de-confidentialite/index.html"
@@ -132,7 +132,7 @@ to = "/futures-labs-agenda/2026/global-commons-futures-lab/"
 
 [[redirects]]
 from = "/en/exhibitions/index.html"
-to = "/hr-genealogies/"
+to = "/exhibitions/"
 
 [[redirects]]
 from = "/test-futures-labs/index.html"
@@ -148,7 +148,7 @@ to = "/hr-videos/2026/test-video-title-2/"
 
 [[redirects]]
 from = "/hr-entries/index.html"
-to = "/hr-genealogies/"
+to = "/exhibitions/"
 
 [[redirects]]
 from = "/agenda/2026/11/index.html"
@@ -187,10 +187,6 @@ from = "/en/organizations/index.html"
 to = "/organizations/"
 
 [[redirects]]
-from = "/exhibitions/exhibitions-archives/index.html"
-to = "/hr-genealogies/exhibitions-archives/"
-
-[[redirects]]
 from = "/future-labs/2026/12/index.html"
 to = "/futures-labs-agenda/2026/12/"
 
@@ -209,6 +205,14 @@ to = "/fr/agenda/2026/02/"
 [[redirects]]
 from = "/en/future-labs/2026/index.html"
 to = "/futures-labs-agenda/2026/"
+
+[[redirects]]
+from = "/hr-genealogies-wip/hr-map-data-1/index.html"
+to = "/hr-genealogies/hr-map-data/"
+
+[[redirects]]
+from = "/hr-genealogies-wip/index.html"
+to = "/hr-genealogies/"
 
 [[redirects]]
 from = "/en/index.html"
@@ -299,6 +303,10 @@ from = "/en/future-labs/2026/inception-design-united-kingdom/index.html"
 to = "/futures-labs-agenda/2026/inception-design-united-kingdom/"
 
 [[redirects]]
+from = "/hr-genealogies/exhibitions-archives/index.html"
+to = "/exhibitions/exhibitions-archives/"
+
+[[redirects]]
 from = "/repository/digital-rights-technology/index.html"
 to = "/repository/themes/"
 
@@ -324,7 +332,7 @@ to = "/futures-labs-agenda/2026/01/"
 
 [[redirects]]
 from = "/en/exhibitions/exhibitions-archives/index.html"
-to = "/hr-genealogies/exhibitions-archives/"
+to = "/exhibitions/exhibitions-archives/"
 
 [[redirects]]
 from = "/personnes/equipe-editoriale/index.html"
@@ -353,6 +361,10 @@ to = "/futures-labs-agenda/2026/inception-design-united-kingdom/"
 [[redirects]]
 from = "/en/agenda/2026/08/index.html"
 to = "/futures-labs-agenda/2026/08/"
+
+[[redirects]]
+from = "/hr-genealogies/hr-map-data-1/index.html"
+to = "/hr-genealogies/hr-map-data/"
 
 [[redirects]]
 from = "/repository/themes/digital-rights-technolog/index.html"
