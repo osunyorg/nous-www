@@ -12,20 +12,24 @@
 */
 const fs = require("fs");
 const path = require("path");
-const { detectDelimiter, parse, stringify, norm } = require("./csv");
+const { detectDelimiter, parse, stringify, norm, noPoint } = require("./csv");
 
 const DIR = __dirname;
-const NO_POINT = /^(global|international|worldwide|world|multiple|various|n\/a|unknown)\b/i;
 
-/* "Babylonia / Mesopotamia (present-day Iraq)" -> requêtes à essayer, de la plus précise à la plus large */
+/* "Babylonia / Mesopotamia (present-day Iraq)" -> requêtes à essayer, de la plus précise à la plus large.
+   Ordre : libellé complet, puis DERNIER morceau (souvent le pays), puis premier, puis les autres,
+   puis les morceaux « present-day ». Ex. « Terai region, Nepal » -> complet, « Nepal », « Terai region » :
+   évite le faux positif « Terai » (Hokkaido, Japon). */
 function buildQueries(place) {
   const modern = (place.match(/present[- ]day\s+([^)]+)\)/i) || [])[1];
   const base = place.replace(/\([^)]*\)/g, " ").replace(/\s+/g, " ").trim();
-  const parts = base.split(/\s*[\/;]\s*/).map(s => s.trim()).filter(Boolean);
+  const parts = base.split(/\s*[\/;,]\s*/).map(s => s.trim()).filter(Boolean);
   const modernParts = modern ? modern.split(/\s*(?:\/|,| and )\s*/).map(s => s.trim()).filter(Boolean) : [];
-  const q = [];
+  const q = [base];
+  if (parts.length > 1) q.push(parts[parts.length - 1]); // le pays en premier
+  if (parts[0]) q.push(parts[0]);
+  parts.slice(1, -1).forEach(p => q.push(p));
   if (parts[0] && modernParts[0]) q.push(parts[0] + ", " + modernParts[0]);
-  parts.forEach(p => q.push(p));
   modernParts.forEach(p => q.push(p));
   return q.filter((v, i) => v && q.indexOf(v) === i);
 }
@@ -75,7 +79,7 @@ async function run(opts) {
     const place = todo[i];
     let row = find(place);
     if (!row) { row = [place, "", "", "", "", ""]; table.push(row); }
-    if (NO_POINT.test(place)) { row[3] = "no point"; save(); continue; }
+    if (noPoint(place)) { row[3] = "no point"; save(); continue; }
     let hit = null, used = "";
     for (const q of buildQueries(place)) {
       try { hit = await lookup(q, fetchFn, contact); } catch (e) { hit = null; console.warn("  erreur pour « " + q + " » : " + e.message); }

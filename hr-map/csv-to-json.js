@@ -1,17 +1,20 @@
 /*
-  Convertit hr-map.csv en static/hr-map.json
-  Usage : node hr-map/csv-to-json.js
+  Convertit un CSV de la carte HR en static/data/hr-map.json
+  Usage : node hr-map/csv-to-json.js [csv] [output.json] [places.csv]
 
-  Coordonnées : colonnes Lat / Lon de hr-map.csv si elles sont remplies,
-  sinon celles de hr-map/places.csv (une ligne par lieu, voir geocode.js).
+  Coordonnées : colonnes Lat / Lon du CSV si elles sont remplies,
+  sinon celles du fichier places (argv[4], défaut hr-map/places.csv — une ligne
+  par lieu, voir geocode.js ; scripts/build-hr-map.js peut en passer un fusionné
+  avec des lieux géocodés à la volée).
 */
 const fs = require("fs");
 const path = require("path");
-const { detectDelimiter, parse, norm } = require("./csv");
+const { detectDelimiter, parse, norm, noPoint } = require("./csv");
 
-const input = process.argv[2] || path.join(__dirname, "hr-map.csv");
+const input = process.argv[2] || path.join(__dirname, "fallback.csv");
 const output = process.argv[3] || path.join(__dirname, "..", "static", "hr-map.json");
-const placesFile = path.join(__dirname, "places.csv");
+// argv[4] : fichier places alternatif (ex. places.csv + lieux géocodés au build par scripts/build-hr-map.js)
+const placesFile = process.argv[4] || path.join(__dirname, "places.csv");
 
 const read = f => fs.readFileSync(f, "utf8").replace(/^\uFEFF/, "");
 const num = v => parseFloat(String(v || "").trim().replace(",", "."));
@@ -57,7 +60,8 @@ rows.forEach((r, n) => {
   if ((isNaN(lat) || isNaN(lon)) && placeCoords[place]) {
     lat = placeCoords[place][0]; lon = placeCoords[place][1]; fromPlaces++;
   }
-  const isGlobal = (isNaN(lat) || isNaN(lon)) && globalPlaces[place];
+  // « no point » dans places.csv, ou libellé générique (Not specified, Global… même au milieu) -> entrée globale
+  const isGlobal = (isNaN(lat) || isNaN(lon)) && (globalPlaces[place] || noPoint(place));
   if (isGlobal) {
     const g = { title: title, date: get(r, idx.date), place: place, text: get(r, idx.text),
       category: get(r, idx.category), url: get(r, idx.url), global: true };

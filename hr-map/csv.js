@@ -36,4 +36,12 @@ function stringify(rows, delim) {
 
 const norm = s => String(s || "").replace(/\s+/g, " ").trim();
 
-module.exports = { detectDelimiter, parse, stringify, norm };
+// Lieux sans point carte (entrée « globale », listée sous la légende) — partagé geocode.js / csv-to-json.js
+const NO_POINT = /^(global|international|worldwide|world|multiple|various|n\/a|not specified|unspecified|unknown)\b/i;
+// teste le libellé entier ET chaque morceau séparé par / ; , (« Indigenous territories / Global » -> global)
+const noPoint = s => {
+  const t = norm(s);
+  return NO_POINT.test(t) || t.split(/\s*[\/;,]\s*/).some(p => NO_POINT.test(p));
+};
+
+module.exports = { detectDelimiter, parse, stringify, norm, NO_POINT, noPoint };

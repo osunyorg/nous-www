@@ -1,9 +1,9 @@
 place;lat;lon;status;matched;approx
 Babylonia / Mesopotamia (present-day Iraq);32.5422;44.4300;auto;Babylonia, Iraq → Babylonian theatre, شارع منتجع بابل, Al Hillah [building];
 Ancient Greece;37.7714;21.7434;auto;Ancient Greece → Municipality of Ancient Olympia, Elis Regional Unit, Western Greece [municipality];
-Babylon, Mesopotamia;;;not found;;
+Babylon, Mesopotamia;32.5447;44.4318;manual;Babylon → Babylon, Al-Qadisiyyah Governorate, Iraq [city];
 Mauryan Empire / South Asia;25.6000;85.1000;manual;Pataliputra / Patna, Inde (corrigé : Bali);yes
-Medina, Arabian Peninsula;;;not found;;
+Medina, Arabian Peninsula;24.4712;39.6111;manual;Medina → Medina, Al Madinah Province, Saudi Arabia [city];
 Arabian Peninsula;22.3743;49.4771;auto;Arabian Peninsula → Arabian Peninsula, Saudi Arabia [peninsula];yes
 England;52.5310;-1.2649;auto;England → England, United Kingdom [state];
 Indigenous territories / Global;;;no point;entrée globale (corrigé : Venezuela);
@@ -75,3 +75,4 @@ Pakistan;30.3308;71.2475;auto;Pakistan → Pakistan [country];
 Brazil;-10.3333;-53.2000;auto;Brazil → Brazil [country];
 Thailand;14.8972;100.8327;auto;Thailand → Thailand [country];
 Kenya;0.2793;37.5165;auto;Kenya → Kenya [historic:administrative];
+Barcelona;41.3826;2.1771;auto;Barcelona → Barcelona, Barcelonès, Barcelona [city];
