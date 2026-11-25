@@ -153,20 +153,23 @@ $nwm-muted: #555 !default
     gap: 8px 16px
     padding: 0
 
+// Same colors as the points on the map (.nwm-point). The dark ring stands in for
+// the map background, so the cream parts stay visible on the cream boxes.
 .nwm-legend-dot
   flex: 0 0 auto
   width: 12px
   height: 12px
-  border: 2px solid $nwm-sea
+  border: 2px solid $nwm-accent
   border-radius: 50%
-  background: $nwm-accent
+  background: $header-background
+  box-shadow: 0 0 0 2px $nwm-sea
 
   &--active
-    border-color: $nwm-accent
+    border-color: $header-background
 
   &--approx
-    border-color: $nwm-accent
-    background: $nwm-sea
+    border-color: $header-background
+    background: $nwm-accent
 
 // Boxes in the sidebar: same as the note under the map
 .nwm-box
