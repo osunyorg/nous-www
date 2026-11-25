@@ -23,10 +23,6 @@ from = "/fichiers/index.html"
 to = "/fr/fichiers/"
 
 [[redirects]]
-from = "/exhibitions/hr-map-data/index.html"
-to = "/exhibitions/hr-map-data-old/"
-
-[[redirects]]
 from = "/repository/digital-rights-technology/education-knowledge-justice/index.html"
 to = "/repository/themes/education-knowledge-justice/"
 
