@@ -1,5 +1,9 @@
 # 2026-11-24 — Carte HR (Genealogies) : options pour déposer un CSV de nouveaux points
 
+> **→ Décision prise le 2026-11-25** : variante de l'option 1 retenue (CSV déposé dans
+> l'admin Osuny, lu **au build** par `hr-map/build.js` → `static/data/hr-map.json`).
+> Doc complète de la logique en place : `journal/2026-11-25-csv-hr-map-via-cms.md`.
+
 Objectif : permettre d'ajouter des points sur la carte `/hr-genealogies/` à partir d'un CSV,
 sans passer par un commit manuel dans le repo. Ce doc liste les options creusées dans le code,
 pour décision. Aujourd'hui le flux est : `hr-map/hr-map.csv` → `node hr-map/csv-to-json.js` →
