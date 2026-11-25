@@ -73,6 +73,26 @@
         align-items: center
         margin-top: $spacing-4 !important
 
+    // Mobile : centrage explicite (le thème repasse en grille sous desktop)
+    // et espace réduit au-dessus du bouton. Le thème met margin-right/top: 1.5rem
+    // sur .actions a (inline-block) : on les annule, sinon le bouton reste décalé.
+    @include media-breakpoint-down(md)
+      > div
+        display: flex !important
+        align-items: center
+        text-align: center
+
+        .top, .actions
+          width: 100%
+
+        .actions
+          align-items: center
+          margin-top: $spacing-3 !important
+          text-align: center
+
+          a
+            margin: 0
+
   // "Partner institutions": up to 4 cards per row, violet frame, transparent background
   .block-links.block-links--cards
     .block-title

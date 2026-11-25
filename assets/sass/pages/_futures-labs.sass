@@ -28,9 +28,9 @@
       &-title
         a
           color: $color-accent
-          font-size: 2.5rem
+          font-size: clamp(1.5rem, 2.5vw, 2rem) // même taille que les titres de la page Jams
           font-weight: 700
-          line-height: 1
+          line-height: 1.15
 
           &:hover
             color: darken($color-accent, 10%)
@@ -207,9 +207,7 @@
     margin-bottom: 0
 
     .block-title
-      font-size: 2.5rem
-      font-weight: 800
-      text-transform: capitalize
+      @include section-title // même taille que les titres de la page Jams
       margin-bottom: 0
 
       // Le titre n'est plus un lien visible ni cliquable, sans flèche
@@ -306,9 +304,7 @@
             content: none
 
     .call_to_action h2.block-title
-      font-size: 2.5rem !important
-      font-weight: 800
-      text-transform: capitalize
+      @include section-title // même taille que les titres de la page Jams
 
   // Pas d'espace blanc entre le dernier bloc et le footer
   main.page-with-blocks
@@ -397,7 +393,7 @@
     @include icon(calendar-line, before)
       font-size: 1.1em
 
-  // Bouton "Watch the Highlights" + lien "Key Insights"
+  // Bouton "Watch the Highlights"
   .event-actions
     order: 4
     display: flex
@@ -424,17 +420,6 @@
     &::before,
     &::after
       content: none
-
-  a.event-actions-secondary
-    color: $color-accent
-    font-weight: 700
-    text-decoration: underline
-    text-underline-offset: 0.2em
-    text-decoration-thickness: 1px
-
-    &:hover,
-    &:focus-visible
-      text-decoration-thickness: 2px
 
   // Media à gauche
   .media

@@ -1,19 +1,17 @@
 {{/* Surcharge du thème (events/partials/event/core.html).
      Layout "large" (Featured Gathering, page Futures Labs) :
      catégorie, lieu + dates (résumé) avec icône calendrier,
-     puis bouton "Watch the Highlights" (header_cta) et lien "Key Insights".
+     puis bouton "Watch the Highlights" (header_cta).
      Les autres layouts gardent le comportement du thème. */}}
 {{ $with_more := .with_more | default site.Params.events.list.with_more }}
 
 {{ if eq .layout "large" }}
   {{ $event := .event }}
 
-  {{/* Ancres des blocs de la page événement (slugs Osuny) */}}
+  {{/* Ancre du bloc vidéo de la page événement (slug Osuny) */}}
   {{ $video_anchor := "" }}
-  {{ $report_anchor := "" }}
   {{ range $event.Params.contents }}
     {{ if and (eq .template "video") (not $video_anchor) }}{{ $video_anchor = .slug }}{{ end }}
-    {{ if and (eq .template "chapter") (not $report_anchor) }}{{ $report_anchor = .slug }}{{ end }}
   {{ end }}
 
   {{ if .options.categories }}
@@ -36,7 +34,6 @@
         {{ end }}
       {{ end }}
     {{ end }}
-    <a class="event-actions-secondary" href="{{ $event.RelPermalink }}{{ with $report_anchor }}#{{ . }}{{ end }}">Key Insights</a>
   </div>
 {{ else if eq .layout "grid" }}
   {{/* Grilles Futures Labs (Upcoming, Past Gatherings) :
