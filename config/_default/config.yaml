@@ -8,6 +8,14 @@ cascade:
       kind: page
     outputs:
       - RSS # pas de HTML -> pas de page single, mais l'entrée reste dans toutes les listes (section + taxonomies)
+  # Page de données HR map (bloc datatable importé via API, scripts/import-osuny/import-hr-map.rb) :
+  # publiée car le sync git Osuny ne génère que les contenus publiés, mais jamais rendue ni listée —
+  # ses données sont lues au build pour générer static/hr-map.json
+  - _target:
+      path: "/pages/hr-genealogies/hr-map-data/**"
+    _build:
+      render: never
+      list: never
 params:
   additional_csp: "img.youtube.com www.youtube-nocookie.com"
   summary:

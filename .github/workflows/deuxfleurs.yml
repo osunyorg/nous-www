@@ -33,6 +33,9 @@ jobs:
         hugo-version: '0.165.0'
         extended: true
 
+    - name: Régénération de hr-map.json depuis le CSV Osuny (média syncé dans le repo)
+      run: node scripts/build-hr-map.js
+
     - name: Compilation du site
       run: yarn osuny build
 
