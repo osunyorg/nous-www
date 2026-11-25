@@ -2,7 +2,8 @@
   Régénère static/data/hr-map.json au build, depuis le CSV de la carte HR.
 
   Source principale : le bloc « files » de la page hr-map-data (rempli à la main dans
-  l'admin Osuny) :
+  l'admin Osuny) — le fichier déposé DOIT être un CSV UTF-8 (Excel : exporter en CSV ;
+  tout autre format est refusé avec une erreur et on retombe sur fallback.csv) :
     content/en/pages/.../hr-map-data/_index.html -> data.files[0].file (page File)
       -> original_blob.id -> data/media/<id[0,2]>/<id>.yml -> direct_url (S3, publique)
       -> fetch du CSV
@@ -46,13 +47,19 @@ function findPageFile(dir) {
   return null;
 }
 
-function mediaDirectUrl(mediaId) {
-  const mediaYml = path.join(ROOT, "data", "media", mediaId.slice(0, 2), mediaId + ".yml");
-  if (!fs.existsSync(mediaYml)) return null;
-  return (fs.readFileSync(mediaYml, "utf8").match(/^direct_url:\s*"?(\S+?)"?\s*$/m) || [])[1] || null;
+function mediaYml(mediaId) {
+  const p = path.join(ROOT, "data", "media", mediaId.slice(0, 2), mediaId + ".yml");
+  if (!fs.existsSync(p)) return null;
+  return fs.readFileSync(p, "utf8");
 }
 
-// Résout le CSV du bloc files : retourne une URL, ou null si bloc absent/incomplet
+function mediaDirectUrl(mediaId) {
+  const y = mediaYml(mediaId);
+  return y && (y.match(/^direct_url:\s*"?(\S+?)"?\s*$/m) || [])[1] || null;
+}
+
+// Résout le CSV du bloc files : retourne { url, name }, ou null si bloc absent/incomplet.
+// Le fichier déposé dans l'admin DOIT être un CSV (UTF-8) — Excel : exporter en CSV.
 function csvUrlFromFilesBlock() {
   const pageFile = findPageFile(path.join(ROOT, "content"));
   if (!pageFile) return null;
@@ -65,9 +72,22 @@ function csvUrlFromFilesBlock() {
   const fileFm = fs.readFileSync(filePage, "utf8").match(/^---\n([\s\S]*?)\n---/);
   const blobId = fileFm && (fileFm[1].match(/^original_blob:\s*\n\s*id:\s*"?([0-9a-f-]{36})"?/m) || [])[1];
   if (!blobId) return null;
-  const url = mediaDirectUrl(blobId);
-  if (url) console.log("[hr-map] CSV résolu via le bloc files -> " + m[1]);
-  return url;
+  const y = mediaYml(blobId);
+  if (!y) return null;
+  const url = (y.match(/^direct_url:\s*"?(\S+?)"?\s*$/m) || [])[1];
+  const name = (y.match(/^name:\s*"?(.+?)"?\s*$/m) || [])[1] || "";
+  if (!url) return null;
+  console.log("[hr-map] CSV résolu via le bloc files -> " + m[1] + " (" + name + ")");
+  return { url, name, blobId };
+}
+
+/* Dernier hash connu, stocké dans le JSON servi (entrée _build, filtrée par hr-map.js). */
+function lastBuildHash() {
+  try {
+    const data = JSON.parse(fs.readFileSync(OUT, "utf8"));
+    const meta = data.find(e => e && e._build);
+    return meta ? meta._build.hash : null;
+  } catch { return null; }
 }
 
 /* Lit places.csv -> Map norm(place) -> {lat, lon} */
@@ -136,23 +156,41 @@ async function geocodeMissingPlaces(csvPath) {
   return placesTmp;
 }
 
-function generate(csvPath, placesPath, label) {
+const crypto = require("crypto");
+const sha1 = s => crypto.createHash("sha1").update(s).digest("hex");
+
+/* Hash combiné : id du média (change si le CSV uploadé change) + contenu de places.csv + contenu du CSV.
+   Si identique au dernier build connu (champ _build.hash du JSON servi), on ne régénère rien. */
+function buildHash(sourceId, csvPath) {
+  const csvHash = sha1(fs.readFileSync(csvPath));
+  const placesHash = fs.existsSync(PLACES_CSV) ? sha1(fs.readFileSync(PLACES_CSV)) : "";
+  return sha1(sourceId + "|" + placesHash + "|" + csvHash);
+}
+
+function generate(csvPath, placesPath, label, hash) {
   execFileSync(process.execPath,
     [path.join(ROOT, "hr-map", "csv-to-json.js"), csvPath, OUT, placesPath], { stdio: "inherit" });
+  // métadonnée technique (pas d'erreurs affichées) pour la détection de changement au build suivant
+  const data = JSON.parse(fs.readFileSync(OUT, "utf8"));
+  data.push({ _build: { hash, source: label, generatedAt: new Date().toISOString() } });
+  fs.writeFileSync(OUT, JSON.stringify(data, null, 1) + "\n");
   console.log("[hr-map] " + OUT + " régénéré depuis " + label);
 }
 
 (async () => {
   let csvPath = null, label = null;
-  const url = csvUrlFromFilesBlock();
-  if (url) {
-    console.log("[hr-map] CSV média : " + url);
+  const media = csvUrlFromFilesBlock();
+  if (media && !/\.csv$/i.test(media.name)) {
+    console.error("[hr-map] le fichier déposé dans le bloc files n'est pas un CSV (" + media.name +
+      ") — seules les entrées .csv sont prises en compte (Excel : exporter en CSV UTF-8). -> fallback");
+  } else if (media) {
+    console.log("[hr-map] CSV média : " + media.url);
     try {
-      const res = await fetch(url);
+      const res = await fetch(media.url);
       if (res.ok) {
         csvPath = path.join(os.tmpdir(), "hr-map-" + Date.now() + ".csv");
         fs.writeFileSync(csvPath, Buffer.from(await res.arrayBuffer()));
-        label = "le CSV du bloc files (média " + url.slice(0, 60) + "…)";
+        label = "le CSV du bloc files (" + media.name + ")";
       } else {
         console.error("[hr-map] fetch du CSV en échec (HTTP " + res.status + ") -> fallback");
       }
@@ -170,6 +208,13 @@ function generate(csvPath, placesPath, label) {
     csvPath = FALLBACK_CSV;
     label = "hr-map/fallback.csv (repo)";
   }
+  // Détection : si le CSV source et places.csv n'ont pas changé depuis le dernier build, on garde le JSON.
+  const sourceId = media && /\.csv$/i.test(media.name) ? media.blobId : "fallback";
+  const hash = buildHash(sourceId, csvPath);
+  if (lastBuildHash() === hash) {
+    console.log("[hr-map] rien n'a changé (même CSV, même places.csv) -> JSON conservé tel quel");
+    process.exit(0);
+  }
   // Géocodage au build des lieux absents de places.csv (en mémoire, places.csv du repo intact)
   let placesPath = PLACES_CSV;
   try {
@@ -177,5 +222,5 @@ function generate(csvPath, placesPath, label) {
   } catch (e) {
     console.error("[hr-map] géocodage en erreur (" + e.message + ") -> places.csv sans les nouveaux lieux");
   }
-  generate(csvPath, placesPath, label);
+  generate(csvPath, placesPath, label, hash);
 })();
