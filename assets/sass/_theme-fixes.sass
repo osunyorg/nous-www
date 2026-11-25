@@ -11,10 +11,15 @@
 // Taille logo (légèrement réduit pour que la nav tienne sur une seule ligne en desktop)
 @media (min-width: 992px)
   header#document-header .logo img
-    height: 3rem
+    height: 2.75rem
 
-// Nav principale compacte sur desktop pour tenir sur une seule ligne
+// Nav principale compacte sur desktop pour tenir sur une seule ligne :
+// marge latérale du conteneur du header réduite (espace à gauche du logo
+// et à droite du dernier item), items un peu plus petits
 @media (min-width: 992px)
+  header#document-header .primary-menu > .container
+    padding-left: pxToRem(10)
+    padding-right: pxToRem(10)
   header#document-header .primary-menu .nav-level-1 > li
     > a, > span
       font-size: pxToRem(13)
