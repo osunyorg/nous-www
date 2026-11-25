@@ -1,6 +1,6 @@
 [build]
   publish = "public"
-  command = "yarn osuny build"
+  command = "node scripts/build-hr-map.js && yarn osuny build"
 
 [build.environment]
   HUGO_VERSION = "0.159.2"
