@@ -8,6 +8,16 @@ cascade:
       kind: page
     outputs:
       - RSS # pas de HTML -> pas de page single, mais l'entrée reste dans toutes les listes (section + taxonomies)
+  # Sous-page conteneur de données HR map (bloc files avec le CSV) : elle doit rester publiée
+  # dans le CMS (le sync git Osuny ne génère que les pages publiées) pour que hr-map/build.js
+  # puisse lire le CSV, mais Hugo ne doit jamais la rendre ni la lister.
+  # NB : clé "build" (et non "_build", supprimée dans Hugo >= 0.145) ; path exact pour ne
+  # pas toucher la page parente /hr-genealogies/ qui, elle, doit être rendue.
+  - _target:
+      path: "/pages/hr-genealogies/hr-map-data"
+    build:
+      render: never
+      list: never
 params:
   additional_csp: "img.youtube.com www.youtube-nocookie.com"
   summary:
