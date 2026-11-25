@@ -34,15 +34,34 @@ const MAX_GEOCODE = 20;
 const GEOCODE_DELAY_MS = 1100;
 const GEOCODE_CONTACT = process.env.GEOCODE_CONTACT || "hr-map-build@nous.osuny.site";
 
-function findPageFile(dir) {
+/* Liste toutes les pages _index.html du site (content/en/**). */
+function allIndexFiles(dir, acc = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const p = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      const found = findPageFile(p);
-      if (found) return found;
-    } else if (entry.name === "_index.html" && p.includes("hr-map-data")) {
-      return p;
-    }
+    if (entry.isDirectory()) allIndexFiles(p, acc);
+    else if (entry.name === "_index.html") acc.push(p);
+  }
+  return acc;
+}
+
+/* Trouve la page qui porte un bloc files avec un fichier CSV (quel que soit son slug) :
+   insensible au renommage de la page (hr-map-data, hr-genealogies-wip, …). */
+function findCsvFilesPage() {
+  for (const pageFile of allIndexFiles(path.join(ROOT, "content"))) {
+    const fm = fs.readFileSync(pageFile, "utf8").match(/^---\n([\s\S]*?)\n---/);
+    if (!fm) continue;
+    const m = fm[1].match(/template:\s*files\b[\s\S]*?file:\s*"(content\/en\/files\/[^"]+\.html)"/);
+    if (!m) continue;
+    const filePage = path.join(ROOT, m[1]);
+    if (!fs.existsSync(filePage)) continue;
+    const fileFm = fs.readFileSync(filePage, "utf8").match(/^---\n([\s\S]*?)\n---/);
+    const blobId = fileFm && (fileFm[1].match(/^original_blob:\s*\n\s*id:\s*"?([0-9a-f-]{36})"?/m) || [])[1];
+    if (!blobId) continue;
+    const y = mediaYml(blobId);
+    if (!y) continue;
+    const name = (y.match(/^name:\s*"?(.+?)"?\s*$/m) || [])[1] || "";
+    if (!/\.csv$/i.test(name)) continue; // bloc files présent mais pas un CSV
+    return { pageFile, filePage: m[1], blobId, name };
   }
   return null;
 }
@@ -58,27 +77,16 @@ function mediaDirectUrl(mediaId) {
   return y && (y.match(/^direct_url:\s*"?(\S+?)"?\s*$/m) || [])[1] || null;
 }
 
-// Résout le CSV du bloc files : retourne { url, name }, ou null si bloc absent/incomplet.
+// Résout le CSV du bloc files : retourne { url, name, blobId }, ou null si absent.
 // Le fichier déposé dans l'admin DOIT être un CSV (UTF-8) — Excel : exporter en CSV.
 function csvUrlFromFilesBlock() {
-  const pageFile = findPageFile(path.join(ROOT, "content"));
-  if (!pageFile) return null;
-  const fm = fs.readFileSync(pageFile, "utf8").match(/^---\n([\s\S]*?)\n---/);
-  if (!fm) return null;
-  const m = fm[1].match(/template:\s*files\b[\s\S]*?file:\s*"(content\/en\/files\/[^"]+)"/);
-  if (!m) return null;
-  const filePage = path.join(ROOT, m[1]);
-  if (!fs.existsSync(filePage)) return null;
-  const fileFm = fs.readFileSync(filePage, "utf8").match(/^---\n([\s\S]*?)\n---/);
-  const blobId = fileFm && (fileFm[1].match(/^original_blob:\s*\n\s*id:\s*"?([0-9a-f-]{36})"?/m) || [])[1];
-  if (!blobId) return null;
-  const y = mediaYml(blobId);
-  if (!y) return null;
-  const url = (y.match(/^direct_url:\s*"?(\S+?)"?\s*$/m) || [])[1];
-  const name = (y.match(/^name:\s*"?(.+?)"?\s*$/m) || [])[1] || "";
+  const found = findCsvFilesPage();
+  if (!found) return null;
+  const url = mediaDirectUrl(found.blobId);
   if (!url) return null;
-  console.log("[hr-map] CSV résolu via le bloc files -> " + m[1] + " (" + name + ")");
-  return { url, name, blobId };
+  console.log("[hr-map] CSV résolu via le bloc files de " + found.pageFile.replace(ROOT + "/", "") +
+    " -> " + found.filePage + " (" + found.name + ")");
+  return { url, name: found.name, blobId: found.blobId };
 }
 
 /* Dernier hash connu, stocké dans le JSON servi (entrée _build, filtrée par hr-map.js). */
