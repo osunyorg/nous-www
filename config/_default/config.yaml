@@ -20,6 +20,15 @@ cascade:
       list: never
 params:
   additional_csp: "img.youtube.com www.youtube-nocookie.com"
+  image_sizes:
+    blocks:
+      chapter:
+        # Variantes plus grandes : les images de blocs chapter sont affichées jusqu'à
+        # 75% de la colonne (ex. About Us), soit > 448px en grand écran — l'ancien
+        # réglage 448px du thème faisait upscale l'image par le navigateur (pixelisé).
+        mobile: 350
+        tablet: 800
+        desktop: 1200
   summary:
     position: hero
   search:
