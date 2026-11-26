@@ -1,0 +1,13 @@
+---
+title: Footer
+items:
+- title: Privacy Policy
+  slug: privacy-policy
+  target: "/privacy-policy/"
+  kind: page
+  new_tab: false
+  children: []
+  descendants_targets: []
+  path: "/pages/privacy-policy"
+  file: content/en/pages/privacy-policy/_index.html
+
