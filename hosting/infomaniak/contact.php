@@ -28,7 +28,7 @@ const DB_TABLE_PREFIX = 'messages_'; // + form key: messages_contact, messages_p
 
 // Sender address: must be an address of the site's domain, hosted at Infomaniak
 // (otherwise the emails end up in spam, see SPF / DKIM in the Cloudflare DNS)
-const MAIL_FROM = ''; // TODO, e.g. 'noreply@humanrightsfutures.com'
+const MAIL_FROM = 'noreply@humanrightsfutures.com';
 const MAIL_FROM_NAME = 'Nous website';
 
 // Sites allowed to post the forms (Origin header). Empty = only the current host.
@@ -43,7 +43,7 @@ const RATE_LIMIT = 5;
 // type: text | email | url | textarea — max: maximum length
 const FORMS = [
   'contact' => [
-    'to' => '', // TODO
+    'to' => 'coline@nous.colmena.fund',
     'subject' => '[Nous] New message from the website',
     'fields' => [
       'name'         => ['label' => 'Name', 'required' => true, 'max' => 200],
@@ -54,7 +54,7 @@ const FORMS = [
     ],
   ],
   'pitch' => [
-    'to' => '', // TODO
+    'to' => 'coline@nous.colmena.fund',
     'subject' => '[Nous] New provocation pitch',
     'fields' => [
       'name'         => ['label' => 'Name', 'required' => true, 'max' => 200],

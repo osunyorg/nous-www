@@ -1,22 +1,11 @@
 # Footer links (the footer itself: layouts/_partials/footer/footer-simple.html)
-links:
-  - title: Home
-    url: /
-  - title: About us
-    url: /abous-us/
-  - title: Privacy Policy
-    url: /privacy-policy/
+# The footer links are the "Footer" menu in Osuny (data/menus/<lang>/footer.yml)
 
 tagline: "Nous: Powering the Future of Human Rights."
 
-# Order of the icons; an empty url hides the icon
+# Order of the first social icons. The URLs are set in Osuny (website settings > social networks);
+# a network left empty in Osuny is hidden, any other network filled in Osuny is added after these.
 socials:
   - key: youtube
-    label: YouTube
-    url: "https://www.youtube.com/" # TODO
   - key: instagram
-    label: Instagram
-    url: "https://www.instagram.com/" # TODO
   - key: linkedin
-    label: LinkedIn
-    url: "https://www.linkedin.com/" # TODO

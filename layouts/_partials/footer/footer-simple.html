@@ -2,21 +2,44 @@
 {{ with site.Data.footer }}
   <div class="container footer-nous">
     <div class="footer-nous-top">
-      {{ with .links }}
+      {{/* Links: the "Footer" menu in Osuny (synced into data/menus/<lang>/footer.yml), first level only */}}
+      {{ with (partial "GetMenu" "footer").items }}
         <nav aria-label="Footer">
           <ul class="footer-nous-links">
             {{ range . }}
-              <li><a href="{{ .url }}">{{ .title }}</a></li>
+              {{ if .target }}
+                <li><a href="{{ .target | safeURL }}"{{ if .new_tab }} target="_blank" rel="noreferrer"{{ end }}>{{ .title }}</a></li>
+              {{ else }}
+                <li><span>{{ .title }}</span></li>
+              {{ end }}
             {{ end }}
           </ul>
         </nav>
       {{ end }}
-      {{ $socials := where .socials "url" "!=" "" }}
+      {{/* URLs come from Osuny (website settings > social networks, synced into site.Params.contact_details).
+           data/footer.yaml only sets the order of the first icons; any other network filled in Osuny
+           follows, in Osuny's order. A network left empty in Osuny is hidden. */}}
+      {{ $networks := (site.Params.contact_details).social_networks | default dict }}
+      {{ $keys := slice }}
+      {{ range .socials }}{{ $keys = $keys | append .key }}{{ end }}
+      {{ range $key, $_ := $networks }}
+        {{ if not (in $keys $key) }}{{ $keys = $keys | append $key }}{{ end }}
+      {{ end }}
+      {{ $socials := slice }}
+      {{ range $keys }}
+        {{ $key := . }}
+        {{ with index $networks $key }}
+          {{ with chomp .value }}
+            {{ $label := i18n (printf "commons.contact.socials.social_networks.%s" $key) | default (humanize $key) }}
+            {{ $socials = $socials | append (dict "url" . "key" $key "label" $label) }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
       {{ with $socials }}
         <ul class="footer-nous-socials">
           {{ range . }}
             <li class="{{ .key }}">
-              <a href="{{ .url }}" rel="noreferrer" target="_blank" title="{{ .label }}"><span class="sr-only">{{ .label }}</span></a>
+              <a href="{{ .url | safeURL }}" rel="noreferrer" target="_blank" title="{{ .label }}"><span class="sr-only">{{ .label }}</span></a>
             </li>
           {{ end }}
         </ul>
