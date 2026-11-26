@@ -28,7 +28,7 @@ items:
   descendants_targets: []
   path: "/pages/legal-terms"
   file: content/en/pages/legal-terms/_index.html
-- title: Privacy Policy
+- title: Privacy policy
   slug: privacy-policy
   target: "/privacy-policy/"
   kind: page

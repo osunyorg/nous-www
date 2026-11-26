@@ -2,7 +2,7 @@
 
 en:
   title: >-
-    Nous
+    Nous - Powering the future of human rights
   contentDir: content/en
   locale: en
   label: English
@@ -12,9 +12,19 @@ en:
       social_networks:
         instagram:
           label: >-
-            leonstudio.app
+            
           value: >-
-            https://instagram.com/leonstudio.app
+            https://instagram.com/
+        linkedin:
+          label: >-
+            linkedin.com
+          value: >-
+            https://www.linkedin.com/
+        youtube:
+          label: >-
+            
+          value: >-
+            https://www.youtube.com/@
 
   taxonomies:
     administrator: administrators
