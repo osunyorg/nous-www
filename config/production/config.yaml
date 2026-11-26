@@ -7,6 +7,10 @@ osuny:
   website:
     id: 072641b5-6716-49b3-8c74-b761bc68f78b
 
+## PARAMS
+params:
+  _merge: deep
+  plausible: "humanrightsfutures.com"
 
 ## LANGUAGE
 defaultContentLanguage: en
