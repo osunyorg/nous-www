@@ -9,6 +9,12 @@ en:
   buildFuture: true
   params:
     contact_details:
+      social_networks:
+        instagram:
+          label: >-
+            leonstudio.app
+          value: >-
+            https://instagram.com/leonstudio.app
 
   taxonomies:
     administrator: administrators
