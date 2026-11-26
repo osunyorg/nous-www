@@ -1,20 +1,34 @@
 <?php
 /**
  * Form endpoint (Infomaniak web hosting, PHP).
- * Receives the form popups (data/forms.yaml, assets/js/form-modal.js) and sends them by email.
+ * Receives the form popups (data/forms.yaml, assets/js/form-modal.js),
+ * saves them in the MySQL database and, when the addresses are filled in, sends them by email.
  * The "_form" field says which form it is: "contact" or "pitch".
+ *
+ * Database credentials: NOT in this file (it is in the public GitHub repo / deployed folder).
+ * They are read from CONFIG_FILE, created once by hand on the server, OUTSIDE the site folder
+ * (rsync --delete removes everything in the site folder at each deploy).
+ * Template: hosting/infomaniak/contact-config.example.php
+ * One table per form (messages_contact, messages_pitch), created automatically on the first message.
+ * Read the messages in phpMyAdmin.
  *
  * Copied to public/contact.php by hosting/infomaniak/build.js.
  * Then set `action: "/contact.php"` for each form in data/forms.yaml.
  */
 
 // ---------------------------------------------------------------------------
-// Configuration (TODO: fill in before going live)
+// Configuration
 // ---------------------------------------------------------------------------
+
+// Database credentials file, one folder above the site folder (SSH_WORKDIR)
+const CONFIG_FILE = __DIR__ . '/../contact-config.php';
+const DB_TABLE_PREFIX = 'messages_'; // + form key: messages_contact, messages_pitch
+
+// Email (optional). Leave MAIL_FROM or a form's 'to' empty: no email, the message is only saved.
 
 // Sender address: must be an address of the site's domain, hosted at Infomaniak
 // (otherwise the emails end up in spam, see SPF / DKIM in the Cloudflare DNS)
-const MAIL_FROM = 'TODO@example.org';
+const MAIL_FROM = ''; // TODO, e.g. 'noreply@humanrightsfutures.com'
 const MAIL_FROM_NAME = 'Nous website';
 
 // Sites allowed to post the forms (Origin header). Empty = only the current host.
@@ -29,7 +43,7 @@ const RATE_LIMIT = 5;
 // type: text | email | url | textarea — max: maximum length
 const FORMS = [
   'contact' => [
-    'to' => 'TODO@example.org',
+    'to' => '', // TODO
     'subject' => '[Nous] New message from the website',
     'fields' => [
       'name'         => ['label' => 'Name', 'required' => true, 'max' => 200],
@@ -40,7 +54,7 @@ const FORMS = [
     ],
   ],
   'pitch' => [
-    'to' => 'TODO@example.org',
+    'to' => '', // TODO
     'subject' => '[Nous] New provocation pitch',
     'fields' => [
       'name'         => ['label' => 'Name', 'required' => true, 'max' => 200],
@@ -136,6 +150,60 @@ if ($count >= RATE_LIMIT) {
 }
 file_put_contents($bucket, (string) ($count + 1), LOCK_EX);
 
+// Database: one table per form (messages_<form>), one column per field of that form
+function save_message(string $formKey, array $form, array $values): bool
+{
+  if (!is_file(CONFIG_FILE)) {
+    error_log('contact.php: missing ' . CONFIG_FILE);
+    return false;
+  }
+  $config = require CONFIG_FILE;
+  try {
+    $pdo = new PDO(
+      'mysql:host=' . $config['db_host'] . ';dbname=' . $config['db_name'] . ';charset=utf8mb4',
+      $config['db_user'],
+      $config['db_password'],
+      [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
+
+    // $formKey is a key of FORMS (checked above), so it is safe in the table name
+    $table = DB_TABLE_PREFIX . $formKey;
+    $definitions = '';
+    foreach ($form['fields'] as $key => $field) {
+      $type = ($field['type'] ?? 'text') === 'textarea' ? 'TEXT' : 'VARCHAR(500)';
+      $definitions .= ", `$key` $type NULL";
+    }
+    $pdo->exec("CREATE TABLE IF NOT EXISTS `$table` ("
+      . '`id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, '
+      . '`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP'
+      . $definitions
+      . ') DEFAULT CHARSET=utf8mb4');
+
+    $keys = array_keys($form['fields']);
+    $sql = "INSERT INTO `$table` (`" . implode('`, `', $keys) . '`) VALUES (?'
+         . str_repeat(', ?', count($keys) - 1) . ')';
+    $params = [];
+    foreach ($keys as $key) {
+      $params[] = $values[$key] !== '' ? $values[$key] : null;
+    }
+    $pdo->prepare($sql)->execute($params);
+    return true;
+  } catch (Throwable $e) {
+    error_log('contact.php: database error: ' . $e->getMessage());
+    return false;
+  }
+}
+
+$saved = save_message($get('_form'), $form, $values);
+
+// No email configured: the database is the only copy
+if (MAIL_FROM === '' || $form['to'] === '') {
+  if (!$saved) {
+    reply(500, ['ok' => false, 'error' => 'save_failed']);
+  }
+  reply(200, ['ok' => true]);
+}
+
 // Email: one-line fields first, then the texts
 $lines = [];
 $texts = [];
@@ -166,7 +234,8 @@ $sent = mail(
   '-f' . MAIL_FROM
 );
 
-if (!$sent) {
+// Success if at least one copy exists (database or email)
+if (!$sent && !$saved) {
   reply(500, ['ok' => false, 'error' => 'mail_failed']);
 }
 

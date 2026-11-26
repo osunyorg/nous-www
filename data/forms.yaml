@@ -12,7 +12,7 @@ contact:
   trigger_text: Get in touch
   title: Get in touch
   intro: Tell us a bit about yourself and what you would like to talk about.
-  action: ""
+  action: "/contact.php"
   submit: Send message
   success: Thank you! Your message has been sent, we will get back to you soon.
   error: Sorry, your message could not be sent. Please try again later.
@@ -57,7 +57,7 @@ pitch:
   # Opened by the "Submit a Pitch!" button of the Provocations page
   title: Submit a Pitch
   intro: Have a Provocation to share? Tell us about your essay, question, or dialogue proposal.
-  action: ""
+  action: "/contact.php"
   submit: Submit my pitch
   success: Thank you! Your pitch has been sent, we will get back to you soon.
   error: Sorry, your pitch could not be sent. Please try again later.
