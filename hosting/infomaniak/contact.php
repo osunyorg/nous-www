@@ -43,7 +43,7 @@ const RATE_LIMIT = 5;
 // type: text | email | url | textarea — max: maximum length
 const FORMS = [
   'contact' => [
-    'to' => 'contact@leonstudio.app',
+    'to' => 'coline@nous.colmena.fund',
     'subject' => '[Nous] New message from the website',
     'fields' => [
       'name'         => ['label' => 'Name', 'required' => true, 'max' => 200],
@@ -54,7 +54,7 @@ const FORMS = [
     ],
   ],
   'pitch' => [
-    'to' => 'contact@leonstudio.app',
+    'to' => 'coline@nous.colmena.fund',
     'subject' => '[Nous] New provocation pitch',
     'fields' => [
       'name'         => ['label' => 'Name', 'required' => true, 'max' => 200],
