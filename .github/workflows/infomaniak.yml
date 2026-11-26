@@ -11,25 +11,28 @@ jobs:
       group: ${{ github.workflow }}
       cancel-in-progress: false # Can cause difficulties to publish when lots of changes are done
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
         with:
           submodules: true  # Fetch Hugo themes (true OR recursive)
           fetch-depth: 1    # Fetch all history for .GitInfo and .Lastmod
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+      - name: Installation de Hugo
+        uses: noesya/actions-hugo@release
         with:
           hugo-version: '0.165.0'
           extended: true
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      - name: Installation de Node
+        uses: actions/setup-node@v6
         with:
           node-version: 'lts/*'
           cache: 'yarn'
 
       - name: Install JS dependencies
         run: yarn install --frozen-lockfile
+
+      - name: Régénération de hr-map.json depuis le CSV Osuny (média syncé dans le repo)
+        run: node hr-map/build.js
 
       - name: Build
         run: yarn osuny build
@@ -45,13 +48,3 @@ jobs:
 
       - name: Deploy with rsync
         run: rsync -avz --delete -e "ssh -p ${{ secrets.SSH_PORT }}" ./public/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_WORKDIR }}/
-
-      - name: Notification Slack en cas d'échecs
-        uses: ravsamhq/notify-slack-action@2.3.0
-        if: always()
-        with:
-          status: ${{ job.status }}
-          notify_when: "failure"
-          notification_title: ""
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
